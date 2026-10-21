@@ -27,6 +27,19 @@
     return a;
   }
   function clear() { root.innerHTML = ''; }
+  // 複製文字並用頁面共用的提示框（site.js 建立的 .toast）告訴讀者結果
+  function copy(text, msg) {
+    var say = function (m) { var t = document.querySelector('.toast'); if (t) { t.textContent = m; t.classList.add('show'); setTimeout(function () { t.classList.remove('show'); }, 2600); } };
+    var fallback = function () {
+      var t = el('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      t.remove();
+      say(ok ? msg : '複製失敗，請手動選取文字複製。');
+    };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { say(msg); }, fallback);
+    else fallback();
+  }
   function focusFirst(n) { var f = n.querySelector('h2, button'); if (f) { f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: true }); } }
   var NAME = { julian: '🇹🇼 陳雙宇（理性）', ginni: '🇯🇵 永瀨子琦（感性）' };
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
@@ -235,14 +248,26 @@
       card.appendChild(dl);
       card.appendChild(el('p', 'sub', '關掉這個分頁，內容就會消失。想留著的話，先複製下來。'));
       var row = el('div', 'actions');
-      row.appendChild(btn('複製我的五層筆記', 'primary', function () {
-        var done = function () { var t = document.querySelector('.toast'); if (t) { t.textContent = '已複製五層筆記'; t.classList.add('show'); setTimeout(function () { t.classList.remove('show'); }, 2600); } };
-        if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done);
-        else { var t = el('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) {} t.remove(); }
-      }));
+      row.appendChild(btn('複製我的五層筆記', '', function () { copy(text, '已複製五層筆記'); }));
       row.appendChild(btn('重新開始', '', function () { answers = []; step(0); }));
       card.appendChild(row);
-      root.appendChild(card);
+
+      // 自己寫完五層之後，常常會卡在「然後呢？」：把提示詞＋筆記一起帶給 AI，讓它一次問一個問題陪你往下整理
+      if (data.prompt) {
+        var ai = el('div', 'game-card handoff');
+        ai.appendChild(el('h2', 'game-ask', '想再深入一點？帶去給 AI 繼續問'));
+        ai.appendChild(el('p', 'sub', '按下按鈕，會一次複製「五層提問提示詞＋你剛剛的筆記」。貼到你常用的 AI（ChatGPT、Gemini、Claude 都可以），它會從你的筆記接著，一次問你一個問題。'));
+        ai.appendChild(el('p', 'sub', '提醒：AI 服務可能會保存對話內容，筆記裡不需要寫任何人的真實姓名。'));
+        var row2 = el('div', 'actions');
+        var handoff = data.prompt + '\n\n---\n\n以下是我先自己寫好的五層筆記。請先讀完，再從「開場」開始，用一次一個問題的方式陪我往下整理：\n\n' + text;
+        row2.appendChild(btn('📋 複製提示詞＋我的筆記', 'primary', function () { copy(handoff, '已複製！貼到你常用的 AI 就能開始'); }));
+        row2.appendChild(link('這是什麼提示詞？', '../../toolkit/index.html'));
+        ai.appendChild(row2);
+        root.appendChild(card);
+        root.appendChild(ai);
+      } else {
+        root.appendChild(card);
+      }
       focusFirst(card);
     };
     step(0);

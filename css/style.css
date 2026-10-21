@@ -420,6 +420,7 @@ button.btn.primary { background: var(--accent); }
 .game-text:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 .game-text::placeholder { color: var(--muted); opacity: 0.8; }
 .notes { margin: 16px 0; }
+.handoff { margin-top: 12px; padding-top: 24px; border-top: 1px solid var(--rule); }
 .notes dt { font-family: var(--font-log); color: var(--data); font-size: 0.85rem; margin-top: 14px; }
 .notes dd { margin: 4px 0 0; white-space: pre-wrap; }
 
