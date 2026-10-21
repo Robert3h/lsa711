@@ -193,6 +193,8 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .news-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; padding: 4px 0; text-decoration: none; color: var(--ink); }
 .news-item:hover .news-text, .news-item:focus-visible .news-text { color: var(--accent); text-decoration: underline; }
 .news-text { font-size: 0.95rem; }
+/* 類型小標：中性色，只幫讀者分辨是文章、小遊戲還是工具，不搶標題 */
+.news-type { font-size: 0.75rem; color: var(--muted); border: 1px solid var(--rule); border-radius: 3px; padding: 0 6px; white-space: nowrap; }
 .news-new {
   margin-left: 8px; padding: 0 6px; border: 1px solid var(--data); border-radius: 3px;
   font-size: 0.7rem; color: var(--data); letter-spacing: 0.06em;
