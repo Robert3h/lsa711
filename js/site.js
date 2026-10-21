@@ -60,6 +60,28 @@
     });
   });
 
+  // ---------- 2a. 「複製提示詞」等按鈕：data-copy 指向要複製的元素 ----------
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var src = document.querySelector(b.getAttribute('data-copy'));
+      if (!src) return;
+      var text = src.textContent;
+      var msg = b.getAttribute('data-copied') || (EN ? 'Copied' : '已複製');
+      var done = function () { say(msg); };
+      var fail = function () { say(fallbackCopy(text) ? msg : (EN ? 'Copy failed — please open the full prompt below and copy it manually.' : '複製失敗，請展開下方的完整提示詞手動複製。')); };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fail);
+      else fail();
+    });
+  });
+
+  // ---------- 2a-2. 首頁傳訊列：7 天內的消息顯示 NEW（依讀者當下的真實日期判斷） ----------
+  document.querySelectorAll('.news-item[data-date]').forEach(function (a) {
+    var d = new Date(a.getAttribute('data-date') + 'T00:00:00+08:00');
+    var days = (Date.now() - d.getTime()) / 86400000;
+    var tag = a.querySelector('.news-new');
+    if (tag && days >= 0 && days < 7) tag.hidden = false;
+  });
+
   // ---------- 2b. 文章裡的 🥚：撿起傳訊碎片（小遊戲 03） ----------
   // 收集紀錄只存在讀者自己的瀏覽器；存不了（無痕模式）也照樣顯示提示
   var FKEY = 'lsa-fragments';
