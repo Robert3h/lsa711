@@ -135,6 +135,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .site-footer p { margin: 0 0 6px; }
 .site-footer a { color: var(--muted); }
 .site-footer a:hover { color: var(--ink); }
+.site-footer .privacy { margin-top: 10px; font-size: 0.8rem; opacity: .8; }
 
 /* ---------- 首頁：兩個入口，權重相等 ---------- */
 .home-intro { padding: 56px 0 28px; }
