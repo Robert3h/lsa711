@@ -514,6 +514,14 @@ button.btn.primary { background: var(--accent); }
 .gal-open:hover img, .gal-open:focus-visible img { filter: brightness(1.05); transform: scale(1.03); }
 .gal-item figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
 
+/* 短片：按了才播放，不自動播放 */
+.clips-title { font-size: 1.05rem; margin: 32px 0 4px; }
+.clips { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 760px) { .clips { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
+.clip { margin: 0; }
+.clip video { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: #000; border-radius: 4px; }
+.clip figcaption { margin-top: 6px; color: var(--muted); font-size: 0.85rem; }
+
 /* 放大檢視 */
 .lightbox { position: fixed; inset: 0; z-index: 40; background: rgba(5, 6, 8, .94); display: flex; align-items: center; justify-content: center; padding: 56px 12px; }
 .lightbox[hidden] { display: none; }
