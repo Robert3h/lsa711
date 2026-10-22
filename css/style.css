@@ -478,6 +478,73 @@ button.btn.primary { background: var(--accent); }
 .turn-coach { justify-self: start; border-left: 3px solid var(--data); }
 .turn-you-r { justify-self: end; border-right: 3px solid var(--accent); }
 
+/* ---------- 賽博創界 設定集＋藝廊（/lsa/cybertron/） ----------
+   這一頁的主角本來就是視覺，所以比其他頁多一點動態：照片 hover 微亮、放大檢視。
+   但仍然不自動播放、不無限循環動畫。 */
+.trial-note { margin-top: 16px; padding: 10px 14px; border: 1px dashed var(--data); border-radius: 4px; color: var(--data); font-size: 0.9rem; max-width: var(--measure); }
+.trial-note code { font-family: var(--font-log); font-size: 0.85em; }
+
+/* 角色檔案：子琦在左、雙宇在右（和合照的位置一樣） */
+.files { display: grid; gap: 20px; }
+@media (min-width: 760px) { .files { grid-template-columns: 1fr 1fr; } }
+.file { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 18px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); }
+.file img { width: 120px; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; border-radius: 3px; }
+.file h3 { margin: 4px 0 8px; font-size: 1.1rem; }
+.file p { margin: 0 0 10px; }
+.file-ginni { border-left: 3px solid var(--accent); }
+.file-julian { border-left: 3px solid var(--data); }
+.file blockquote { margin: 0; padding-left: 12px; border-left: 2px solid var(--rule); color: var(--muted); font-size: 0.95rem; }
+.file cite { display: block; margin-top: 4px; font-style: normal; font-family: var(--font-log); font-size: 0.75rem; color: var(--data); }
+@media (min-width: 1000px) { .file { grid-template-columns: 160px 1fr; } .file img { width: 160px; } }
+@media (max-width: 420px) { .file { grid-template-columns: 88px 1fr; gap: 12px; padding: 14px; } .file img { width: 88px; } }  /* 手機：照片縮小，文字欄寬一點 */
+
+/* 場景：寬圖＋原稿裡的場景描述 */
+.scenes { display: grid; gap: 28px; }
+.scene { margin: 0; }
+.scene img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; border-radius: 4px; }
+.scene figcaption { margin-top: 10px; color: var(--muted); max-width: var(--measure); line-height: 1.7; }
+.scene figcaption .log { display: block; margin-bottom: 4px; }
+
+/* 劇照牆：錯落排列（直圖、橫圖混排也不會留空） */
+.gallery { columns: 2 160px; column-gap: 12px; }
+@media (min-width: 760px) { .gallery { columns: 3 220px; column-gap: 16px; } }
+.gal-item { margin: 0 0 12px; break-inside: avoid; }
+.gal-open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden; }
+.gal-open img { width: 100%; height: auto; filter: brightness(.9); transition: filter .3s ease, transform .4s ease; }
+.gal-open:hover img, .gal-open:focus-visible img { filter: brightness(1.05); transform: scale(1.03); }
+.gal-item figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+
+/* 放大檢視 */
+.lightbox { position: fixed; inset: 0; z-index: 40; background: rgba(5, 6, 8, .94); display: flex; align-items: center; justify-content: center; padding: 56px 12px; }
+.lightbox[hidden] { display: none; }
+.lightbox figure { margin: 0; max-width: min(1100px, 100%); max-height: 100%; display: flex; flex-direction: column; align-items: center; }
+.lightbox img { max-width: 100%; max-height: calc(100vh - 140px); object-fit: contain; border-radius: 3px; }
+.lightbox figcaption { margin-top: 10px; color: #c9ced2; }
+.lightbox button { position: absolute; width: 48px; height: 48px; border-radius: 50%; border: 1px solid #555; background: rgba(20, 22, 25, .8); color: #eee; font-size: 1.2rem; cursor: pointer; }
+.lightbox button:hover { border-color: #d97757; color: #d97757; }
+.lb-close { top: 12px; right: 12px; }
+.lb-prev { left: 12px; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 12px; top: 50%; transform: translateY(-50%); }
+@media (prefers-reduced-motion: reduce) { .gal-open img { transition: none; } .gal-open:hover img { transform: none; } }
+
+/* 影片：只放縮圖，點了去 YouTube（網站不放影片檔） */
+.videos { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .videos { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px) { .videos { grid-template-columns: repeat(3, 1fr); } }
+.video-card { display: block; text-decoration: none; color: var(--ink); }
+.video-thumb { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px; background: var(--surface); }
+.video-thumb img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); transition: filter .3s ease; }
+.video-hint {
+  position: absolute; inset: auto 0 0 0; padding: 8px 12px; font-size: 0.85rem; color: #fff;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .75)); opacity: 0; transition: opacity .25s ease;
+}
+.video-card:hover .video-hint, .video-card:focus-visible .video-hint { opacity: 1; }
+.video-card:hover .video-thumb img { filter: brightness(1); }
+.video-card .log { display: block; margin-top: 8px; }
+.video-title { display: block; margin-top: 2px; font-weight: 600; line-height: 1.5; }
+.video-card:hover .video-title { color: var(--accent); }
+@media (hover: none) { .video-hint { opacity: 1; } }   /* 手機沒有 hover：提示一直顯示 */
+
 /* ---------- 複製 Email 的提示 ---------- */
 .toast {
   position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
