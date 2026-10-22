@@ -151,36 +151,36 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .gate:hover .go { text-decoration: underline; }
 @media (min-width: 760px) {
   .gates { grid-template-columns: 1fr 1fr; }
-  .gate { padding: 48px 32px 48px 24px; }
-  .gate + .gate { border-top: 0; border-left: 1px solid var(--rule); padding-left: 40px; }
+  .gate { padding: 40px 32px; }   /* 左右兩個入口內距一樣，圖片才會一樣大 */
+  .gate + .gate { border-top: 0; border-left: 1px solid var(--rule); }
 }
 
-/* 入口浮現的人像：工作系統＝Robert 本人（招募者看到的是真的人），寫作系統＝子琦。
-   只在有滑鼠的寬螢幕出現；人像四周淡出，不做成一張貼上去的照片 */
-.gate { position: relative; overflow: hidden; }
-.gate > :not(.gate-art) { position: relative; z-index: 1; }
-.gate-art { display: none; }
-@media (hover: hover) and (min-width: 760px) {
-  .gate-art {
-    display: block; position: absolute; right: 0; top: 0;
-    width: 46%; height: 100%; object-fit: cover; object-position: center 15%;
-    opacity: 0; transform: translateX(12px);
-    transition: opacity .35s ease, transform .35s ease;
-    -webkit-mask-image: radial-gradient(ellipse 70% 75% at 60% 45%, #000 35%, transparent 75%);
-            mask-image: radial-gradient(ellipse 70% 75% at 60% 45%, #000 35%, transparent 75%);
-    pointer-events: none;
-  }
-  /* 兩人合照是橫的，給它較寬的空間，讓子琦和雙宇都入鏡 */
-  .gate-art-pair {
-    width: 100%; object-position: center 25%;
-    -webkit-mask-image: radial-gradient(ellipse 75% 80% at 50% 45%, #000 45%, transparent 85%);
-            mask-image: radial-gradient(ellipse 75% 80% at 50% 45%, #000 45%, transparent 85%);
-  }
-  .gate:hover .gate-art, .gate:focus-visible .gate-art { opacity: 0.22; transform: none; }
-  :root[data-theme="light"] .gate:hover .gate-art,
-  :root[data-theme="light"] .gate:focus-visible .gate-art { opacity: 0.3; }
+/* 入口的圖片（2026-10-22）：一直看得到，讓兩條路一眼就有視覺差異；手機也看得到。
+   工作＝Robert 本人正面照（招募者看到的是真人），寫作＝子琦與雙宇合照。
+   兩張圖用同樣的框（大小、比例一樣），維持兩個入口份量相等。 */
+.gate { position: relative; }
+.gate-media {
+  aspect-ratio: 16 / 10; overflow: hidden; border-radius: 4px;
+  margin-bottom: 18px; background: var(--surface);
 }
-@media (prefers-reduced-motion: reduce) { .gate-art { transition: none; transform: none; } }
+.gate-media img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(.88); transition: filter .35s ease, transform .5s ease;
+}
+.gate-work .gate-media img { object-position: center 18%; }   /* 正面照：臉＋西裝上半身入鏡 */
+.gate-lsa .gate-media img { object-position: center 35%; }    /* 合照：兩人的臉與中間那道光都入鏡 */
+.gate:hover .gate-media img, .gate:focus-within .gate-media img { filter: brightness(1.02); transform: scale(1.03); }
+@media (prefers-reduced-motion: reduce) { .gate-media img { transition: none; } .gate:hover .gate-media img { transform: none; } }
+
+/* 整張卡片都可以點：標題連結的 ::after 撐滿整張卡；寫作入口的兩個小連結疊在上面，可以單獨點 */
+.gate h2 a.gate-link { color: inherit; text-decoration: none; }
+.gate-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.gate-link:focus-visible { outline: none; }
+.gate:focus-within { outline: 2px solid var(--accent); outline-offset: -2px; }
+.gate:hover h2 a.gate-link { color: var(--accent); }
+.gate-extra { position: relative; z-index: 2; margin: 14px 0 0; font-size: 0.92rem; color: var(--muted); }
+.gate-extra a { color: var(--accent); }
+.gate-extra a:hover { color: var(--accent-strong); }
 
 .motto { margin: 28px 0 0; color: var(--muted); font-size: 0.95rem; }
 
