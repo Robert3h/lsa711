@@ -170,7 +170,22 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .gate-work .gate-media img { object-position: center 18%; }   /* 正面照：臉＋西裝上半身入鏡 */
 .gate-lsa .gate-media img { object-position: center 35%; }    /* 合照：兩人的臉與中間那道光都入鏡 */
 .gate:hover .gate-media img, .gate:focus-within .gate-media img { filter: brightness(1.02); transform: scale(1.03); }
-@media (prefers-reduced-motion: reduce) { .gate-media img { transition: none; } .gate:hover .gate-media img { transform: none; } }
+
+/* 開場對焦（2026-10-22，Robert 想試的版本）：網頁打開時只播一次，
+   照片從 104% 慢慢收回原尺寸後就停住，像相機對焦，不做反覆呼吸（會一直搶走文字的注意力）。
+   用 backwards：播完就交還給原本的樣式，hover 放大照常運作。
+   第二張晚 0.15 秒開始，兩張不會完全同步，比較自然。 */
+@keyframes gate-focus {
+  from { transform: scale(1.04); filter: brightness(.7); }
+  to   { transform: scale(1);    filter: brightness(.88); }
+}
+.gate-media img { animation: gate-focus 1.5s cubic-bezier(.2, .7, .2, 1) backwards; }
+.gate-lsa .gate-media img { animation-delay: .15s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gate-media img { transition: none; animation: none; }
+  .gate:hover .gate-media img { transform: none; }
+}
 
 /* 整張卡片都可以點：標題連結的 ::after 撐滿整張卡；寫作入口的兩個小連結疊在上面，可以單獨點 */
 .gate h2 a.gate-link { color: inherit; text-decoration: none; }
