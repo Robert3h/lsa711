@@ -554,6 +554,36 @@ button.btn.primary { background: var(--accent); }
 .video-card:hover .video-title { color: var(--accent); }
 @media (hover: none) { .video-hint { opacity: 1; } }   /* 手機沒有 hover：提示一直顯示 */
 
+/* ---------- 全部傳訊（/lsa/archive/） ----------
+   篩選是單選：只有三類，複選等於「全部」，沒有意義。
+   艙房顏色沿用全站規則：本站可讀的連結用橘色；艙房標籤用中性框線，只幫忙分辨類型。 */
+.arc-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 6px; }
+.arc-filter {
+  font: inherit; font-size: 0.9rem; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--rule); background: transparent; color: var(--muted);
+}
+.arc-filter:hover { color: var(--ink); border-color: var(--muted); }
+.arc-filter[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.arc-filter[aria-pressed="true"] .log { color: inherit; }
+.arc-status { margin: 0 0 8px; min-height: 1.4em; }
+.arc-month { padding-top: 28px; }
+.arc-month[hidden] { display: none; }
+.arc-ym { font-size: 0.85rem; margin: 0 0 6px; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+.arc-list { list-style: none; margin: 0; padding: 0; }
+.arc-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.arc-item[hidden] { display: none; }
+.arc-room, .arc-tag { font-size: 0.72rem; padding: 0 6px; border-radius: 3px; border: 1px solid var(--rule); color: var(--muted); white-space: nowrap; }
+.arc-b { border-color: var(--data); color: var(--data); }
+.arc-title { flex: 1 1 100%; line-height: 1.6; }
+.arc-title a { font-weight: 600; }
+.arc-title-plain { color: var(--ink); }
+.arc-read { margin-left: 8px; font-size: 0.8rem; color: var(--accent); white-space: nowrap; }
+@media (min-width: 760px) {
+  .arc-item { flex-wrap: nowrap; }
+  .arc-item .log { flex: 0 0 6.5rem; }
+  .arc-title { flex: 1 1 auto; }
+}
+
 /* ---------- 複製 Email 的提示 ---------- */
 .toast {
   position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
