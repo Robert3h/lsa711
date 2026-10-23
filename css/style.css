@@ -536,6 +536,45 @@ button.btn.primary { background: var(--accent); }
 .lb-next { right: 12px; top: 50%; transform: translateY(-50%); }
 @media (prefers-reduced-motion: reduce) { .gal-open img { transition: none; } .gal-open:hover img { transform: none; } }
 
+/* 背景音樂的傳訊卡片（2026-10-23）
+   沿用方案 A：不加霓虹光暈、不用毛玻璃。科幻感只靠三件事：Tron 青的訊號條（全站「紀錄資料」色）、
+   等寬字的傳訊抬頭、深色面板。可以按的「播放」照全站規則用 Claude 橘。
+   放在右下角、不擋劇照；放大檢視（z-index 40）打開時會蓋在它上面。 */
+.transmission {
+  position: fixed; right: 16px; bottom: 20px; z-index: 20; width: min(360px, calc(100% - 32px));
+  padding: 16px 18px 16px 20px; border-radius: 4px;
+  background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--data);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  opacity: 0; transform: translateY(16px); transition: opacity .4s ease, transform .4s ease;
+}
+.transmission.show { opacity: 1; transform: translateY(0); }
+.transmission[hidden] { display: none; }
+.tx-head { margin: 0 0 6px; font-size: 0.8rem; letter-spacing: .02em; }
+.tx-body { margin: 0 0 14px; line-height: 1.6; }
+.tx-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.tx-no { color: var(--muted); }
+:root[data-theme="light"] .transmission { box-shadow: 0 10px 26px rgba(0, 0, 0, .14); }
+
+/* 選過之後留在角落的小按鈕：隨時能開、能關 */
+.tx-mini {
+  position: fixed; right: 16px; bottom: 20px; z-index: 15;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 0.9rem; font-weight: 600;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .28);
+}
+.tx-mini[hidden] { display: none; }
+.tx-mini:hover, .tx-mini:focus-visible { border-color: var(--accent); color: var(--accent); }
+.tx-icon { color: var(--data); }
+.tx-title { display: none; font-size: 0.75rem; }
+.tx-mini.is-playing { border-color: var(--data); }
+.tx-mini.is-playing .tx-title { display: inline; }   /* 正在播的時候才顯示曲名：顯示的是真實狀態 */
+@media (max-width: 420px) { .tx-mini.is-playing .tx-title { display: none; } }
+:root[data-theme="light"] .tx-mini { box-shadow: 0 6px 18px rgba(0, 0, 0, .12); }
+@media (min-width: 760px) { .transmission, .tx-mini { right: 28px; bottom: 28px; } }
+@media (prefers-reduced-motion: reduce) { .transmission { transition: none; transform: none; } }
+.music-note { margin-top: 40px; font-size: 0.85rem; }
+
 /* 影片：只放縮圖，點了去 YouTube（網站不放影片檔） */
 .videos { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: 1fr; }
 @media (min-width: 560px) { .videos { grid-template-columns: 1fr 1fr; } }
