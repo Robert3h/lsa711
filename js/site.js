@@ -141,4 +141,26 @@
     window.addEventListener('resize', update);
     update();
   });
+
+  // 麵包屑「LSA ▾」的同層頁面選單：點 ▾ 開關（手機也能用）；有滑鼠的電腦，移上去就打開、移開稍等一下才關，
+  // 避免滑鼠從 ▾ 移到選單途中經過空隙就關掉。Esc 或點選單外面也會關。
+  document.querySelectorAll('.crumb-menu').forEach(function (box) {
+    var btn = box.querySelector('.crumb-toggle');
+    var list = box.querySelector('.crumb-list');
+    var timer;
+    function set(open) {
+      clearTimeout(timer);
+      list.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function () { set(list.hidden); });
+    if (window.matchMedia('(hover: hover)').matches) {
+      box.addEventListener('mouseenter', function () { set(true); });
+      box.addEventListener('mouseleave', function () { timer = setTimeout(function () { set(false); }, 250); });
+    }
+    document.addEventListener('click', function (e) { if (!box.contains(e.target)) set(false); });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !list.hidden) { set(false); btn.focus(); }
+    });
+  });
 })();
