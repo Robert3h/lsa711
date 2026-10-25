@@ -69,6 +69,12 @@
 
   if (recall()) {
     showMini();
+  } else if (window.matchMedia('(max-width: 759px)').matches) {
+    // 手機：卡片放進頁首說明區、不浮在劇照上（浮動卡片在窄螢幕上幾乎全寬，會一直擋住照片）
+    var head = document.querySelector('.page-head');
+    if (head) { head.appendChild(card); card.classList.add('inline'); }
+    card.hidden = false;
+    card.classList.add('show');
   } else {
     setTimeout(function () {
       card.hidden = false;

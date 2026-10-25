@@ -200,6 +200,18 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 
 .motto { margin: 28px 0 0; color: var(--muted); font-size: 0.95rem; }
 
+/* 手機首頁（2026-10-25，健檢 M4）：第一屏要先看到兩個入口，不是寫作系統的消息。
+   所以手機上把 LATEST 排到入口下面、入口圖片改矮、頂端留白縮小；桌機第一屏本來就看得到兩個入口，維持原樣。
+   只改畫面順序、不改 HTML 順序：鍵盤操作的順序在手機上會和畫面不同，但手機幾乎不用鍵盤，代價最小。 */
+@media (max-width: 759px) {
+  .home { display: flex; flex-direction: column; }
+  .home .home-intro { padding: 24px 0 20px; }
+  .home .gates { order: 1; }
+  .home .news { order: 2; margin: 24px 0 0; }
+  .home .motto { order: 3; }
+  .gate-media { aspect-ratio: 16 / 8; }
+}
+
 /* ---------- 首頁傳訊列：配角，細細一條在兩個入口上方 ----------
    不做跑馬燈（移動的字難讀、難點，也會搶走兩個入口的焦點）；
    NEW 只在 7 天內出現，依真實日期判斷，不是裝飾 */
@@ -308,7 +320,7 @@ figcaption, .caption { color: var(--muted); font-size: 0.9rem; line-height: 1.6;
 .prose .layer dt .log { font-size: 0.85rem; margin-right: 8px; }
 .prose .layer dd { margin: 4px 0 0; }
 .prose figure { margin: 2em 0; }
-.prose figure.portrait img { max-width: 360px; }
+.prose figure.portrait img { max-width: min(360px, 100%); }   /* 不能比手機的內容區寬，否則整頁會左右滑（健檢 M5） */
 
 .video { max-width: 360px; }
 .video video { width: 100%; background: #000; border-radius: 4px; }
@@ -572,6 +584,9 @@ button.btn.primary { background: var(--accent); }
 @media (max-width: 420px) { .tx-mini.is-playing .tx-title { display: none; } }
 :root[data-theme="light"] .tx-mini { box-shadow: 0 6px 18px rgba(0, 0, 0, .12); }
 @media (min-width: 760px) { .transmission, .tx-mini { right: 28px; bottom: 28px; } }
+/* 手機（健檢 S10）：固定在畫面上的卡片幾乎全寬，會一直蓋住劇照。
+   改成放進頁首說明區、跟著頁面捲走，不再浮在照片上；選完之後一樣留角落的小 ♪。 */
+.transmission.inline { position: static; width: auto; margin: 20px 0 0; box-shadow: none; }
 @media (prefers-reduced-motion: reduce) { .transmission { transition: none; transform: none; } }
 .music-note { margin-top: 40px; font-size: 0.85rem; }
 
