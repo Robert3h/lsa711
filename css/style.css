@@ -125,6 +125,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
   .site-header .site-nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; flex-wrap: nowrap; gap: 8px; }
   .site-nav ul { gap: 0 14px; }
   .lang-switch { gap: 4px; }
+  .lang-switch a { padding: 10px 8px; margin: -10px -8px; }   /* 「EN」只有兩個字母，點擊範圍加大；負外距抵銷，版面寬度不變（健檢 C11） */
   /* 完整的 English 只在視覺上藏起來，報讀軟體照樣唸得到 */
   .lang-switch .l-full { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .lang-switch .l-short { display: inline; }
@@ -133,9 +134,9 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 /* ---------- 頁尾 ---------- */
 .site-footer { border-top: 1px solid var(--rule); margin-top: 96px; padding: 28px 0 40px; color: var(--muted); font-size: 0.9rem; }
 .site-footer p { margin: 0 0 6px; }
-.site-footer a { color: var(--muted); }
+.site-footer a { color: var(--muted); display: inline-block; padding: 6px 2px; }   /* 手機手指好點（健檢 C11） */
 .site-footer a:hover { color: var(--ink); }
-.site-footer .privacy { margin-top: 10px; font-size: 0.8rem; opacity: .8; }
+.site-footer .privacy { margin-top: 10px; font-size: 0.8rem; }   /* 不再降低透明度：淺色主題下小字對比會低於 4.5:1（健檢 C3） */
 
 /* ---------- 首頁：兩個入口，權重相等 ---------- */
 .home-intro { padding: 56px 0 28px; }
@@ -195,7 +196,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .gate:focus-within { outline: 2px solid var(--accent); outline-offset: -2px; }
 .gate:hover h2 a.gate-link { color: var(--accent); }
 .gate-extra { position: relative; z-index: 2; margin: 14px 0 0; font-size: 0.92rem; color: var(--muted); }
-.gate-extra a { color: var(--accent); }
+.gate-extra a { color: var(--accent); display: inline-block; padding: 10px 2px; margin: -10px 0; }   /* 疊在整張可點的卡片上，點擊範圍要夠大才不會誤點進卡片（健檢 C11） */
 .gate-extra a:hover { color: var(--accent-strong); }
 
 .motto { margin: 28px 0 0; color: var(--muted); font-size: 0.95rem; }
@@ -233,6 +234,12 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .page-head h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); line-height: 1.25; margin: 4px 0 12px; }
 .page-head.with-photo { display: grid; gap: 24px; }
 .page-head.with-photo img { width: 160px; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; border-radius: 4px; }
+/* 手機：照片縮成標題旁的小圖，聯絡按鈕才會在第一屏完整出現（健檢 S9） */
+@media (max-width: 759px) {
+  .page-head.with-photo { grid-template-columns: minmax(0, 1fr) 76px; gap: 16px; align-items: start; }   /* minmax(0,…)：長英文字不會把欄位撐寬 */
+  .page-head.with-photo img { width: 76px; grid-column: 2; grid-row: 1; }
+  .page-head.with-photo > div { grid-column: 1; grid-row: 1; }
+}
 @media (min-width: 760px) {
   .page-head.with-photo { grid-template-columns: 1fr 200px; align-items: start; }
   .page-head.with-photo img { width: 200px; grid-column: 2; grid-row: 1; }
@@ -487,11 +494,11 @@ button.btn.primary { background: var(--accent); }
   background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
   font-size: 0.92rem; font-weight: 600; text-decoration: none;
   box-shadow: 0 6px 20px rgba(0, 0, 0, .28);
-  transition: opacity .25s ease, transform .25s ease, border-color .2s;
+  transition: opacity .25s ease, transform .25s ease, border-color .2s, visibility .25s;
 }
 .float-nav span { color: var(--accent); }
 .float-nav:hover, .float-nav:focus-visible { border-color: var(--accent); color: var(--accent); }
-.float-nav.is-hidden { opacity: 0; transform: translateY(12px); pointer-events: none; }
+.float-nav.is-hidden { opacity: 0; transform: translateY(12px); pointer-events: none; visibility: hidden; }   /* visibility：藏起來時按 Tab 不會停在看不見的按鈕上（健檢 C4） */
 :root[data-theme="light"] .float-nav { box-shadow: 0 6px 18px rgba(0, 0, 0, .12); }
 @media (min-width: 760px) { .float-nav { right: 28px; bottom: 28px; } }
 @media (prefers-reduced-motion: reduce) { .float-nav { transition: none; } }
@@ -673,12 +680,14 @@ button.btn.primary { background: var(--accent); }
 .arc-list { list-style: none; margin: 0; padding: 0; }
 .arc-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
 .arc-item[hidden] { display: none; }
-.arc-room, .arc-tag { font-size: 0.72rem; padding: 0 6px; border-radius: 3px; border: 1px solid var(--rule); color: var(--muted); white-space: nowrap; }
-.arc-b { border-color: var(--data); color: var(--data); }
+/* 艙房、備註：單純的灰色小字，不加外框，不讓人誤以為能點（健檢 S2）。能點的篩選按鈕在頁面上方 */
+.arc-room, .arc-tag { font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+.arc-tag::before { content: "· "; }
 .arc-title { flex: 1 1 100%; line-height: 1.6; }
 .arc-title a { font-weight: 600; }
 .arc-title-plain { color: var(--ink); }
 .arc-read { margin-left: 8px; font-size: 0.8rem; color: var(--accent); white-space: nowrap; }
+.arc-ext { color: var(--muted); }   /* 外部連結的標題後面已經有 ↗，來源名稱退後 */
 @media (min-width: 760px) {
   .arc-item { flex-wrap: nowrap; }
   .arc-item .log { flex: 0 0 6.5rem; }
@@ -698,3 +707,12 @@ button.btn.primary { background: var(--accent); }
 }
 
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- 文章底部：上一篇／下一篇（2026-10-27） ---------- */
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 40px 0 0; max-width: var(--measure); }
+.pager a { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 6px; text-decoration: none; color: var(--ink); }
+.pager a:hover, .pager a:focus-visible { border-color: var(--accent); }
+.pager a:hover .pager-title { color: var(--accent); }
+.pager-next { text-align: right; grid-column: 2; }
+.pager-title { font-size: 0.95rem; line-height: 1.5; }
+@media (max-width: 559px) { .pager { grid-template-columns: 1fr; } .pager-next { grid-column: 1; } }

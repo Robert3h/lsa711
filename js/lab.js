@@ -41,7 +41,8 @@
     else fallback();
   }
   function focusFirst(n) { var f = n.querySelector('h2, button'); if (f) { f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: true }); } }
-  var NAME = { julian: '🇹🇼 陳雙宇（理性）', ginni: '🇯🇵 永瀨子琦（感性）' };
+  // 不放國旗：Windows 電腦會把國旗顯示成「TW」「JP」字母，按鈕看起來像程式代碼（健檢 C10）
+  var NAME = { julian: '陳雙宇（理性）', ginni: '永瀨子琦（感性）' };
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 
   // 一則對話泡泡：子琦在左、雙宇在右（和合照的位置一樣）
@@ -154,6 +155,7 @@
         row.appendChild(link('讀這則彩蛋對應的文章 LSA_012', '../../lsa-012/index.html'));
         card.appendChild(row);
         log.appendChild(card);
+        focusFirst(card);   // 最後一個選項按下後就消失了，焦點移到結果卡，鍵盤使用者不用從頁首重來（健檢 C4）
       };
       next();
     };

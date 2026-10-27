@@ -52,6 +52,14 @@
   box.addEventListener('click', function (e) { if (e.target === box) close(); });
   document.addEventListener('keydown', function (e) {
     if (box.hidden) return;
+    // 焦點留在放大視窗裡：Tab 只在三顆按鈕之間繞，不會跑到背後的頁面（健檢 C4）
+    if (e.key === 'Tab') {
+      var f = [box.querySelector('.lb-close'), box.querySelector('.lb-prev'), box.querySelector('.lb-next')];
+      var k = f.indexOf(document.activeElement);
+      e.preventDefault();
+      f[(k + (e.shiftKey ? f.length - 1 : 1)) % f.length].focus();
+      return;
+    }
     if (e.key === 'Escape') close();
     if (e.key === 'ArrowRight') show(i + 1);
     if (e.key === 'ArrowLeft') show(i - 1);
