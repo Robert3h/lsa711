@@ -79,7 +79,8 @@
     var d = new Date(a.getAttribute('data-date') + 'T00:00:00+08:00');
     var days = (Date.now() - d.getTime()) / 86400000;
     var tag = a.querySelector('.news-new');
-    if (tag && days >= 0 && days < 7) tag.hidden = false;
+    // 未來日期（先公布的預告）也算新消息；過了 7 天才拿掉 NEW
+    if (tag && days < 7) tag.hidden = false;
   });
 
   // ---------- 2b. 文章裡的 🥚：撿起傳訊碎片（小遊戲 03） ----------
