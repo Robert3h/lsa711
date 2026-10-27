@@ -1,23 +1,23 @@
-// 劇照放大檢視：點照片打開，左右鍵／按鈕／手機左右滑切換，Esc 或點背景關閉。
-// 關閉後把焦點還給原本那張照片，鍵盤使用者不會迷路。
+// 放大檢視：劇照牆與相簿共用同一個檢視框。
+//   劇照牆：點哪張就從哪張開始，左右切換整面牆的照片。
+//   相簿（2026-10-27）：點封面從第 1 張開始，左右翻整本相簿。
+// 操作：左右鍵／按鈕／手機左右滑切換，Esc 或點背景關閉；關閉後把焦點還給原本的按鈕，鍵盤使用者不會迷路。
 (function () {
   var box = document.querySelector('.lightbox');
-  var items = Array.prototype.slice.call(document.querySelectorAll('.gal-open'));
-  if (!box || !items.length) return;
+  if (!box) return;
   var img = box.querySelector('img');
   var cap = box.querySelector('figcaption');
-  var i = 0, opener = null;
+  var list = [], i = 0, title = '', opener = null;
 
   function show(n) {
-    i = (n + items.length) % items.length;
-    var it = items[i];
-    img.src = it.getAttribute('data-full');
-    img.alt = it.querySelector('img').alt;
-    var c = it.getAttribute('data-caption');
-    cap.textContent = (i + 1) + ' / ' + items.length + (c && c !== '暫代圖' ? ' · ' + c : '');
+    i = (n + list.length) % list.length;
+    var it = list[i];
+    img.src = it.src;
+    img.alt = it.alt || '';
+    cap.textContent = (title ? title + ' · ' : '') + (i + 1) + ' / ' + list.length + (it.cap ? ' · ' + it.cap : '');
   }
-  function open(n) {
-    opener = items[n];
+  function open(items, n, t, btn) {
+    list = items; title = t || ''; opener = btn;
     show(n);
     box.hidden = false;
     document.body.style.overflow = 'hidden';   // 放大時背景不跟著捲動
@@ -29,7 +29,23 @@
     if (opener) opener.focus();
   }
 
-  items.forEach(function (b, n) { b.addEventListener('click', function () { open(n); }); });
+  // 劇照牆
+  var wall = Array.prototype.slice.call(document.querySelectorAll('.gal-open'));
+  var wallItems = wall.map(function (b) {
+    var c = b.getAttribute('data-caption');
+    return { src: b.getAttribute('data-full'), alt: b.querySelector('img').alt, cap: c && c !== '暫代圖' ? c : '' };
+  });
+  wall.forEach(function (b, n) { b.addEventListener('click', function () { open(wallItems, n, '', b); }); });
+
+  // 相簿
+  document.querySelectorAll('.album-open').forEach(function (b) {
+    var t = b.getAttribute('data-title');
+    var items = JSON.parse(b.getAttribute('data-album')).map(function (src, k) {
+      return { src: src, alt: t + ' 第 ' + (k + 1) + ' 張', cap: '' };
+    });
+    b.addEventListener('click', function () { open(items, 0, t, b); });
+  });
+
   box.querySelector('.lb-close').addEventListener('click', close);
   box.querySelector('.lb-prev').addEventListener('click', function () { show(i - 1); });
   box.querySelector('.lb-next').addEventListener('click', function () { show(i + 1); });
@@ -50,4 +66,10 @@
     if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
     x0 = null;
   });
+
+  // 從別的頁面用 #album-01 這種網址連過來：捲到那本相簿並微微標示
+  if (/^#album-\d+$/.test(location.hash)) {
+    var target = document.querySelector(location.hash);
+    if (target) target.classList.add('album-target');
+  }
 })();
