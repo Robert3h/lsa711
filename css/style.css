@@ -716,3 +716,8 @@ button.btn.primary { background: var(--accent); }
 .pager-next { text-align: right; grid-column: 2; }
 .pager-title { font-size: 0.95rem; line-height: 1.5; }
 @media (max-width: 559px) { .pager { grid-template-columns: 1fr; } .pager-next { grid-column: 1; } }
+
+/* 文章裡的 YouTube 封面卡（插圖清單.csv，2026-10-28）：封面上已經寫「在 YouTube 觀看 →」，不再加外部連結的 ↗ */
+.prose .yt .video-card::after { content: none; }
+.prose .fig-link { margin: 1.2em 0; font-weight: 600; }
+.prose .yt-note { font-size: 0.85em; color: var(--muted); }
