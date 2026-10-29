@@ -92,7 +92,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .site-name { order: 1; }
 .site-header .site-nav { order: 2; margin-left: auto; }
 .site-header .theme-toggle { order: 3; }
-.site-name { font-weight: 700; color: var(--ink); text-decoration: none; }
+.site-name { font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; }   /* 名字不從中間斷開（2026-10-29） */
 .site-name:hover { color: var(--accent); }
 .site-nav { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 18px; }
@@ -119,16 +119,24 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 /* 手機：固定在上方的頁首只佔兩行，把畫面留給內容
    第一行：名字＋主題按鈕；第二行：選單＋語言切換 */
 @media (max-width: 559px) {
-  .site-header .wrap { padding-top: 8px; padding-bottom: 6px; }
+  .site-header .wrap { padding-top: 8px; padding-bottom: 6px; gap: 2px 12px; }
   .site-name { flex: 1; }
   .site-header .theme-toggle { order: 2; }
-  .site-header .site-nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; flex-wrap: nowrap; gap: 8px; }
-  .site-nav ul { gap: 0 14px; }
-  .lang-switch { gap: 4px; }
+  /* 2026-10-29（Robert 的三星 S26 Ultra）：畫面比 375px 窄、系統字又比較大時，「關於」被擠到下一行、「中文」被拆成直排。
+     改成：每個項目都不能從中間斷開；真的放不下時，整個語言切換換到下一行靠右，而不是把字拆開 */
+  .site-header .site-nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; flex-wrap: wrap; gap: 0 12px; }
+  .site-nav ul { gap: 0 14px; flex-wrap: nowrap; }
+  .site-nav li, .site-nav a { white-space: nowrap; }
+  .lang-switch { gap: 4px; flex-shrink: 0; white-space: nowrap; margin-left: auto; }
   .lang-switch a { padding: 10px 8px; margin: -10px -8px; }   /* 「EN」只有兩個字母，點擊範圍加大；負外距抵銷，版面寬度不變（健檢 C11） */
   /* 完整的 English 只在視覺上藏起來，報讀軟體照樣唸得到 */
   .lang-switch .l-full { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .lang-switch .l-short { display: inline; }
+}
+/* 很窄的手機（約 360px 以下）：選單字距再縮一點、拿掉 🌐，讓三個選單和語言切換盡量擠在同一行 */
+@media (max-width: 380px) {
+  .site-nav ul { gap: 0 10px; }
+  .lang-switch > span[aria-hidden="true"]:first-child { display: none; }
 }
 
 /* ---------- 頁尾 ---------- */
