@@ -576,8 +576,9 @@ button.btn.primary { background: var(--accent); }
 .clip figcaption { margin-top: 6px; color: var(--muted); font-size: 0.85rem; }
 
 /* 相簿（2026-10-27）：每本一張封面卡，點開後在放大檢視裡翻整本 */
-.albums { display: grid; gap: 22px; grid-template-columns: repeat(2, 1fr); }
-@media (min-width: 760px) { .albums { grid-template-columns: repeat(3, 1fr); } }
+/* minmax(0, 1fr)：每欄永遠一樣寬。只寫 1fr 的話，長網址這種不能斷行的字會把某一欄撐寬，另一欄被擠成細條（2026-10-29 手機實測） */
+.albums { display: grid; gap: 22px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 760px) { .albums { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .album { margin: 0; scroll-margin-top: calc(var(--header-h) + 20px); }
 .album h3 { font-size: 1rem; margin: 10px 0 2px; line-height: 1.45; }
 .album .log { margin: 0; }
@@ -594,7 +595,7 @@ button.btn.primary { background: var(--accent); }
 .album-open:hover + h3 { color: var(--accent); }
 .album-soon { display: flex; align-items: center; justify-content: center; border-style: dashed; margin: 0 12px 12px 0; }
 .album-soon span { font-family: var(--font-log); font-size: 0.8rem; letter-spacing: .1em; color: var(--muted); }
-.album-note { margin: 6px 0 0; font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+.album-note { margin: 6px 0 0; font-size: 0.85rem; color: var(--muted); line-height: 1.6; overflow-wrap: anywhere; }   /* 長網址可以換行 */
 .album-target .album-cover { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .album-cover img { transition: none; } .album-open:hover .album-cover img { transform: none; } }
 
