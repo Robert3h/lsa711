@@ -270,7 +270,8 @@ section > h2 { font-size: 1.25rem; margin: 0 0 16px; padding-bottom: 8px; border
 /* 規格表：工作成果數字，取自履歷 */
 .spec { margin: 0; display: grid; grid-template-columns: 1fr; }
 .spec > div { padding: 14px 0; border-bottom: 1px solid var(--rule); }
-.spec dt { font-family: var(--font-log); font-size: 1.6rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+/* 成果數字（2026-10-29）：用 Tron 青＝「紀錄資料」，不用橘色（橘色只給能點的東西）；深淺主題各自有一個對比足夠的青色 */
+.spec dt { font-family: var(--font-log); font-size: 2rem; font-weight: 700; color: var(--data); line-height: 1.25; }
 .spec dd { margin: 2px 0 0; color: var(--muted); }
 @media (min-width: 760px) { .spec { grid-template-columns: repeat(3, 1fr); column-gap: 32px; } }
 
@@ -729,3 +730,26 @@ button.btn.primary { background: var(--accent); }
 .prose .yt .video-card::after { content: none; }
 .prose .fig-link { margin: 1.2em 0; font-weight: 600; }
 .prose .yt-note { font-size: 0.85em; color: var(--muted); }
+
+/* ---------- 傳訊給我（2026-10-29） ---------- */
+.transmit { display: grid; gap: 6px; max-width: var(--measure); margin: 8px 0 40px; }
+.transmit[hidden] { display: none; }   /* display: grid 會蓋過 hidden，送出成功後表單要真的藏起來 */
+.transmit label { font-weight: 600; margin-top: 14px; }
+.transmit .opt { font-weight: 400; font-size: 0.85rem; color: var(--muted); margin-left: 6px; }
+.transmit input, .transmit textarea {
+  font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; width: 100%;
+}
+.transmit textarea { resize: vertical; min-height: 10em; line-height: 1.7; }
+.transmit input::placeholder, .transmit textarea::placeholder { color: var(--muted); opacity: .8; }
+.transmit input:focus, .transmit textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.transmit .actions { margin-top: 12px; }
+.transmit button[disabled] { opacity: .6; cursor: wait; }
+/* 機器人陷阱：真人看不到、按 Tab 也不會跳到這一格 */
+.transmit .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.transmit-status { min-height: 1.4em; margin: 4px 0 0; color: var(--data); }
+.transmit-status.is-bad { color: var(--accent); }
+.transmit-done { max-width: var(--measure); margin: 8px 0 40px; padding: 20px; border: 1px solid var(--data); border-radius: 8px; }
+.transmit-done .lead { margin: 6px 0 16px; }
+/* 文章結尾的傳訊入口：一行字，不搶訂閱區的位置 */
+.transmit-cta { margin: 32px 0 0; color: var(--muted); max-width: var(--measure); }
