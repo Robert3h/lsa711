@@ -654,6 +654,21 @@ button.btn.primary { background: var(--accent); }
 @media (prefers-reduced-motion: reduce) { .transmission { transition: none; transform: none; } }
 .music-note { margin-top: 40px; font-size: 0.85rem; }
 
+/* 3D 導覽（2026-10-30）：整張卡片可點，新分頁打開（3D 頁面是全螢幕，沒有本站導覽列可以回來） */
+.tours { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) { .tours { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tour-card { display: block; height: 100%; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.tour-thumb { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg); }
+.tour-thumb img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.9); transition: filter .3s ease; }
+.tour-title { display: block; padding: 14px 16px 0; font-weight: 700; line-height: 1.5; }
+.tour-desc { display: block; padding: 6px 16px 0; color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.tour-card .go { display: block; padding: 10px 16px 16px; color: var(--accent); font-weight: 600; }
+.tour-card[target="_blank"]::after { content: none; }   /* 卡片裡的「開始導覽 ↗」已經有箭頭，不要再自動多加一個在卡片最下面 */
+.tour-card:hover, .tour-card:focus-visible { border-color: var(--accent); }
+.tour-card:hover .tour-thumb img, .tour-card:focus-visible .tour-thumb img { filter: brightness(1); }
+.tour-card:hover .tour-title { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .tour-thumb img { transition: none; } }
+
 /* 影片：只放縮圖，點了去 YouTube（網站不放影片檔） */
 .videos { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: 1fr; }
 @media (min-width: 560px) { .videos { grid-template-columns: 1fr 1fr; } }
