@@ -353,6 +353,14 @@ figcaption, .caption { color: var(--muted); font-size: 0.9rem; line-height: 1.6;
 .prose ul { padding-left: 1.2em; margin: 0 0 1.2em; }
 .prose li { margin: 0.4em 0; }
 .prose .note { color: var(--muted); font-size: 0.95rem; }
+/* 小劇場對話頁（2026-11-01）：說話者一行粗體，台詞靠左邊框分辨是誰；子琦／雙宇顏色和小遊戲一樣 */
+.prose .scene-note { color: var(--muted); font-size: 0.95rem; margin-bottom: 2em; }
+.prose .speaker { font-weight: 700; margin: 1.8em 0 0.4em; }
+.prose .line { margin: 0; padding: 0.15em 0 0.15em 14px; border-left: 3px solid var(--rule); }
+.prose .line-ginni { border-left-color: var(--accent); }
+.prose .line-julian { border-left-color: var(--data); }
+.prose .stage { color: var(--muted); font-size: 0.95rem; }
+.prose .line + figure, .prose .line + .note { margin-top: 1.8em; }
 .prose .callout { list-style: none; padding: 0; }
 .prose .callout li { padding: 10px 0 10px 14px; border-left: 3px solid var(--accent); margin: 0 0 10px; }
 .prose .layer { margin: 0 0 1.6em; }
