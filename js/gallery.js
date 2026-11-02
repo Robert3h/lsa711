@@ -38,10 +38,12 @@
   wall.forEach(function (b, n) { b.addEventListener('click', function () { open(wallItems, n, '', b); }); });
 
   // 相簿
+  var EN_PAGE = (document.documentElement.lang || '').indexOf('en') === 0;
   document.querySelectorAll('.album-open').forEach(function (b) {
     var t = b.getAttribute('data-title');
     var items = JSON.parse(b.getAttribute('data-album')).map(function (src, k) {
-      return { src: src, alt: t + ' 第 ' + (k + 1) + ' 張', cap: '' };
+      // 英文版設定集（en.html）用英文報讀
+      return { src: src, alt: EN_PAGE ? t + ', image ' + (k + 1) : t + ' 第 ' + (k + 1) + ' 張', cap: '' };
     });
     b.addEventListener('click', function () { open(items, 0, t, b); });
   });

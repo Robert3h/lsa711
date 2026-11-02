@@ -164,4 +164,18 @@
       if (e.key === 'Escape' && !list.hidden) { set(false); btn.focus(); }
     });
   });
+  // ---------- 4. Google 整頁翻譯的說明（2026-11-02） ----------
+  // 沒有英文版的頁面，按 English 會打開 Google 翻譯版（網址是 …translate.goog）。
+  // 在最上方加一行英文說明：機器翻譯、可能不準確、原文是台灣繁體中文。translate="no" 讓 Google 不去翻這一行。
+  if (/\.translate\.goog$/.test(location.hostname)) {
+    var orig = 'https://robert3h.github.io' + location.pathname;
+    var note = document.createElement('p');
+    note.className = 'mt-note notranslate';
+    note.setAttribute('translate', 'no');
+    note.setAttribute('lang', 'en');
+    note.innerHTML = 'Machine-translated by Google from the original in Traditional Chinese (Taiwan). It may be inaccurate. ' +
+      '<a href="' + orig + '">Read the original</a>';
+    var main = document.querySelector('main') || document.body;
+    main.insertBefore(note, main.firstChild);
+  }
 })();

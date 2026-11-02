@@ -25,10 +25,11 @@
     }, 50);
   }
 
+  var EN_PAGE = (document.documentElement.lang || '').indexOf('en') === 0;   // 英文版設定集用英文
   function setPlaying(on) {
     mini.setAttribute('aria-pressed', on ? 'true' : 'false');
     mini.classList.toggle('is-playing', on);
-    label.textContent = on ? '暫停音樂' : '播放音樂';
+    label.textContent = on ? (EN_PAGE ? 'Pause music' : '暫停音樂') : (EN_PAGE ? 'Play music' : '播放音樂');
   }
 
   function play() {
@@ -36,7 +37,7 @@
     var p = audio.play();
     setPlaying(true);
     fade(VOL, 1500);
-    if (p && p.catch) p.catch(function () { setPlaying(false); label.textContent = '音樂暫時無法播放'; });
+    if (p && p.catch) p.catch(function () { setPlaying(false); label.textContent = EN_PAGE ? 'Music can’t play right now' : '音樂暫時無法播放'; });
   }
   function pause() {
     setPlaying(false);

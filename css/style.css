@@ -218,6 +218,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
   .home .gates { order: 1; }
   .home .news { order: 2; margin: 24px 0 0; }
   .home .motto { order: 3; }
+  .home .resonate { order: 4; }   /* 手機版首頁會重排順序，有共鳴要跟著排在最後 */
   .gate-media { aspect-ratio: 16 / 8; }
 }
 
@@ -665,7 +666,8 @@ button.btn.primary { background: var(--accent); }
 /* 3D 導覽（2026-10-30）：整張卡片可點，新分頁打開（3D 頁面是全螢幕，沒有本站導覽列可以回來） */
 .tours { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 760px) { .tours { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.tour-card { display: block; height: 100%; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.tours > li { display: flex; flex-direction: column; }   /* 卡片下面還有「有共鳴」按鈕：卡片撐滿剩下的高度，按鈕排在卡片下面（2026-11-02） */
+.tour-card { display: block; flex: 1; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
 .tour-thumb { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg); }
 .tour-thumb img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.9); transition: filter .3s ease; }
 .tour-title { display: block; padding: 14px 16px 0; font-weight: 700; line-height: 1.5; }
@@ -789,3 +791,10 @@ button.btn.primary { background: var(--accent); }
 .resonate-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .resonate.is-on .resonate-btn { background: var(--accent); color: var(--on-accent); cursor: default; }
 .resonate-count { color: var(--muted); }
+/* 小一號的「有共鳴」：放在相簿、3D 導覽、小遊戲簡介、設定集各區的結尾 */
+.resonate.is-small { margin: 12px 0 0; gap: 8px; font-size: .9rem; }
+.resonate.is-small .resonate-btn { padding: 6px 12px; min-height: 40px; }
+
+/* Google 整頁翻譯版最上方的說明（只在 translate.goog 網址出現，見 site.js 第 4 段） */
+.mt-note { box-sizing: border-box; width: calc(100% - 32px); max-width: 1060px; margin: 12px auto 0; padding: 10px 16px; border-left: 3px solid var(--data); background: var(--surface); color: var(--muted); font-size: .9rem; }
+.mt-note a { color: var(--accent); }
