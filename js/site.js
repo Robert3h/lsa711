@@ -177,5 +177,24 @@
       '<a href="' + orig + '">Read the original</a>';
     var main = document.querySelector('main') || document.body;
     main.insertBefore(note, main.firstChild);
+    // 進了翻譯版之後，Google 會把站內所有連結都改成翻譯版網址，讀者會一直被翻譯下去。
+    // 所以把頁首的「中文」做成可以按的連結，直接回到真正的網站（2026-11-02 Robert 發現）
+    var cur = document.querySelector('.lang-switch .lang-cur:not([lang="en"])') || document.querySelector('.lang-cur:not([lang="en"])');
+    if (cur) {
+      var back = document.createElement('a');
+      back.href = orig; back.textContent = '中文';
+      back.setAttribute('hreflang', 'zh-Hant-TW'); back.setAttribute('lang', 'zh-Hant-TW');
+      back.setAttribute('translate', 'no'); back.className = 'notranslate';
+      cur.parentNode.replaceChild(back, cur);
+      // 原本的 English 連結在翻譯版裡只會連回自己，改成「目前所在的語言」
+      var en = document.querySelector('.lang-switch a[hreflang="en"]');
+      if (en) {
+        var here = document.createElement('span');
+        here.className = 'lang-cur notranslate'; here.setAttribute('aria-current', 'true');
+        here.setAttribute('lang', 'en'); here.setAttribute('translate', 'no');
+        here.innerHTML = en.innerHTML;
+        en.parentNode.replaceChild(here, en);
+      }
+    }
   }
 })();
