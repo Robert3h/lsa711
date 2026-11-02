@@ -164,6 +164,114 @@
       if (e.key === 'Escape' && !list.hidden) { set(false); btn.focus(); }
     });
   });
+  // ---------- 3b. 長頁面的「位置條」（2026-11-02 Robert）----------
+  // 有 3 個以上段落標題（h2）的頁面，捲過頁首大標題後，釘住的頁首下緣淡入一行：目前在哪一段 ▾、第幾段、閱讀進度細線。
+  // 點 ▾ 打開這一頁的段落清單，點了就跳過去。位置條疊在頁首下面（position: absolute），出現、收起都不會推動內文。
+  // 沒有 JS 時什麼都不加，頁面照常閱讀。
+  (function () {
+    var header = document.querySelector('.site-header');
+    var main = document.querySelector('main');
+    if (!header || !main) return;
+    var heads = Array.prototype.filter.call(main.querySelectorAll('h2'), function (h) {
+      // 文末的訂閱框、頁尾、隱藏標題不算段落
+      return !h.closest('aside, footer, .visually-hidden, [hidden]') && h.textContent.trim();
+    });
+    if (heads.length < 3) return;
+    heads.forEach(function (h, i) { if (!h.id) h.id = 'sec-' + (i + 1); });
+    // 網站根目錄：從載入這支 site.js 的路徑推回去（例：../../js/site.js → ../../），各層頁面都能找到同一張圖
+    var me = document.querySelector('script[src*="js/site.js"]');
+    var SITE_ROOT = me ? me.getAttribute('src').replace(/js\/site\.js.*$/, '') : '';
+    var title = main.querySelector('h1');
+    if (title && title.closest('.visually-hidden')) title = null;    // 只給報讀軟體的隱藏標題，看不到位置，改用第一段
+    var T = EN ? { top: 'Top', list: 'Sections on this page', open: 'Jump to a section' }
+               : { top: '開頭', list: '這一頁的段落', open: '跳到其他段落' };
+
+    var bar = document.createElement('div');
+    bar.className = 'toc-bar';
+    bar.setAttribute('aria-label', T.list);
+    // 兩種樣子，依寬度自動選（參考 Robert 另一個專案的目錄列，2026-11-02）：
+    //   排得下 → 所有段落排成一排（.toc-inline），目前那段橘色底線，看一眼就知道全部有幾段
+    //   排不下或手機 → 收成「段落名 ▾」，點開才列出全部
+    bar.innerHTML = '<div class="wrap"><ol class="toc-inline"></ol><div class="toc-menu">' +
+      '<button type="button" class="toc-toggle" aria-expanded="false" title="' + T.open + '">' +
+      '<span class="toc-page"></span><span class="toc-here"></span><span class="toc-caret" aria-hidden="true">▾</span></button>' +
+      '<ol class="toc-list" hidden></ol></div><span class="log toc-count"></span></div><span class="toc-progress" aria-hidden="true"></span>' +
+      // 星羽號停在進度線最前端，跟著往右飛（Robert 2026-11-03：「騷包一點」）。圖取自設定集封面的去背圖，左右翻轉成機頭朝右
+      '<img class="toc-ship" src="' + SITE_ROOT + 'assets/ship-progress.png" alt="" aria-hidden="true" width="44" height="12">';
+    header.appendChild(bar);
+    var btn = bar.querySelector('.toc-toggle'), list = bar.querySelector('.toc-list'), inline = bar.querySelector('.toc-inline');
+    var here = bar.querySelector('.toc-here'), count = bar.querySelector('.toc-count'), prog = bar.querySelector('.toc-progress');
+    // 頁名：文章頁的大標題太長，CSS 會截短；手機上只顯示段落名稱
+    if (title) bar.querySelector('.toc-page').textContent = title.textContent.trim();
+    var items = heads.map(function (h, i) {
+      var n = (i < 9 ? '0' : '') + (i + 1);         // 段落編號 01、02…（青色紀錄字體＝資料）
+      return '<li><a href="#' + h.id + '"><span class="log">' + n + '</span>' +
+        h.textContent.trim().replace(/[&<>"]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }) + '</a></li>';
+    }).join('');
+    list.innerHTML = items;
+    inline.innerHTML = items;
+    var links = Array.prototype.slice.call(list.querySelectorAll('a')).concat(Array.prototype.slice.call(inline.querySelectorAll('a')));
+    function fit() {
+      // 先假設排成一排，量看看會不會超出；手機（720px 以下）一律用下拉
+      bar.classList.add('inline');
+      var ok = window.innerWidth > 720 && inline.scrollWidth <= inline.clientWidth + 1;
+      bar.classList.toggle('inline', ok);
+    }
+    fit();
+
+    function set(open) {
+      list.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function () { set(list.hidden); });
+    list.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+    window.addEventListener('resize', fit);
+    document.addEventListener('click', function (e) { if (!bar.contains(e.target)) set(false); });
+    bar.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !list.hidden) { set(false); btn.focus(); }
+    });
+
+    var raf;
+    function update() {
+      var hb = header.getBoundingClientRect().bottom;
+      // 跳到段落時，標題停在位置條下方，不會被蓋住。頁首的高度已經由 html 的 scroll-padding-top 讓出來了，
+      // 這裡只補位置條的高度（兩個都算頁首會重複，標題停太低、橘色停在前一段：2026-11-03 Robert 發現）
+      root.style.setProperty('--toc-offset', Math.round(bar.offsetHeight + 8) + 'px');
+      var show = (title || heads[0]).getBoundingClientRect().bottom < hb;
+      bar.classList.toggle('show', show);
+      if (!show) set(false);
+      var cur = -1;
+      heads.forEach(function (h, i) {
+        // 被篩選器藏起來的段落（全部傳訊頁）不算
+        // 判斷線在位置條下方 48px：點清單跳過去的標題（停在條下方約 20px）一定算進去
+        if (h.offsetParent !== null && h.getBoundingClientRect().top < hb + bar.offsetHeight + 48) cur = i;
+      });
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      // 捲到底時，最後一段可能太短、標題到不了判斷線：直接算最後一段（參考 Robert 另一個專案）
+      if (show && max > 0 && window.scrollY >= max - 2) {
+        for (var k = heads.length - 1; k >= 0; k--) if (heads[k].offsetParent !== null) { cur = k; break; }
+      }
+      here.textContent = cur < 0 ? T.top : heads[cur].textContent.trim();
+      count.textContent = (cur + 1) + ' / ' + heads.length;
+      links.forEach(function (a, j) {
+        var i = j % heads.length;                    // 下拉清單和一排式各有一份連結
+        if (i === cur) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+        a.parentNode.hidden = heads[i].offsetParent === null;
+      });
+      var p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      prog.style.transform = 'scaleX(' + p + ')';
+      bar.style.setProperty('--toc-p', p);
+    }
+    function later() { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }
+    window.addEventListener('scroll', later, { passive: true });
+    window.addEventListener('resize', later);
+    document.addEventListener('click', later);      // 全部傳訊頁按艙房篩選後，段落清單跟著更新
+    // 點段落連結跳過去後，馬上重新判斷一次（不等下一次捲動），橘色才會立刻停在點的那一段
+    window.addEventListener('hashchange', update);
+    bar.addEventListener('click', function (e) { if (e.target.closest('a')) setTimeout(update, 50); });
+    update();
+  })();
+
   // ---------- 4. Google 整頁翻譯的說明（2026-11-02） ----------
   // 沒有英文版的頁面，按 English 會打開 Google 翻譯版（網址是 …translate.goog）。
   // 在最上方加一行英文說明：機器翻譯、可能不準確、原文是台灣繁體中文。translate="no" 讓 Google 不去翻這一行。

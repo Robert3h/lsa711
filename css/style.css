@@ -340,6 +340,63 @@ figcaption, .caption { color: var(--muted); font-size: 0.9rem; line-height: 1.6;
 .crumb-list a:hover, .crumb-list a:focus-visible { color: var(--accent); background: var(--bg); text-decoration: none; }
 :root[data-theme="light"] .crumb-list { box-shadow: 0 10px 24px rgba(0, 0, 0, .12); }
 
+/* 長頁面的位置條（2026-11-02，js/site.js 3b）：疊在釘住的頁首下緣，不佔版面、不推動內文。
+   平常收起來；捲過頁首大標題才淡入。段落名稱是灰色小字，可以點的 ▾ 用橘色，閱讀進度細線用青色（資料） */
+.toc-bar {
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: var(--bg); border-bottom: 1px solid var(--rule);
+  opacity: 0; visibility: hidden; transform: translateY(-4px);
+  transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s;
+}
+.toc-bar.show { opacity: 1; visibility: visible; transform: none; transition: opacity .2s ease, transform .2s ease; }
+.toc-bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 2px; padding-bottom: 2px; }
+.toc-menu { position: relative; min-width: 0; }
+.toc-toggle {
+  font: inherit; font-size: 0.88rem; color: var(--muted); background: none; border: 0; cursor: pointer;
+  display: flex; align-items: center; gap: 0; max-width: 100%; min-height: 32px; padding: 0 6px 0 0; border-radius: 3px; text-align: left;
+}
+.toc-toggle:hover .toc-here, .toc-toggle:focus-visible .toc-here { color: var(--ink); }
+.toc-page { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 18em; }
+.toc-page:not(:empty)::after { content: "//"; margin: 0 8px; }
+.toc-here { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
+.toc-caret { color: var(--accent); margin-left: 6px; }
+.toc-count { white-space: nowrap; color: var(--muted); }
+.toc-list {
+  position: absolute; top: 100%; left: 0; z-index: 25; min-width: 15rem; max-width: min(24rem, calc(100vw - 32px));
+  max-height: 60vh; overflow-y: auto; margin: 4px 0 0; padding: 6px 0; list-style: none;
+  background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--data); border-radius: 4px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .4); font-size: 0.95rem;
+}
+.toc-list[hidden], .toc-list li[hidden] { display: none; }
+.toc-list a { display: block; padding: 9px 16px; color: var(--ink); text-decoration: none; }
+.toc-list a:hover, .toc-list a:focus-visible { color: var(--accent); background: var(--bg); }
+.toc-list a[aria-current] { color: var(--accent); font-weight: 700; }
+.toc-list .log, .toc-inline .log { color: var(--data); font-size: 0.72rem; margin-right: 8px; }
+/* 一排式：電腦上段落排得下時用（js 量寬度決定）。目前那段和頁首「目前頁面」同一套樣子：橘色＋底線 */
+.toc-inline { display: none; flex: 1; min-width: 0; list-style: none; margin: 0; padding: 0; gap: 0 20px; flex-wrap: nowrap; overflow: hidden; font-size: 0.88rem; }
+.toc-bar.inline .toc-inline { display: flex; }
+.toc-bar.inline .toc-menu { display: none; }
+.toc-inline li[hidden] { display: none; }
+.toc-inline a { color: var(--muted); text-decoration: none; white-space: nowrap; display: inline-block; padding: 7px 0; }
+.toc-inline a:hover, .toc-inline a:focus-visible { color: var(--ink); text-decoration: underline; }
+.toc-inline a[aria-current] { color: var(--accent); font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+:root[data-theme="light"] .toc-list { box-shadow: 0 10px 24px rgba(0, 0, 0, .12); }
+.toc-progress {
+  position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%;
+  background: var(--data); transform: scaleX(0); transform-origin: left;
+}
+/* 星羽號（2026-11-03）：停在進度線最前端，跟著捲動往右飛；剛開頁面在最左邊，讀到底抵達最右邊。
+   只是裝飾：不能點、報讀軟體跳過，也不會擋到下面的字（pointer-events: none） */
+.toc-ship {
+  position: absolute; bottom: -6px; left: calc(var(--toc-p, 0) * (100% - 44px));
+  width: 44px; height: 12px; pointer-events: none;
+}
+:root[data-theme="light"] .toc-ship { filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, .35)); }   /* 白色機身在白底上要有一點影子才看得到 */
+/* 點清單跳到段落時，標題停在位置條下方。頁首的高度 html 的 scroll-padding-top 已經讓了，這裡只補位置條（兩者會相加） */
+main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
+@media (max-width: 600px) { .toc-page { display: none; } }   /* 手機只顯示段落名稱 */
+@media (prefers-reduced-motion: reduce) { .toc-bar, .toc-bar.show { transition: none; transform: none; } }
+
 .prose { font-size: 18px; line-height: 1.95; }
 .prose p { margin: 0 0 1.1em; }
 /* 小標：上方留大空白、加分段記號，讓讀者一眼看出「換段落了」 */
