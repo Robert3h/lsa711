@@ -164,7 +164,7 @@
       if (e.key === 'Escape' && !list.hidden) { set(false); btn.focus(); }
     });
   });
-  // ---------- 3b. 長頁面的「位置條」（2026-11-02 Robert）----------
+  // ---------- 3b. 長頁面的「位置條」（2026-11-02）----------
   // 有 3 個以上段落標題（h2）的頁面，捲過頁首大標題後，釘住的頁首下緣淡入一行：目前在哪一段 ▾、第幾段、閱讀進度細線。
   // 點 ▾ 打開這一頁的段落清單，點了就跳過去。位置條疊在頁首下面（position: absolute），出現、收起都不會推動內文。
   // 沒有 JS 時什麼都不加，頁面照常閱讀。
@@ -189,14 +189,14 @@
     var bar = document.createElement('div');
     bar.className = 'toc-bar';
     bar.setAttribute('aria-label', T.list);
-    // 兩種樣子，依寬度自動選（參考 Robert 另一個專案的目錄列，2026-11-02）：
+    // 兩種樣子，依寬度自動選：
     //   排得下 → 所有段落排成一排（.toc-inline），目前那段橘色底線，看一眼就知道全部有幾段
     //   排不下或手機 → 收成「段落名 ▾」，點開才列出全部
     bar.innerHTML = '<div class="wrap"><ol class="toc-inline"></ol><div class="toc-menu">' +
       '<button type="button" class="toc-toggle" aria-expanded="false" title="' + T.open + '">' +
       '<span class="toc-page"></span><span class="toc-here"></span><span class="toc-caret" aria-hidden="true">▾</span></button>' +
       '<ol class="toc-list" hidden></ol></div><span class="log toc-count"></span></div><span class="toc-progress" aria-hidden="true"></span>' +
-      // 星羽號停在進度線最前端，跟著往右飛（Robert 2026-11-03：「騷包一點」）。圖取自設定集封面的去背圖，左右翻轉成機頭朝右
+      // 星羽號停在進度線最前端，跟著往右飛。圖取自設定集封面的去背圖，左右翻轉成機頭朝右
       '<img class="toc-ship" src="' + SITE_ROOT + 'assets/ship-progress.png" alt="" aria-hidden="true" width="44" height="12">';
     header.appendChild(bar);
     var btn = bar.querySelector('.toc-toggle'), list = bar.querySelector('.toc-list'), inline = bar.querySelector('.toc-inline');
@@ -235,7 +235,7 @@
     function update() {
       var hb = header.getBoundingClientRect().bottom;
       // 跳到段落時，標題停在位置條下方，不會被蓋住。頁首的高度已經由 html 的 scroll-padding-top 讓出來了，
-      // 這裡只補位置條的高度（兩個都算頁首會重複，標題停太低、橘色停在前一段：2026-11-03 Robert 發現）
+      // 這裡只補位置條的高度（兩個都算頁首會重複，標題停太低、橘色停在前一段）
       root.style.setProperty('--toc-offset', Math.round(bar.offsetHeight + 8) + 'px');
       var show = (title || heads[0]).getBoundingClientRect().bottom < hb;
       bar.classList.toggle('show', show);
@@ -247,7 +247,7 @@
         if (h.offsetParent !== null && h.getBoundingClientRect().top < hb + bar.offsetHeight + 48) cur = i;
       });
       var max = document.documentElement.scrollHeight - window.innerHeight;
-      // 捲到底時，最後一段可能太短、標題到不了判斷線：直接算最後一段（參考 Robert 另一個專案）
+      // 捲到底時，最後一段可能太短、標題到不了判斷線：直接算最後一段
       if (show && max > 0 && window.scrollY >= max - 2) {
         for (var k = heads.length - 1; k >= 0; k--) if (heads[k].offsetParent !== null) { cur = k; break; }
       }
@@ -272,6 +272,45 @@
     update();
   })();
 
+  // ---------- 3c. 作品集的五站流程（2026-11-03，/work/cases/）----------
+  // 每一站是按鈕，點了看那一站的說明。電腦上（橫排）說明在整排下方，永遠開著一站；
+  // 手機上（直排）說明若在五站最後面，點第一站要滑過四張卡片才看得到，所以搬到被點的那站正下方，再點一次收起。
+  // 沒有 JS 時五段說明全部照順序列出，內容一樣讀得到。
+  Array.prototype.forEach.call(document.querySelectorAll('.flow'), function (fig) {
+    var list = fig.querySelector('.pipeline');
+    var btns = Array.prototype.slice.call(fig.querySelectorAll('.station'));
+    var panels = {};
+    Array.prototype.forEach.call(fig.querySelectorAll('.flow-detail'), function (d) { panels[d.getAttribute('data-k')] = d; d.hidden = true; });
+    var narrow = window.matchMedia('(max-width: 899px)');
+    var cur = null;
+    function btnOf(k) { return btns.filter(function (b) { return b.getAttribute('data-k') === k; })[0]; }
+    function place(k) {
+      var d = panels[k];
+      if (narrow.matches) btnOf(k).parentNode.appendChild(d);
+      else list.parentNode.insertBefore(d, list.nextSibling);
+    }
+    function show(k, btn) {
+      if (narrow.matches && k === cur) k = null;          // 手機：再點同一站＝收起
+      var anchor = btn || btnOf(k);
+      var before = anchor ? anchor.getBoundingClientRect().top : 0;
+      cur = k;
+      Object.keys(panels).forEach(function (x) { panels[x].hidden = x !== k; });
+      if (k) place(k);
+      btns.forEach(function (b) {
+        var on = b.getAttribute('data-k') === k;
+        b.setAttribute('aria-expanded', on ? 'true' : 'false');
+        b.querySelector('.more').textContent = on ? (EN ? 'Details below' : '說明在下方') : (EN ? 'See details' : '看說明');   // 已經打開的那站不再寫「看說明」
+      });
+      // 說明收起或搬走時，被點的卡片會往上跳；捲回原位，視線不會跟丟
+      if (btn) window.scrollBy(0, btn.getBoundingClientRect().top - before);
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-k'), b); }); });
+    var open = fig.getAttribute('data-open');
+    var onChange = function () { if (cur) place(cur); else if (!narrow.matches) show(open); };   // 轉橫向、縮放視窗跨過斷點
+    if (narrow.addEventListener) narrow.addEventListener('change', onChange); else if (narrow.addListener) narrow.addListener(onChange);
+    show(open);
+  });
+
   // ---------- 4. Google 整頁翻譯的說明（2026-11-02） ----------
   // 沒有英文版的頁面，按 English 會打開 Google 翻譯版（網址是 …translate.goog）。
   // 在最上方加一行英文說明：機器翻譯、可能不準確、原文是台灣繁體中文。translate="no" 讓 Google 不去翻這一行。
@@ -286,7 +325,7 @@
     var main = document.querySelector('main') || document.body;
     main.insertBefore(note, main.firstChild);
     // 進了翻譯版之後，Google 會把站內所有連結都改成翻譯版網址，讀者會一直被翻譯下去。
-    // 所以把頁首的「中文」做成可以按的連結，直接回到真正的網站（2026-11-02 Robert 發現）
+    // 所以把頁首的「中文」做成可以按的連結，直接回到真正的網站（2026-11-02）
     var cur = document.querySelector('.lang-switch .lang-cur:not([lang="en"])') || document.querySelector('.lang-cur:not([lang="en"])');
     if (cur) {
       var back = document.createElement('a');

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From 650 minutes to 48: building a data pipeline inside Excel | Portfolio | Robert Huang</title>
+<meta name="description" content="Three Excel modules with clear roles, chained into one automated flow: clean the data first, let formulas calculate, then publish the report in one click.">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="canonical" href="https://robert3h.github.io/lsa711/work/cases/report-workstation/en.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Robert Huang 黃星翰 × LSA-711">
+<meta property="og:title" content="From 650 minutes to 48: building a data pipeline inside Excel | Portfolio | Robert Huang">
+<meta property="og:description" content="Three Excel modules with clear roles, chained into one automated flow: clean the data first, let formulas calculate, then publish the report in one click.">
+<meta property="og:url" content="https://robert3h.github.io/lsa711/work/cases/report-workstation/en.html">
+<meta property="og:image" content="https://robert3h.github.io/lsa711/assets/og/og-work.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Robert Huang 黃星翰，金融業經營分析師">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<script>/* 在畫面出現前套用讀者上次選的主題，避免閃一下 */try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-name" href="../../../en/index.html">Robert Huang 黃星翰</a>
+    <nav class="site-nav" aria-label="Main menu">
+      <ul>
+        <li><a href="../../../en/work/index.html" aria-current="page">Work</a></li>
+        <li><a href="../../../en/lsa/index.html">Writing (LSA)</a></li>
+        <li><a href="../../../en/about/index.html">About</a></li>
+      </ul>
+      <div class="lang-switch" role="group" aria-label="Language"><span aria-hidden="true">🌐</span><a href="../../../work/cases/report-workstation/index.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW">中文</a><span aria-hidden="true">｜</span><span class="lang-cur" aria-current="true" lang="en"><span class="l-full">English</span><span class="l-short" aria-hidden="true">EN</span></span></div>
+    </nav>
+    <button type="button" class="theme-toggle" aria-pressed="false">Light mode</button>
+  </div>
+</header>
+<main id="main">
+
+<p class="mt-note" lang="en">Translated with AI (Claude) from the original in Traditional Chinese (Taiwan). It may be inaccurate. <a href="index.html" hreflang="zh-Hant-TW">Read the original</a></p>
+<div class="wrap">
+<article class="case">
+  <header class="article-head">
+    <nav class="crumbs log" aria-label="You are here"><ol><li><a href="../../../en/work/index.html">Work</a></li><li><a href="../../../en/work/index.html#h-cases">Portfolio</a></li><li><span class="crumb-here" aria-current="page">Case 01</span></li></ol></nav>
+    <p class="log">CASE 01 · Portfolio</p>
+    <h1>From 650 minutes to 48: building a data pipeline inside Excel</h1>
+    <p class="result-line"><span>Monthly work <b>650</b> min → <b>48</b> min</span><span class="hero"><b>−92%</b></span><span><b>65</b> indicators</span></p>
+  </header>
+  <div class="prose">
+<h2>In three sentences</h2>
+<ol class="steps">
+  <li><span class="node log">01</span>
+    <p class="io"><span>Source files</span><span class="to">→</span><span>Clean database</span></p>
+    <p><strong>First, clean the data. </strong>Different sources spell the same company in different ways. The system standardises the names and blocks duplicates first, and every record can be traced to who wrote it and when.</p></li>
+  <li><span class="node log">02</span>
+    <p class="io"><span>Database</span><span class="to">→</span><span>Share · rank · change</span></p>
+    <p><strong>Then let formulas do the calculating. </strong>Market share, rank and rates of change are calculated instantly. Switching the month, the change basis or the merger basis requires no rework.</p></li>
+  <li><span class="node log">03</span>
+    <p class="io"><span>Calculated results</span><span class="to">→</span><span>PDF report · meeting slides</span></p>
+    <p><strong>Finally, publish the report in one click. </strong>The results are frozen as plain values that never shift on recalculation, printed straight for senior executives or pasted into meeting slides. Errors from manual copy-and-paste have all but disappeared.</p></li>
+</ol>
+<h2>The problem: a report that went wrong every month</h2>
+<p>Every month, senior executives need a report on &quot;how each of our business lines compares with our peers&quot;, covering 65 indicators. Each one is viewed over the last three years, the last twelve months, and year-to-date against the same period last year, together with market share, rank and change.</p>
+<p>The data comes from five or six places: internal systems, public data from the exchanges and industry associations, data exchanged among peers, and files supplied monthly by each business unit. Every source has its own format; even the same company&#x27;s name is written differently.</p>
+<p>The original process was to copy and paste item by item and update page by page. It took a full day every month, and almost every month something was pasted wrong.</p>
+<h2>The constraint: no database, no IT scheduling</h2>
+<p>The ideal answer is a data warehouse plus a BI tool, but at the time Excel was all I had. Rather than wait for resources, I chose to build the basic principles of data engineering with the tools at hand.</p>
+<h2>The design: three modules, one job each</h2>
+<p>I split the process into three independent files, each responsible for one thing:</p>
+<table class="compare"><thead><tr><th scope="col">Module</th><th scope="col">What it does</th><th scope="col">Data-engineering equivalent</th></tr></thead><tbody><tr class="pick"><th scope="row">Load</th><td data-col="What it does">Standardise names, validate, store in a single database</td><td data-col="Data-engineering equivalent">Extraction and cleansing (the E and T of ETL), master data management</td></tr><tr><th scope="row">Calculate</th><td data-col="What it does">Formulas calculate market share, rank and change on the fly; the month and comparison basis can be chosen</td><td data-col="Data-engineering equivalent">Semantic layer / metrics layer</td></tr><tr><th scope="row">Report</th><td data-col="What it does">One click turns it into a report of fixed values</td><td data-col="Data-engineering equivalent">Publishing layer, data snapshot</td></tr></tbody></table>
+<p>Why split it this way:</p>
+<ul><li><strong>Load cares only about &quot;clean&quot;</strong>: no calculations at all, so the data stays free of duplicates and traceable.</li><li><strong>Calculate cares only about &quot;flexible&quot;</strong>: the formulas are heavy and slow, but the month, the change basis (change in business volume itself, or change in market share) and the merger basis can be switched freely.</li><li><strong>Report cares only about &quot;stable&quot;</strong>: fixed values only, so the file is light, never shifts on recalculation, and is fit for sending and archiving.</li></ul>
+<p>With the three layers separated, a problem in any one of them never spreads to the other two.</p>
+<figure class="flow wide" data-open="write">
+  <figcaption class="log">Diagram · the five-stage flow (tap each stage for details)</figcaption>
+  <ol class="pipeline">
+    <li><button class="station" type="button" data-k="src" aria-expanded="false" aria-controls="fd-src">
+      <span class="log">STEP 0</span><strong>Multiple data sources</strong><span class="desc">Internal systems, public data, peer exchanges, files from business units</span>
+      <span class="time text">Formats and company names all differ</span><span class="more">See details</span></button></li>
+    <li><button class="station" type="button" data-k="write" aria-expanded="false" aria-controls="fd-write">
+      <span class="log">STEP 1</span><strong>Load module</strong><span class="desc">Standardise names, validate, store in a single database</span>
+      <span class="time">⏱ 40 min</span><span class="more">See details</span></button></li>
+    <li><button class="station" type="button" data-k="calc" aria-expanded="false" aria-controls="fd-calc">
+      <span class="log">STEP 2</span><strong>Calculation module</strong><span class="desc">Formulas calculate market share, rank and change on the fly; the month and comparison basis can be chosen</span>
+      <span class="time">⏱ 0 min (instant)</span><span class="more">See details</span></button></li>
+    <li><button class="station" type="button" data-k="report" aria-expanded="false" aria-controls="fd-report">
+      <span class="log">STEP 3</span><strong>Report module</strong><span class="desc">One click turns it into a printable report of plain values</span>
+      <span class="time">⏱ 8 min</span><span class="more">See details</span></button></li>
+    <li><button class="station" type="button" data-k="cxo" aria-expanded="false" aria-controls="fd-cxo">
+      <span class="log">OUTPUT</span><strong>Executive report</strong><span class="desc">Monthly peer-comparison PDF and meeting-slide material; supports ad-hoc requests</span>
+      <span class="time long">Ad-hoc requests 30 → 5 min</span><span class="more">See details</span></button></li>
+  </ol>
+  <div class="flow-detail" id="fd-src" data-k="src"><dl><dt>Problem</dt><dd>The same company has different names in different sources, and file formats are inconsistent, so manual matching is error-prone.</dd><dt>How</dt><dd><ul><li>Sources: internal company systems, public data from the exchanges and industry associations, peer-exchange data, monthly Excel files from each business unit, API data</li><li>Each month, that month&#x27;s source files are gathered into one folder and kept as raw data</li></ul></dd><dt>Result</dt><dd>All raw files are kept, so anything can be verified later if needed.</dd></dl></div><div class="flow-detail" id="fd-write" data-k="write"><dl><dt>Problem</dt><dd>If the data is not clean, fast calculation downstream is worthless.</dd><dt>How</dt><dd><ul><li>Name standardisation: a mapping table turns every spelling into one standard name; anything that does not match is flagged immediately</li><li>Unique key: one record per &quot;year + month + company&quot;, preventing duplicate writes</li><li>Automatic checks: missing data, totals that do not reconcile, and too few companies all raise a warning</li><li>Write log: every load is recorded and traceable</li></ul></dd><dt>Result</dt><dd>A clean, duplicate-free, traceable database.</dd></dl></div><div class="flow-detail" id="fd-calc" data-k="calc"><dl><dt>Problem</dt><dd>Executives want many views: the last 3 years, the last 12 months, year-to-date versus the same period last year, market share, and changes in rank.</dd><dt>How</dt><dd><ul><li>Formulas calculate values, market share, rank and rates of change for each business line directly from the database</li><li>Choose the month: pick the month to view and every period comparison updates with it</li><li>Change basis: a button switches between &quot;change in value&quot; (how much the business itself grew) and &quot;change in market share&quot; (whether we gained or lost ground against peers)</li><li>Merger-basis switch: one click toggles between pre-merger and post-merger comparison bases; which companies are merged is set by a mapping list that can be extended at any time</li></ul></dd><dt>Result</dt><dd>Change a condition and the numbers update instantly, with no rework.</dd></dl></div><div class="flow-detail" id="fd-report" data-k="report"><dl><dt>Problem</dt><dd>The calculation file is heavy and shifts whenever formulas recalculate, so it is unfit for sending or archiving as is.</dd><dt>How</dt><dd><ul><li>One click pastes the results into about 45 report sheets as plain values</li><li>Headers keep their formatting while the body receives values only; one set is produced pre-merger and one post-merger</li><li>Pre-print tidying (grouping, fonts, hiding sheets) is also done by button</li></ul></dd><dt>Result</dt><dd>A light file with fixed numbers, ready to print to PDF.</dd></dl></div><div class="flow-detail" id="fd-cxo" data-k="cxo"><dl><dt>Problem</dt><dd>Senior executives need a reliable, timely peer comparison every month.</dd><dt>How</dt><dd><ul><li>A peer-comparison report on 65 indicators, produced every month</li><li>Meeting slides: because the data is already structured, the report extends directly into table layouts for meetings; once pasted into PowerPoint only fonts and styling need adjusting</li><li>When a department needs a different format at short notice, it is produced from the same database by adjusting parameters</li></ul></dd><dt>Result</dt><dd>Routine report 650 → 48 min per month; ad-hoc requests 30 → 5 min each; meeting slides 10–30+ min → about 1 min per table (author&#x27;s estimate).</dd></dl></div>
+</figure>
+<h2>Four key decisions</h2>
+<h3>1. Fix the names before the numbers</h3>
+<p>The same company may be written three or four ways across sources. I built a mapping table that ties every spelling to one standard name; any name that does not match is flagged before loading, instead of quietly becoming a new company.</p>
+<p>In data work this is called <strong>master data management</strong> (MDM). In my experience, most reporting errors are not miscalculations but &quot;we thought it was the same company, and it wasn&#x27;t.&quot;</p>
+<h3>2. Every record has a unique identity</h3>
+<p>Each row in the database uses &quot;year + month + company&quot; as its unique key (primary key). Duplicate writes are blocked or overwritten, so one company never has two figures for the same month. Every load also leaves a log entry: who, when and what was written can all be looked up.</p>
+<h3>3. Keep reporting separate from calculation</h3>
+<p>The calculation file is full of formulas: it recalculates on opening, and a broken link can throw the numbers off. So the last step is always to &quot;freeze&quot; the results into fixed values before handing them over. A file an executive receives shows the same numbers when reopened a year later.</p>
+<h3>4. One dataset, many outputs</h3>
+<p>Once the data is structured, the report is no longer the only output. The monthly written report, ad-hoc departmental queries and the tables for meeting slides all come from the same database: meeting tables reuse the report&#x27;s structure directly, and once pasted into PowerPoint only fonts and styling need adjusting.</p>
+<p>In data work this is called <strong>single source of truth</strong>: numbers are produced in one place only, so reports and slides never tell different stories.</p>
+<h2>Result</h2>
+<ul><li>Monthly routine work: about 650 min → 48 min (−92%).</li><li>Ad-hoc requests: about 30 min → 5 min each, because every format a department asks for can be produced from the same database by adjusting parameters.</li><li>Meeting slides: about 10–30+ min → about 1 min per table (author&#x27;s estimate).</li><li>Pasting is now done by code, and errors from manual copy-and-paste have all but disappeared.</li><li>Review time for managers fell too: the data has already been checked, so they only need to look at the conclusions.</li></ul>
+<h2>What I learned</h2>
+<p>A tool&#x27;s limits are not the limits of your thinking. Layered data, unique keys, master data and snapshots hold true in Excel just as they do elsewhere. Moving to SQL or a BI tool, the architecture carries straight over; only the implementation changes.</p>
+  </div>
+  <p class="case-note">Times and ratios are based on the author&#x27;s own benefit calculation sheet (August 2026 version); meeting-slide times are the author&#x27;s estimate. No company names, internal systems, file details or business figures are disclosed.</p>
+  <div class="resonate" data-endpoint="https://script.google.com/macros/s/AKfycbxPF7zOsSah8MmHhBUXHvIFPNYMO0_fBYdG4oM2G9egW3bruhN4yqBLVe8m13TqyZ1t/exec" data-slug="case-report-workstation" data-name="作品集｜案例 01 從 650 分鐘到 48 分鐘：在 Excel 裡蓋一座資料管線" data-lang="en" hidden><button type="button" class="resonate-btn" aria-pressed="false"><span aria-hidden="true">❤️</span> Resonates</button><span class="resonate-count" aria-live="polite"></span></div>
+  <nav class="pager" aria-label="Previous and next case"><span></span><a class="pager-next" href="../merger-restatement/en.html"><span class="log">Next case →</span><span class="pager-title">The growth-rate trap in M&amp;A: at which layer should the data be merged?</span></a></nav>
+  <p class="transmit-cta">Want to talk about a data or reporting problem? <a href="https://www.linkedin.com/in/roberthuang1987" target="_blank" rel="noopener">Contact me on LinkedIn →</a></p>
+</article>
+</div>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p>🌍 Transmitted from planet LSA-711</p>
+    <p><a href="https://www.linkedin.com/in/roberthuang1987" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://lsa711.substack.com/" target="_blank" rel="noopener">Substack</a> · <a href="https://vocus.cc/user/robert-lsa" target="_blank" rel="noopener">Vocus</a> · <a href="mailto:lsa711.cybertron@gmail.com">Email</a> · <a href="../../../en/contact/index.html">📡 Send me a message</a></p>
+    <p>© 2026 Robert Huang 黃星翰</p>
+    <p class="privacy">This site counts anonymous visits with GoatCounter: no cookies, no stored IP addresses, no personal tracking.</p>
+  </div>
+</footer>
+<script src="../../../js/site.js"></script>
+<script src="../../../js/resonate.js"></script>
+<!-- 瀏覽人次統計（GoatCounter，2026-10-22 起，代碼 lsa711）：不用 Cookie、不存 IP；後台 https://lsa711.goatcounter.com
+     寫 https:// 而不是 //：在本機直接打開檔案時才不會去找本機路徑而報錯（本機預覽本來就不計數） -->
+<!-- 同一頁有「…/cybertron」和「…/cybertron/index.html」兩種網址，GoatCounter 會拆成兩行算；統一去掉 index.html（2026-11-02） -->
+<script>window.goatcounter = {path: function(p) { return p.replace(/\/index\.html(?=$|\?)/, '') || '/'; }};</script>
+<script data-goatcounter="https://lsa711.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

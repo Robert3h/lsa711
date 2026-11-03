@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-Hant-TW" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>從 650 分鐘到 48 分鐘：在 Excel 裡蓋一座資料管線｜作品集｜Robert Huang</title>
+<meta name="description" content="三個分工明確的 Excel 模組串成一條自動化流程：先把資料整理乾淨，再讓公式自動計算，最後一鍵產出報表。">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="canonical" href="https://robert3h.github.io/lsa711/work/cases/report-workstation/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Robert Huang 黃星翰 × LSA-711">
+<meta property="og:title" content="從 650 分鐘到 48 分鐘：在 Excel 裡蓋一座資料管線｜作品集｜Robert Huang">
+<meta property="og:description" content="三個分工明確的 Excel 模組串成一條自動化流程：先把資料整理乾淨，再讓公式自動計算，最後一鍵產出報表。">
+<meta property="og:url" content="https://robert3h.github.io/lsa711/work/cases/report-workstation/">
+<meta property="og:image" content="https://robert3h.github.io/lsa711/assets/og/og-work.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Robert Huang 黃星翰，金融業經營分析師">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<script>/* 在畫面出現前套用讀者上次選的主題，避免閃一下 */try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-name" href="../../../index.html">Robert Huang 黃星翰</a>
+    <nav class="site-nav" aria-label="主選單">
+      <ul>
+        <li><a href="../../../work/index.html" aria-current="page">工作系統</a></li>
+        <li><a href="../../../lsa/index.html">寫作系統 LSA</a></li>
+        <li><a href="../../../about/index.html">關於</a></li>
+      </ul>
+      <div class="lang-switch" role="group" aria-label="語言"><span aria-hidden="true">🌐</span><span class="lang-cur" aria-current="true">中文</span><span aria-hidden="true">｜</span><a hreflang="en" lang="en" href="en.html"><span class="l-full">English</span><span class="l-short" aria-hidden="true">EN</span></a></div>
+    </nav>
+    <button type="button" class="theme-toggle" aria-pressed="false">切換淺色</button>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+<article class="case">
+  <header class="article-head">
+    <nav class="crumbs log" aria-label="目前位置"><ol><li><a href="../../index.html">工作系統</a></li><li><a href="../../index.html#h-cases">作品集</a></li><li><span class="crumb-here" aria-current="page">案例 01</span></li></ol></nav>
+    <p class="log">CASE 01 · 作品集</p>
+    <h1>從 650 分鐘到 48 分鐘：在 Excel 裡蓋一座資料管線</h1>
+    <p class="result-line"><span>每月作業 <b>650</b> 分鐘 → <b>48</b> 分鐘</span><span class="hero"><b>−92%</b></span><span><b>65</b> 項指標</span></p>
+  </header>
+  <div class="prose">
+<h2>用三句話說</h2>
+<ol class="steps">
+  <li><span class="node log">01</span>
+    <p class="io"><span>各來源檔</span><span class="to">→</span><span>乾淨的資料庫</span></p>
+    <p><strong>先把資料整理乾淨。</strong>不同來源對同一家公司有不同寫法，系統先統一名稱、擋掉重複，每一筆都能追溯是誰、何時寫入。</p></li>
+  <li><span class="node log">02</span>
+    <p class="io"><span>資料庫</span><span class="to">→</span><span>市佔・排名・變化率</span></p>
+    <p><strong>再讓公式自動計算。</strong>市佔、排名、變化率即時算好，切換月份、變化率口徑或合併口徑都不必重做。</p></li>
+  <li><span class="node log">03</span>
+    <p class="io"><span>計算結果</span><span class="to">→</span><span>PDF 報告・會議簡報</span></p>
+    <p><strong>最後一鍵產出報表。</strong>轉成純數值，不會因重算而變動，直接列印給高階主管，也能貼進會議簡報；人工剪貼造成的錯誤幾乎歸零。</p></li>
+</ol>
+<h2>問題：一份每月都會出錯的報表</h2>
+<p>高階主管每個月需要一份「本公司和同業相比，各項業務表現如何」的報告，涵蓋 65 項指標：每項要看近三年、近十二個月、今年累計和去年同期比較，還有市佔率、排名與變化。</p>
+<p>資料來自五、六種地方：內部系統、交易所與公會的公開資料、同業交換資料、各業務單位每月提供的檔案。每個來源格式不同，連同一家公司的名字都寫得不一樣。</p>
+<p>原本的做法是逐項剪貼、逐頁更新。每月要花一整天，而且幾乎每個月都有地方貼錯。</p>
+<h2>限制：沒有資料庫，也沒有 IT 排程</h2>
+<p>理想答案是資料倉儲加上 BI 工具，但當時能用的只有 Excel。與其等待資源，我選擇在現有工具裡，把資料工程的基本原則做出來。</p>
+<h2>設計：三個模組，各做一件事</h2>
+<p>我把流程切成三個獨立的檔案，每個只負責一件事：</p>
+<table class="compare"><thead><tr><th scope="col">模組</th><th scope="col">做什麼</th><th scope="col">對應的資料工程概念</th></tr></thead><tbody><tr class="pick"><th scope="row">寫入</th><td data-col="做什麼">統一名稱、檢查、存進單一資料庫</td><td data-col="對應的資料工程概念">資料擷取與清理（ETL 的 E、T）、主資料管理</td></tr><tr><th scope="row">計算</th><td data-col="做什麼">用公式即時算出市佔、排名、變化率；可指定年月與比較口徑</td><td data-col="對應的資料工程概念">語意層／指標層</td></tr><tr><th scope="row">報表</th><td data-col="做什麼">一鍵轉成固定數值的報表</td><td data-col="對應的資料工程概念">發布層、資料快照</td></tr></tbody></table>
+<p>這樣切的理由：</p>
+<ul><li><strong>寫入只管「乾淨」</strong>：不做任何計算，確保資料不重複、可追溯。</li><li><strong>計算只管「彈性」</strong>：公式很重、算得慢，但可以任意切換月份、變化率口徑（業務量本身的變化，或市佔率的變化）與合併口徑。</li><li><strong>報表只管「穩定」</strong>：只有固定數值，檔案輕、不會因重算而變動，適合寄送與存檔。</li></ul>
+<p>三層分開後，任何一層出問題都不會牽連其他兩層。</p>
+<figure class="flow wide" data-open="write">
+  <figcaption class="log">圖解 · 五站流程（點每一站看說明）</figcaption>
+  <ol class="pipeline">
+    <li><button class="station" type="button" data-k="src" aria-expanded="false" aria-controls="fd-src">
+      <span class="log">STEP 0</span><strong>多元資料來源</strong><span class="desc">內部系統、公開資料、同業交換、各單位提供的檔案</span>
+      <span class="time text">格式與公司名稱各不相同</span><span class="more">看說明</span></button></li>
+    <li><button class="station" type="button" data-k="write" aria-expanded="false" aria-controls="fd-write">
+      <span class="log">STEP 1</span><strong>寫入模組</strong><span class="desc">統一名稱、檢查、存進單一資料庫</span>
+      <span class="time">⏱ 40 分鐘</span><span class="more">看說明</span></button></li>
+    <li><button class="station" type="button" data-k="calc" aria-expanded="false" aria-controls="fd-calc">
+      <span class="log">STEP 2</span><strong>計算模組</strong><span class="desc">公式即時算出市佔、排名、變化率；可指定年月與比較口徑</span>
+      <span class="time">⏱ 0 分鐘（即時）</span><span class="more">看說明</span></button></li>
+    <li><button class="station" type="button" data-k="report" aria-expanded="false" aria-controls="fd-report">
+      <span class="log">STEP 3</span><strong>報表模組</strong><span class="desc">一鍵轉成可列印的純數值報表</span>
+      <span class="time">⏱ 8 分鐘</span><span class="more">看說明</span></button></li>
+    <li><button class="station" type="button" data-k="cxo" aria-expanded="false" aria-controls="fd-cxo">
+      <span class="log">OUTPUT</span><strong>高階主管報告</strong><span class="desc">每月同業比較 PDF、會議簡報素材，支援臨時查詢</span>
+      <span class="time long">臨時需求 30 → 5 分鐘</span><span class="more">看說明</span></button></li>
+  </ol>
+  <div class="flow-detail" id="fd-src" data-k="src"><dl><dt>解決什麼</dt><dd>同一家公司在不同來源裡名稱不同，檔案格式也不一致，人工對照容易出錯。</dd><dt>怎麼做</dt><dd><ul><li>來源：公司內部系統、交易所與公會公開資料、同業交換資料、各業務單位每月提供的 Excel、API 資料</li><li>每月把本月來源檔集中到同一個資料夾，作為原始資料保存</li></ul></dd><dt>結果</dt><dd>原始檔全部保留，日後需要時可以回頭查證。</dd></dl></div><div class="flow-detail" id="fd-write" data-k="write"><dl><dt>解決什麼</dt><dd>資料不乾淨，後面算得再快也沒用。</dd><dt>怎麼做</dt><dd><ul><li>名稱標準化：用對照表把各種寫法統一成一個標準名稱，對不上的會直接標示出來</li><li>唯一鍵：以「年＋月＋公司」為一筆資料，防止重複寫入</li><li>自動檢查：缺漏、合計不符、公司數不足都會提示</li><li>寫入日誌：每一次寫入都有紀錄，可以追溯</li></ul></dd><dt>結果</dt><dd>一張乾淨、不重複、可追溯的資料庫。</dd></dl></div><div class="flow-detail" id="fd-calc" data-k="calc"><dl><dt>解決什麼</dt><dd>主管要看的角度很多：近 3 年、近 12 個月、今年累計和去年同期比、市佔、排名變化。</dd><dt>怎麼做</dt><dd><ul><li>用公式從資料庫即時計算各業務的數值、市佔率、排名與變化率</li><li>指定年月：選定要看的月份，所有期間比較跟著更新</li><li>變化率口徑：按鈕切換「數值變化率」（業務量本身成長多少）或「市佔率變化率」（相對同業是進步還是退步）</li><li>合併口徑開關：一鍵切換合併前、合併後兩種比較基礎；要合併哪些公司由對照清單決定，可隨時擴充</li></ul></dd><dt>結果</dt><dd>改條件不必重做，數字當下就更新。</dd></dl></div><div class="flow-detail" id="fd-report" data-k="report"><dl><dt>解決什麼</dt><dd>計算檔很重、會隨公式重算而變動，不適合直接寄送或存檔。</dd><dt>怎麼做</dt><dd><ul><li>一鍵把計算結果轉貼成純數值報表，約 45 張</li><li>表頭保留格式、表身只貼數值，合併前、後各產出一份</li><li>列印前的整理（收折、字體、隱藏工作表）也由按鈕完成</li></ul></dd><dt>結果</dt><dd>檔案輕、數字固定，可以直接列印成 PDF。</dd></dl></div><div class="flow-detail" id="fd-cxo" data-k="cxo"><dl><dt>解決什麼</dt><dd>高階主管每月需要一份可信、即時的同業比較。</dd><dt>怎麼做</dt><dd><ul><li>每月固定產出 65 項指標的同業比較報告</li><li>會議簡報：資料已經結構化，報表可以直接延伸成會議用的表格版面，貼進 PPT 後只需調整字型與外觀</li><li>各部門臨時要不同格式時，從同一個資料庫調整參數即可產出</li></ul></dd><dt>結果</dt><dd>例行報告每月 650 → 48 分鐘；臨時需求每次 30 → 5 分鐘；會議簡報每張表 10–30 分鐘以上 → 約 1 分鐘（作者預估）。</dd></dl></div>
+</figure>
+<h2>四個關鍵決定</h2>
+<h3>1. 先處理「名字」，再處理數字</h3>
+<p>同一家公司在不同來源裡可能有三、四種寫法。我建立一張對照表，把所有寫法對應到唯一的標準名稱；對不上的名字，寫入前就會被標示出來，不會悄悄變成一筆新公司。</p>
+<p>這在資料領域叫做<strong>主資料管理</strong>（Master Data Management）。我的經驗是：多數報表錯誤不是算錯，而是「以為是同一家，其實不是」。</p>
+<h3>2. 每筆資料都有唯一身分</h3>
+<p>資料庫的每一列，以「年＋月＋公司」作為唯一鍵（primary key）。重複寫入會被擋下或覆蓋，不會出現同一個月同一家公司有兩筆數字。每次寫入也會留下日誌：誰、何時、寫了什麼，都查得到。</p>
+<h3>3. 報表與計算分家</h3>
+<p>計算檔裡有大量公式，打開就會重算，連結一斷數字就可能跑掉。所以最後一步一定是把結果「凍結」成固定數值，再交出去。主管拿到的檔案，一年後打開還是同樣的數字。</p>
+<h3>4. 同一份資料，多種出口</h3>
+<p>資料一旦結構化，報表就不是唯一的出口。每月的書面報告、各部門的臨時查詢、會議用的簡報表格，都從同一個資料庫產出：會議表格的版面直接沿用報表的結構，貼進 PPT 後只需要調整字型與外觀。</p>
+<p>這在資料領域叫做<strong>單一資料來源</strong>（single source of truth）：數字只在一個地方產生，報告和簡報不會各說各話。</p>
+<h2>結果</h2>
+<ul><li>每月例行作業：約 650 分鐘 → 48 分鐘（−92%）。</li><li>臨時需求：每次約 30 分鐘 → 5 分鐘，因為各部門要的格式，都能從同一個資料庫調整參數產出。</li><li>會議簡報：每張表格約 10–30 分鐘以上 → 約 1 分鐘（作者預估）。</li><li>轉貼改由程式執行，人工剪貼造成的錯誤幾乎歸零。</li><li>主管的審核時間也跟著縮短：資料已經過檢查，只需要看結論。</li></ul>
+<h2>學到的事</h2>
+<p>工具的限制，不等於思考的限制。資料分層、唯一鍵、主資料、快照，這些原則在 Excel 裡一樣成立。換到 SQL 或 BI 工具，架構可以直接搬過去，只是換一種實作方式。</p>
+  </div>
+  <p class="case-note">時間與比例依據作者自行整理的效益計算表（2026-08 版）；會議簡報時間為作者預估。文中不揭露公司名稱、內部系統、檔案細節與任何業務數值。</p>
+  <div class="resonate" data-endpoint="https://script.google.com/macros/s/AKfycbxPF7zOsSah8MmHhBUXHvIFPNYMO0_fBYdG4oM2G9egW3bruhN4yqBLVe8m13TqyZ1t/exec" data-slug="case-report-workstation" data-name="作品集｜案例 01 從 650 分鐘到 48 分鐘：在 Excel 裡蓋一座資料管線" data-lang="zh" hidden><button type="button" class="resonate-btn" aria-pressed="false"><span aria-hidden="true">❤️</span> 有共鳴</button><span class="resonate-count" aria-live="polite"></span></div>
+  <nav class="pager" aria-label="上一個與下一個案例"><span></span><a class="pager-next" href="../merger-restatement/index.html"><span class="log">下一個案例 →</span><span class="pager-title">併購的成長率陷阱：資料該在哪一層合併？</span></a></nav>
+  <p class="transmit-cta">想聊聊資料或報表的問題？<a href="https://www.linkedin.com/in/roberthuang1987" target="_blank" rel="noopener">LinkedIn 聯絡我 →</a></p>
+</article>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p>🌍 訊息來自 LSA-711 星球</p>
+    <p><a href="https://www.linkedin.com/in/roberthuang1987" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://lsa711.substack.com/" target="_blank" rel="noopener">Substack</a> · <a href="https://vocus.cc/user/robert-lsa" target="_blank" rel="noopener">Vocus</a> · <a href="mailto:lsa711.cybertron@gmail.com">Email</a> · <a href="../../../contact/index.html">📡 傳訊給我</a></p>
+    <p>© 2026 Robert Huang 黃星翰</p>
+    <p class="privacy">本站用 GoatCounter 計算匿名瀏覽人次：不使用 Cookie、不儲存 IP、不追蹤個人。</p>
+  </div>
+</footer>
+<script src="../../../js/site.js"></script>
+<script src="../../../js/resonate.js"></script>
+<!-- 瀏覽人次統計（GoatCounter，2026-10-22 起，代碼 lsa711）：不用 Cookie、不存 IP；後台 https://lsa711.goatcounter.com
+     寫 https:// 而不是 //：在本機直接打開檔案時才不會去找本機路徑而報錯（本機預覽本來就不計數） -->
+<!-- 同一頁有「…/cybertron」和「…/cybertron/index.html」兩種網址，GoatCounter 會拆成兩行算；統一去掉 index.html（2026-11-02） -->
+<script>window.goatcounter = {path: function(p) { return p.replace(/\/index\.html(?=$|\?)/, '') || '/'; }};</script>
+<script data-goatcounter="https://lsa711.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

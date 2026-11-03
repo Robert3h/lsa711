@@ -122,7 +122,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
   .site-header .wrap { padding-top: 8px; padding-bottom: 6px; gap: 2px 12px; }
   .site-name { flex: 1; }
   .site-header .theme-toggle { order: 2; }
-  /* 2026-10-29（Robert 的三星 S26 Ultra）：畫面比 375px 窄、系統字又比較大時，「關於」被擠到下一行、「中文」被拆成直排。
+  /* 2026-10-29：畫面比 375px 窄、系統字又比較大時，「關於」被擠到下一行、「中文」被拆成直排。
      改成：每個項目都不能從中間斷開；真的放不下時，整個語言切換換到下一行靠右，而不是把字拆開 */
   .site-header .site-nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; flex-wrap: wrap; gap: 0 12px; }
   .site-nav ul { gap: 0 14px; flex-wrap: nowrap; }
@@ -181,7 +181,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .gate-lsa .gate-media img { object-position: center 35%; }    /* 合照：兩人的臉與中間那道光都入鏡 */
 .gate:hover .gate-media img, .gate:focus-within .gate-media img { filter: brightness(1.02); transform: scale(1.03); }
 
-/* 開場對焦（2026-10-22，Robert 想試的版本）：網頁打開時只播一次，
+/* 開場對焦（2026-10-22）：網頁打開時只播一次，
    照片從 104% 慢慢收回原尺寸後就停住，像相機對焦，不做反覆呼吸（會一直搶走文字的注意力）。
    用 backwards：播完就交還給原本的樣式，hover 放大照常運作。
    第二張晚 0.15 秒開始，兩張不會完全同步，比較自然。 */
@@ -855,3 +855,116 @@ button.btn.primary { background: var(--accent); }
 /* Google 整頁翻譯版最上方的說明（只在 translate.goog 網址出現，見 site.js 第 4 段） */
 .mt-note { box-sizing: border-box; width: calc(100% - 32px); max-width: 1060px; margin: 12px auto 0; padding: 10px 16px; border-left: 3px solid var(--data); background: var(--surface); color: var(--muted); font-size: .9rem; }
 .mt-note a { color: var(--accent); }
+
+/* ---------- 工作系統：作品集案例（2026-11-03，/work/cases/） ----------
+   內容照流程圖 v2.2。文字維持中文長文行寬；圖解（.wide）可以用滿整個版面，五站才排得成一排。
+   顏色照全站規則：橘色只給可以按的（每一站、連結），青色只給數字與編號 */
+.case .article-head > *, .case .prose > * { max-width: var(--measure); }
+.case .prose > .wide { max-width: none; }
+.case .prose > .compare { max-width: 46em; }
+.case code { font-family: var(--font-log); font-size: .9em; }
+.case-note { font-size: .85rem; color: var(--muted); margin: 40px 0 0; max-width: var(--measure); line-height: 1.7; }
+
+/* 一句話成果：−92% 是這頁的主角，最大；其餘數字次一級，單位退成灰色 */
+.result-line { font-family: var(--font-log); font-size: 1rem; margin: 18px 0 0; color: var(--muted); line-height: 1.5;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; }
+.result-line > span { white-space: nowrap; }
+.result-line b { color: var(--data); font-weight: 600; font-size: 1.6rem; }
+.result-line .hero b { font-size: 2.6rem; letter-spacing: -.02em; }
+@media (max-width: 480px) { .result-line b { font-size: 1.35rem; } .result-line .hero b { font-size: 2.1rem; } }
+
+/* 五站流程：電腦橫排、手機直排。每一站是按鈕，點了看說明（js/site.js 3c） */
+.flow { margin: 28px 0 8px; }
+.flow figcaption { margin-bottom: 4px; }
+.prose .pipeline { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 14px; font-size: 1rem; line-height: 1.75; }
+.prose .pipeline > li { position: relative; margin: 0; }
+.station { width: 100%; height: 100%; text-align: left; font: inherit; color: var(--ink); cursor: pointer;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 14px 12px; min-height: 44px;
+  display: flex; flex-direction: column; justify-content: flex-start; }   /* 靠上對齊：五張高度不同時標題不會上下錯開 */
+.station:hover, .station:focus-visible { border-color: var(--accent); outline: none; }
+.station[aria-expanded="true"] { border-color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); }
+.station .log { display: block; }
+.station strong { display: block; font-size: 1.02rem; margin: 2px 0 4px; }
+.station .desc { display: block; color: var(--muted); font-size: .88rem; line-height: 1.55; }
+.station .time { display: block; margin-top: 8px; font-family: var(--font-log); font-size: 1.05rem; font-weight: 600; color: var(--data); }
+.station .time.long { font-size: .9rem; }
+.station .time.text { color: var(--muted); font-family: var(--font-body); font-size: .88rem; font-weight: 400; }
+.station .more { display: block; margin-top: 6px; font-size: .8rem; color: var(--accent); }
+.station .more::after { content: " ↓"; }   /* 箭頭告訴讀者說明會出現在哪裡 */
+.station[aria-expanded="true"] .more { color: var(--muted); }
+.prose .pipeline > li:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; bottom: -15px; transform: translateX(-50%);
+  color: var(--muted); font-size: .9rem; line-height: 1; }
+@media (min-width: 900px) {
+  .prose .pipeline { grid-template-columns: repeat(5, 1fr); gap: 22px; }
+  .prose .pipeline > li:not(:last-child)::after { content: "→"; left: auto; right: -17px; top: 50%; bottom: auto; transform: translateY(-50%); }
+}
+@media (max-width: 899px) { .station { height: auto; } }   /* 手機上說明搬進卡片底下，卡片不能被撐到整格高、蓋住說明 */
+.flow-detail { margin-top: 18px; border-left: 2px solid var(--data); padding: 4px 0 4px 16px; max-width: 48em; font-size: 1rem; line-height: 1.75; }
+.flow-detail[hidden] { display: none; }
+.flow-detail dl { margin: 0; display: grid; grid-template-columns: 5.5em 1fr; gap: 6px 14px; }
+.flow-detail dt { font-family: var(--font-log); color: var(--data); font-size: .82rem; padding-top: 3px; }
+.flow-detail dd { margin: 0; }
+.prose .flow-detail ul { margin: 0; padding-left: 1.1em; }
+.prose .flow-detail li { margin: 0 0 .2em; }
+.pipeline li > .flow-detail { margin: 12px 0 8px 4px; }
+@media (max-width: 640px) { .flow-detail dl { grid-template-columns: 1fr; gap: 2px; } .flow-detail dd { margin-bottom: 10px; } }
+
+/* 合併示意長條：只表達比例關係，刻意不放數字 */
+.bars-fig { margin: 24px 0; }
+.bars { display: grid; gap: 22px; max-width: 46em; }
+@media (min-width: 720px) { .bars { grid-template-columns: 1fr 1fr; } }
+.prose .bars-cap { font-size: .95rem; margin: 0 0 8px; }
+.bar-row { display: grid; grid-template-columns: 4.2em 1fr; align-items: center; gap: 8px; margin: 6px 0; font-family: var(--font-log); font-size: .8rem; color: var(--muted); line-height: 1.5; }
+.bar { height: 18px; display: flex; border-radius: 2px; overflow: hidden; }
+.seg-a { background: var(--data); }
+.seg-b { background: var(--muted); opacity: .55; }
+.prose .verdict { font-size: .9rem; margin: 6px 0 0; line-height: 1.6; }
+.verdict::before { font-family: var(--font-log); margin-right: 6px; color: var(--muted); }
+.verdict.bad::before { content: "✕"; }
+.verdict.good::before { content: "✓"; }
+.legend { font-size: .8rem; color: var(--muted); display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; }
+.legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+
+/* 合併對照清單：做成日誌式的參數表，一列＝一筆合併 */
+.mlist-fig { margin: 8px 0 28px; }
+.mlist { border-collapse: collapse; font-family: var(--font-log); font-size: .85rem; line-height: 1.5; }
+.mlist caption { text-align: left; font-family: var(--font-body); font-size: .8rem; color: var(--muted); padding-bottom: 6px; }
+.mlist th, .mlist td { text-align: left; padding: 6px 22px 6px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.mlist thead th { font-family: var(--font-body); font-weight: normal; color: var(--muted); font-size: .78rem; }
+.mlist .arrow { color: var(--muted); }
+.mlist td.st { color: var(--muted); font-family: var(--font-body); white-space: normal; }
+.mlist tr.off td:not(.st) { color: var(--muted); }   /* 預先登錄、還沒生效：在清單裡，但目前不參與計算 */
+.mlist tr.new td { border-bottom-style: dashed; }
+.mlist tr.new td:first-child::before { content: "+ "; color: var(--data); }
+@media (max-width: 640px) { .mlist th, .mlist td { padding-right: 12px; } }
+
+/* 取捨對照表：用表格呈現取捨，不用卡片 */
+.compare { width: 100%; border-collapse: collapse; margin: 14px 0 24px; font-size: .95rem; line-height: 1.65; }
+.compare th, .compare td { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--rule); }
+.compare thead th { text-align: center; }
+.compare tbody th { font-family: var(--font-log); font-weight: normal; color: var(--data); font-size: .8rem; width: 7em; padding-top: 13px; }
+.compare tr.pick td { font-weight: 600; }   /* 「選用時機」是讀這張表的鑰匙 */
+@media (max-width: 640px) {
+  .compare thead { display: none; }   /* 手機改成上下堆疊，避免左右滑 */
+  .compare tr { display: block; border-bottom: 1px solid var(--rule); padding: 8px 0; }
+  .compare th, .compare td { display: block; border: 0; padding: 4px 0; width: auto; }
+  .compare td::before { content: attr(data-col); display: block; font-size: .78rem; color: var(--muted); font-weight: normal; }
+}
+
+/* 三句話：直向流程，左側一條線串起三個節點（上一步的產出＝下一步的輸入）；刻意不做卡片，避免和五站流程重複 */
+.prose .steps { list-style: none; margin: 18px 0 8px; padding: 0; }
+.prose .steps > li { position: relative; padding: 0 0 22px 46px; margin: 0; }
+.steps > li::before { content: ""; position: absolute; left: 13px; top: 32px; bottom: 4px; border-left: 1px solid var(--rule); }
+.steps > li:last-child::before { display: none; }
+.steps .node { position: absolute; left: 0; top: 2px; width: 28px; height: 28px; display: grid; place-items: center;
+  border: 1px solid var(--data); border-radius: 50%; font-size: .72rem; }
+.prose .steps p { margin: 0; }
+.prose .steps .io { font-family: var(--font-log); font-size: .82rem; color: var(--data); margin: 2px 0 4px; display: flex; flex-wrap: wrap; gap: 0 8px; }
+.steps .io .to { color: var(--muted); }
+
+/* 工作頁的精簡版五站：只是一行流程，不做成卡片（它不能按，就不要長得像按鈕；細節在下面的案例） */
+.flow-mini { list-style: none; margin: 18px 0 8px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 0; font-size: .95rem; }
+.flow-mini li { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+.flow-mini li + li::before { content: "→"; color: var(--muted); margin: 0 10px; }   /* 箭頭放在下一站前面：手機換行時，新的一行從箭頭開始，不會有掛在行尾的箭頭 */
+.flow-mini .log { font-size: .72rem; }
+.flow-mini b { font-family: var(--font-log); color: var(--data); }
