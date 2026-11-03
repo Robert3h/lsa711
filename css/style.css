@@ -257,7 +257,9 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .sub { color: var(--muted); max-width: var(--measure); }
 
 section { padding-top: 48px; }
-section > h2 { font-size: 1.25rem; margin: 0 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+/* 段落大標（位置條列出來的就是這些）：2026-11-03 起和文章小標同一個樣子，上方分隔線＋橘色 ✦ */
+section > h2 { font-size: 1.25rem; margin: 0 0 16px; padding-top: 20px; border-top: 1px solid var(--rule); }
+section > h2:not(.log)::before { content: "✦ "; color: var(--accent); }
 
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .btn {
@@ -990,11 +992,23 @@ button.btn.primary { background: var(--accent); }
 .steps .io .to { color: var(--muted); }
 
 /* 工作頁的精簡版五站：只是一行流程，不做成卡片（它不能按，就不要長得像按鈕；細節在下面的案例） */
-.flow-mini { list-style: none; margin: 18px 0 8px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 0; font-size: .95rem; }
-.flow-mini li { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
-.flow-mini li + li::before { content: "→"; color: var(--muted); margin: 0 10px; }   /* 箭頭放在下一站前面：手機換行時，新的一行從箭頭開始，不會有掛在行尾的箭頭 */
+/* 工作頁的五站小流程（2026-11-03 改）：每站一個小框，STEP 置中在上、站名在中、⏱ 時間在下一行。
+   電腦：五框一排，框和框之間是 →；手機：上下排，每框橫向一行（STEP｜站名｜時間），框之間 ↓ */
+.flow-mini { list-style: none; margin: 20px 0 8px; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0 22px; }
+.flow-mini li { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px;
+  padding: 12px 8px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); text-align: center; }
+.flow-mini li + li::before { content: "→"; position: absolute; left: -17px; top: 50%; transform: translateY(-50%); color: var(--muted); }
 .flow-mini .log { font-size: .72rem; }
+.flow-mini .fm-name { font-weight: 700; font-size: .95rem; line-height: 1.4; }
+.flow-mini .fm-time { color: var(--data); font-size: .88rem; white-space: nowrap; }
 .flow-mini b { font-family: var(--font-log); color: var(--data); }
+@media (max-width: 760px) {
+  .flow-mini { grid-template-columns: 1fr; gap: 18px 0; }
+  .flow-mini li { flex-direction: row; justify-content: flex-start; gap: 10px; padding: 10px 12px; text-align: left; }
+  .flow-mini .log { flex: 0 0 4.4rem; }
+  .flow-mini .fm-time { margin-left: auto; }
+  .flow-mini li + li::before { content: "↓"; left: 2.2rem; top: -18px; transform: none; line-height: 18px; }
+}
 
 /* 工作頁的案例卡（2026-11-03）：參考「即將上映」海報牆，整張可點。
    上方小圖示意案例在講什麼；有滑鼠時 hover 才動，手機直接顯示完成的樣子 */
