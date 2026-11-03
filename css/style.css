@@ -995,3 +995,50 @@ button.btn.primary { background: var(--accent); }
 .flow-mini li + li::before { content: "→"; color: var(--muted); margin: 0 10px; }   /* 箭頭放在下一站前面：手機換行時，新的一行從箭頭開始，不會有掛在行尾的箭頭 */
 .flow-mini .log { font-size: .72rem; }
 .flow-mini b { font-family: var(--font-log); color: var(--data); }
+
+/* 工作頁的案例卡（2026-11-03）：參考「即將上映」海報牆，整張可點。
+   上方小圖示意案例在講什麼；有滑鼠時 hover 才動，手機直接顯示完成的樣子 */
+.case-cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 700px) { .case-cards { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+.case-card { position: relative; display: flex; flex-direction: column; height: 100%; padding: 16px 18px 18px;
+  border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); color: var(--ink); text-decoration: none;
+  transition: border-color .2s ease, transform .2s ease; }
+.case-card:hover, .case-card:focus-visible { border-color: var(--accent); }
+.case-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.case-card-title { font-size: 1.12rem; font-weight: 700; line-height: 1.45; margin-top: 4px; }
+.case-card:hover .case-card-title, .case-card:focus-visible .case-card-title { color: var(--accent); }
+.case-card-ab { color: var(--muted); font-size: 0.92rem; margin-top: 8px; flex: 1 1 auto; }
+.case-card-go { color: var(--accent); font-size: 0.92rem; margin-top: 14px; }
+.case-art { display: block; margin: 12px 0 14px; padding: 14px; border-radius: 4px; background: var(--bg); min-height: 150px; }
+.art-cap { display: block; margin-top: 8px; color: var(--muted); font-size: 0.78rem; }
+
+/* CASE 01：兩條時間長條，650 → 48 */
+.art-time .t-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+.art-time .t-bar { display: block; height: 14px; border-radius: 2px; }
+.art-time .t-old { width: 78%; background: var(--muted); opacity: .45; }
+.art-time .t-new { width: 6%; background: var(--accent); }
+.art-time b { font-family: var(--font-log); font-size: 1rem; }
+.art-time .t-row:last-of-type b { color: var(--accent); }
+
+/* CASE 02：A、B 兩條線在合併點會合；虛線是帳面上衝高的成長，實線是擬制合併後 */
+.art-merge svg { display: block; width: 100%; max-width: 320px; height: auto; overflow: visible; }
+.art-merge path { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.art-merge .m-in { stroke: var(--data); }
+.art-merge .m-out { stroke: var(--accent); }
+.art-merge .m-fake { stroke: var(--muted); stroke-dasharray: 5 5; opacity: .7; }
+.art-merge circle { fill: var(--accent); }
+.art-merge text { fill: var(--muted); font-size: 12px; font-family: var(--font-log); }
+
+/* 平常顯示完成的樣子；滑鼠移上去（或鍵盤選到）時，動畫從頭播一次 */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .case-card:hover, .case-card:focus-visible { transform: translateY(-2px); }
+  .case-card:hover .t-old, .case-card:focus-visible .t-old { animation: t-fade .5s ease both; }
+  .case-card:hover .t-new, .case-card:focus-visible .t-new { animation: t-grow .6s ease .25s both; }
+  .art-merge .m-out { stroke-dasharray: 100; stroke-dashoffset: 0; }
+  .case-card:hover .m-out, .case-card:focus-visible .m-out { animation: m-draw .7s ease .2s both; }
+  .case-card:hover .m-fake, .case-card:focus-visible .m-fake { animation: m-dim .5s ease both; }
+}
+@keyframes t-fade { from { opacity: .45; } to { opacity: .2; } }
+@keyframes t-grow { from { width: 0; } to { width: 6%; } }
+@keyframes m-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes m-dim { from { opacity: .7; } to { opacity: .25; } }
