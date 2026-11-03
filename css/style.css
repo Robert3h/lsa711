@@ -1056,3 +1056,67 @@ button.btn.primary { background: var(--accent); }
 @keyframes t-grow { from { width: 0; } to { width: 6%; } }
 @keyframes m-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 @keyframes m-dim { from { opacity: .7; } to { opacity: .25; } }
+
+/* ---------- 小說試讀的閱讀模式（2026-11-03，示範版）----------
+   一欄＝一頁：.nv-flow 用 CSS 多欄排版，欄寬＝閱讀區寬度，翻頁時整條左右移動（novel.js 算頁數）。
+   紙色三種：網站（跟著深淺主題）、米色、夜間；只改閱讀區，不動頁首頁尾 */
+.reader { --nv-size: 18px; --nv-lh: 1.95; --nv-bg: var(--bg); --nv-ink: var(--ink); --nv-muted: var(--muted);
+  max-width: 44rem; padding-top: 20px; padding-bottom: 32px; }
+.reader[data-lh="loose"] { --nv-lh: 2.3; }
+.reader[data-paper="sepia"] { --nv-bg: #f4ecd8; --nv-ink: #3b3024; --nv-muted: #7a6a55; }
+.reader[data-paper="night"] { --nv-bg: #08090a; --nv-ink: #b9b4aa; --nv-muted: #7d7a74; }
+.nv-demo { margin: 0 0 12px; color: var(--muted); }
+.nv-bar { display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+.nv-where { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nv-ch { color: var(--muted); font-size: .9rem; }
+.nv-btn { min-width: 44px; min-height: 40px; padding: 6px 12px; white-space: nowrap; flex: none; border: 1px solid var(--rule); border-radius: 4px;
+  background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.nv-btn:hover, .nv-btn:focus-visible { border-color: var(--accent); outline: none; }
+.nv-btn[aria-pressed="true"], .nv-btn[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+.nv-btn:disabled { opacity: .35; cursor: default; border-color: var(--rule); }
+.nv-panel { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.nv-toc { list-style: none; margin: 0; padding: 0; }
+.nv-toc button { width: 100%; padding: 10px 4px; border: 0; border-bottom: 1px solid var(--rule); background: none;
+  color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.nv-toc li:last-child button { border-bottom: 0; }
+.nv-toc button:hover, .nv-toc button:focus-visible { color: var(--accent); outline: none; }
+.nv-pref { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
+.nv-pref > span { width: 3em; color: var(--muted); font-size: .9rem; }
+.nv-vol { flex: 1 1 160px; accent-color: var(--accent); }
+
+.nv-pages { margin-top: 12px; padding: 24px 20px; border-radius: 4px; background: var(--nv-bg); color: var(--nv-ink);
+  transition: background .3s ease, color .3s ease; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.nv-pages:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.reader[data-paper="site"] .nv-pages { background: var(--surface); }
+.nv-clip { overflow: hidden; }
+.nv-flow { height: var(--nv-h, 70vh); column-width: var(--nv-w, 600px); column-gap: var(--nv-gap, 48px); column-fill: auto;
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif; font-size: var(--nv-size); line-height: var(--nv-lh);
+  transition: transform .35s ease; will-change: transform; }
+.nv-flow section { padding-top: 0; }   /* 全站 section 上方的留白會讓封面多出一頁空白，這裡拿掉 */
+.nv-flow p { margin: 0 0 1em; text-indent: 2em; }
+.nv-flow .log, .nv-flow .sub, .nv-flow .nv-quote, .nv-flow .nv-end p, .nv-flow .nv-cover p { text-indent: 0; }
+
+/* 封面、章節扉頁都剛好佔一整頁，下一段內容自然從下一頁開始 */
+.nv-cover, .nv-opener { height: var(--nv-h, 70vh); break-inside: avoid; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; gap: 6px; overflow: hidden; }
+.nv-cover .cover-art { width: auto; height: 62%; max-width: 100%; border-radius: 4px; box-shadow: 0 8px 30px rgba(0, 0, 0, .35); }
+.nv-cover h1 { margin: 14px 0 0; font-size: 1.9rem; letter-spacing: .2em; }
+.nv-by { margin: 0; color: var(--nv-muted); }
+.nv-opener img { width: auto; max-width: 100%; height: 52%; object-fit: cover; border-radius: 4px; }
+.nv-opener .log { margin-top: 14px; }
+.nv-opener h2 { margin: 2px 0 0; font-size: 1.35rem; }
+.nv-quote { margin: 8px 0 0; color: var(--nv-muted); font-size: .92em; }
+.nv-end { margin: 1.6em 0 0; text-align: center; color: var(--nv-muted); break-inside: avoid; }
+.nv-last .btn { margin-top: 8px; }
+
+.nv-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+.nv-count { color: var(--muted); }
+.nv-progress { display: block; height: 2px; margin-top: 10px; background: var(--rule); }
+.nv-progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .35s ease; }
+.reader .music-note { margin-top: 16px; font-size: .85rem; }
+@media (max-width: 600px) {
+  .reader { padding-top: 12px; }
+  .nv-pages { padding: 18px 14px; }
+  .nv-cover h1 { font-size: 1.6rem; }
+}
+@media (prefers-reduced-motion: reduce) { .nv-flow, .nv-progress i, .nv-pages { transition: none; } }
