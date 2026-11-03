@@ -43,7 +43,7 @@
 <div class="wrap">
 <article class="case">
   <header class="article-head">
-    <nav class="crumbs log" aria-label="目前位置"><ol><li><a href="../../index.html">工作系統</a></li><li><a href="../../index.html#h-cases">作品集</a></li><li><span class="crumb-here" aria-current="page">案例 02</span></li></ol></nav>
+    <nav class="crumbs log" aria-label="目前位置"><ol><li><a href="../../index.html">工作系統</a></li><li class="crumb-menu"><a href="../../index.html#h-cases">作品集</a><button type="button" class="crumb-toggle" aria-expanded="false" aria-label="切換到其他案例">▾</button><ul class="crumb-list" hidden><li><a href="../report-workstation/index.html"><span class="log">CASE 01</span> 從 650 分鐘到 48 分鐘：在 Excel 裡蓋一座資料管線</a></li><li><a href="../merger-restatement/index.html" aria-current="page"><span class="log">CASE 02</span> 併購的成長率陷阱：資料該在哪一層合併？</a></li></ul></li><li><span class="crumb-here" aria-current="page">案例 02</span></li></ol></nav>
     <p class="log">CASE 02 · 作品集</p>
     <h1>併購的成長率陷阱：資料該在哪一層合併？</h1>
     
@@ -95,7 +95,7 @@
 <ul><li><strong>優點</strong>：不必擴充任何規則，公式不增加，運算不變慢。</li><li><strong>代價</strong>：資料庫裡，被併方不再單獨出現，也就是資料的顆粒度變粗了。</li><li><strong>補救</strong>：被併方的原始數字另外保存在來源檔，真的需要時仍然可以回查。</li></ul>
 <h2>取捨：顆粒度要服務決策</h2>
 <p>這兩種做法我實務上都在用，不是後者取代前者。差別不在技術高低，而在<strong>決策需要什麼</strong>，判斷時我先問一個問題：這次一共要合併幾家？</p>
-<table class="compare"><thead><tr><th scope="col"></th><th scope="col">計算層合併</th><th scope="col">寫入層合併</th></tr></thead><tbody><tr class="pick"><th scope="row">選用時機</th><td data-col="計算層合併">一對一（1＋1）</td><td data-col="寫入層合併">一家併多家（1＋1＋1…）</td></tr><tr><th scope="row">主管關心的問題</th><td data-col="計算層合併">合併前後各是多少？要揭露、要核對</td><td data-col="寫入層合併">現在誰多大？成長有沒有被高估？</td></tr><tr><th scope="row">細節</th><td data-col="計算層合併">完整保留</td><td data-col="寫入層合併">資料庫內變粗，原始檔可回查</td></tr><tr><th scope="row">系統成本</th><td data-col="計算層合併">隨被併方家數增加</td><td data-col="寫入層合併">幾乎不變</td></tr></tbody></table>
+<table class="compare"><thead><tr><th scope="col"></th><th scope="col">計算層合併<span class="th-sub">保留資料顆粒度</span></th><th scope="col">寫入層合併<span class="th-sub">犧牲資料顆粒度</span></th></tr></thead><tbody><tr class="pick"><th scope="row">選用時機</th><td data-col="計算層合併（保留資料顆粒度）">一對一（1＋1）</td><td data-col="寫入層合併（犧牲資料顆粒度）">一家併多家（1＋1＋1…）</td></tr><tr><th scope="row">主管關心的問題</th><td data-col="計算層合併（保留資料顆粒度）">合併前後各是多少？要揭露、要核對</td><td data-col="寫入層合併（犧牲資料顆粒度）">現在誰多大？成長有沒有被高估？</td></tr><tr><th scope="row">細節</th><td data-col="計算層合併（保留資料顆粒度）">完整保留</td><td data-col="寫入層合併（犧牲資料顆粒度）">資料庫內變粗，原始檔可回查</td></tr><tr><th scope="row">系統成本</th><td data-col="計算層合併（保留資料顆粒度）">隨被併方家數增加</td><td data-col="寫入層合併（犧牲資料顆粒度）">幾乎不變</td></tr></tbody></table>
 <p>事情已經發生，主管在乎的是當下的規模，以及成長率不要被灌水，而不是被併方當年究竟是多少。為了一個很少被問到的問題，讓整個系統變複雜、變慢，並不划算。</p>
 <p>在資料倉儲裡，這是「依現況重編歷史」（as-is）和「保留當時樣貌」（as-was）之間的選擇。成熟的做法通常是<strong>兩者都留</strong>：原始層保留各自的數字，報表層提供重編後的口徑。我的做法也是如此：原始來源檔就是原始層，資料庫和報表則是重編後的版本。</p>
 <h2>實作時的提醒</h2>
