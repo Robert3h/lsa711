@@ -1124,3 +1124,14 @@ button.btn.primary { background: var(--accent); }
   .nv-cover h1 { font-size: 1.6rem; }
 }
 @media (prefers-reduced-motion: reduce) { .nv-flow, .nv-progress i, .nv-pages { transition: none; } }
+
+/* 網站導覽的固定入口（2026-11-04，關於頁與全部傳訊頁頁首）：比一般連結醒目、但不搶主按鈕。
+   框線和字用橘色（可以點），前面的 GUIDE 小標用青色（標記）；滑鼠移上去整顆變實心 */
+.guide-chip { margin: 18px 0 0; }
+.guide-chip a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 16px;
+  border: 1px solid var(--accent); border-radius: 999px; color: var(--accent); font-weight: 600; text-decoration: none;
+  transition: background .2s ease, color .2s ease; }
+.guide-chip .log { color: var(--data); font-size: .75rem; letter-spacing: .08em; }
+.guide-chip a:hover, .guide-chip a:focus-visible { background: var(--accent); color: var(--on-accent); }
+.guide-chip a:hover .log, .guide-chip a:focus-visible .log { color: var(--on-accent); }
+@media (prefers-reduced-motion: reduce) { .guide-chip a { transition: none; } }
