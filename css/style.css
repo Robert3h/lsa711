@@ -44,6 +44,10 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* 斷行（2026-11-04）：避免段落最後一行只剩一兩個字（例如「圖解。」單獨掉到下一行）；標題左右行長度平均。
+   瀏覽器自己依螢幕寬度調整，手機和電腦都適用；不支援的舊瀏覽器照原本方式斷行，不影響閱讀 */
+p, li, dd, figcaption, blockquote { text-wrap: pretty; }
+h1, h2, h3, dd, .sub, .lead, .poster-title, .case-card-title, .case-card-ab { text-wrap: balance; }   /* 短段落：每行長度平均，中文也有效（pretty 對中文沒作用） */
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + 12px); }
 
 body {
