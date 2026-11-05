@@ -461,6 +461,8 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .prose .layer dd { margin: 4px 0 0; }
 .prose figure { margin: 2em 0; }
 .prose figure.portrait img { max-width: min(360px, 100%); }   /* 不能比手機的內容區寬，否則整頁會左右滑（健檢 M5） */
+/* 小劇場的 4:5 直圖（2026-11-05）：手機佔滿內容寬，電腦限寬置中，一張圖不會超過一個畫面。只影響有場景說明的對話頁 */
+.prose .scene-note ~ figure.portrait img { width: 100%; max-width: min(440px, 100%); margin-inline: auto; }
 
 .video { max-width: 360px; }
 .video video { width: 100%; background: #000; border-radius: 4px; }
