@@ -36,7 +36,7 @@
 
 :root {
   --font-body: system-ui, -apple-system, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-log: "Cascadia Mono", Consolas, "SFMono-Regular", Menlo, "Noto Sans Mono", monospace;
+  --font-log: "Cascadia Mono", Consolas, "SFMono-Regular", Menlo, "Noto Sans Mono", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", monospace;
   --gutter: 16px;
   --measure: 36em;       /* 中文長文行寬 */
   --wide: 68rem;
@@ -239,7 +239,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .news-type { font-size: 0.75rem; color: var(--muted); border: 1px solid var(--rule); border-radius: 3px; padding: 0 6px; white-space: nowrap; }
 .news-new {
   margin-left: 8px; padding: 0 6px; border: 1px solid var(--data); border-radius: 3px;
-  font-size: 0.7rem; color: var(--data); letter-spacing: 0.06em;
+  font-size: 0.75rem; color: var(--data); letter-spacing: 0.06em;
 }
 
 /* ---------- 一般頁面 ---------- */
@@ -296,6 +296,7 @@ section > h2:not(.log)::before { content: "✦ "; color: var(--accent); }
 
 .plain-list { list-style: none; padding: 0; margin: 0; }
 .plain-list li { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.plain-list a { display: inline-block; padding: 2px 0; min-height: 24px; }
 
 /* ---------- 文章列表：傳訊紀錄 ---------- */
 .entries { list-style: none; margin: 0; padding: 0; }
@@ -404,7 +405,7 @@ figcaption, .caption { color: var(--muted); font-size: 0.9rem; line-height: 1.6;
 .toc-list a { display: block; padding: 9px 16px; color: var(--ink); text-decoration: none; }
 .toc-list a:hover, .toc-list a:focus-visible { color: var(--accent); background: var(--bg); }
 .toc-list a[aria-current] { color: var(--accent); font-weight: 700; }
-.toc-list .log, .toc-inline .log { color: var(--data); font-size: 0.72rem; margin-right: 8px; }
+.toc-list .log, .toc-inline .log { color: var(--data); font-size: 0.75rem; margin-right: 8px; }
 /* 一排式：電腦上段落排得下時用（js 量寬度決定）。目前那段和頁首「目前頁面」同一套樣子：橘色＋底線 */
 .toc-inline { display: none; flex: 1; min-width: 0; list-style: none; margin: 0; padding: 0; gap: 0 20px; flex-wrap: nowrap; overflow: hidden; font-size: 0.88rem; }
 .toc-bar.inline .toc-inline { display: flex; }
@@ -990,7 +991,7 @@ button.btn.primary { background: var(--accent); }
 .steps > li::before { content: ""; position: absolute; left: 13px; top: 32px; bottom: 4px; border-left: 1px solid var(--rule); }
 .steps > li:last-child::before { display: none; }
 .steps .node { position: absolute; left: 0; top: 2px; width: 28px; height: 28px; display: grid; place-items: center;
-  border: 1px solid var(--data); border-radius: 50%; font-size: .72rem; }
+  border: 1px solid var(--data); border-radius: 50%; font-size: .75rem; }
 .prose .steps p { margin: 0; }
 .prose .steps .io { font-family: var(--font-log); font-size: .82rem; color: var(--data); margin: 2px 0 4px; display: flex; flex-wrap: wrap; gap: 0 8px; }
 .steps .io .to { color: var(--muted); }
@@ -1002,7 +1003,7 @@ button.btn.primary { background: var(--accent); }
 .flow-mini li { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px;
   padding: 12px 8px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); text-align: center; }
 .flow-mini li + li::before { content: "→"; position: absolute; left: -17px; top: 50%; transform: translateY(-50%); color: var(--muted); }
-.flow-mini .log { font-size: .72rem; }
+.flow-mini .log { font-size: .75rem; }
 .flow-mini .fm-name { font-weight: 700; font-size: .95rem; line-height: 1.4; }
 .flow-mini .fm-time { color: var(--data); font-size: .88rem; white-space: nowrap; }
 .flow-mini b { font-family: var(--font-log); color: var(--data); }
