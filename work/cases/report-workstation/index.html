@@ -69,7 +69,7 @@
 <p>理想答案是資料倉儲加上 BI 工具，但當時能用的只有 Excel。與其等待資源，我選擇在現有工具裡，把資料工程的基本原則做出來。</p>
 <h2>設計：三個模組，各做一件事</h2>
 <p>我把流程切成三個獨立的檔案，每個只負責一件事：</p>
-<table class="compare"><thead><tr><th scope="col">模組</th><th scope="col">做什麼</th><th scope="col">對應的資料工程概念</th></tr></thead><tbody><tr class="pick"><th scope="row">寫入</th><td data-col="做什麼">統一名稱、檢查、存進單一資料庫</td><td data-col="對應的資料工程概念">資料擷取與清理（ETL 的 E、T）、主資料管理</td></tr><tr><th scope="row">計算</th><td data-col="做什麼">用公式即時算出市佔、排名、變化率；可指定年月與比較口徑</td><td data-col="對應的資料工程概念">語意層／指標層</td></tr><tr><th scope="row">報表</th><td data-col="做什麼">一鍵轉成固定數值的報表</td><td data-col="對應的資料工程概念">發布層、資料快照</td></tr></tbody></table>
+<table class="compare is-steps"><thead><tr><th scope="col">模組</th><th scope="col">做什麼</th><th scope="col">對應的資料工程概念</th></tr></thead><tbody><tr><th scope="row">寫入</th><td data-col="做什麼">統一名稱、檢查、存進單一資料庫</td><td data-col="對應的資料工程概念">資料擷取與清理（ETL 的 E、T）、主資料管理</td></tr><tr><th scope="row">計算</th><td data-col="做什麼">用公式即時算出市佔、排名、變化率；可指定年月與比較口徑</td><td data-col="對應的資料工程概念">語意層／指標層</td></tr><tr><th scope="row">報表</th><td data-col="做什麼">一鍵轉成固定數值的報表</td><td data-col="對應的資料工程概念">發布層、資料快照</td></tr></tbody></table>
 <p>這樣切的理由：</p>
 <ul><li><strong>寫入只管「乾淨」</strong>：不做任何計算，確保資料不重複、可追溯。</li><li><strong>計算只管「彈性」</strong>：公式很重、算得慢，但可以任意切換月份、變化率口徑（業務量本身的變化，或市佔率的變化）與合併口徑。</li><li><strong>報表只管「穩定」</strong>：只有固定數值，檔案輕、不會因重算而變動，適合寄送與存檔。</li></ul>
 <p>三層分開後，任何一層出問題都不會牽連其他兩層。</p>

@@ -997,6 +997,12 @@ button.btn.primary { background: var(--accent); }
   .compare tr { display: block; border-bottom: 1px solid var(--rule); padding: 8px 0; }
   .compare th, .compare td { display: block; border: 0; padding: 4px 0; width: auto; }
   .compare td::before { content: attr(data-col); display: block; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  /* 有先後順序的表：手機沒有表頭，用 STEP 編號和箭頭交代順序，和五站流程同一套編號 */
+  .compare.is-steps tbody { counter-reset: step; }
+  .compare.is-steps tbody tr { counter-increment: step; position: relative; }
+  .compare.is-steps tbody th { width: auto; font-size: .95rem; font-weight: 700; }
+  .compare.is-steps tbody th::before { content: "STEP " counter(step) " · "; }
+  .compare.is-steps tbody tr:not(:last-child)::after { content: "↓"; display: block; color: var(--muted); padding-top: 4px; }
 }
 
 /* 三句話：直向流程，左側一條線串起三個節點（上一步的產出＝下一步的輸入）；刻意不做卡片，避免和五站流程重複 */
