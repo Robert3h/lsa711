@@ -154,6 +154,11 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .home-intro { padding: 56px 0 28px; }
 .home-intro p { margin: 0; color: var(--muted); }
 .home-intro strong { color: var(--ink); }
+.home-intro h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); line-height: 1.35; margin: 0 0 14px; }   /* 開場主標（2026-11-06）：先說明是誰、有什麼，再接入口 */
+.home-intro .home-paths { margin-top: 14px; font-size: 0.95rem; }
+.home-paths a { color: var(--accent); display: inline-block; padding: 10px 2px; margin: -6px 0; }
+.first-read { padding-top: 32px; }
+.first-read > h2 { padding-top: 0; border-top: 0; }   /* 入口區已有底線，這裡不再疊一條線和留白 */
 
 .gates { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 .gate { display: block; padding: 32px 0; text-decoration: none; color: var(--ink); }
@@ -220,9 +225,10 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
   .home { display: flex; flex-direction: column; }
   .home .home-intro { padding: 24px 0 20px; }
   .home .gates { order: 1; }
-  .home .news { order: 2; margin: 24px 0 0; }
-  .home .motto { order: 3; }
-  .home .resonate { order: 4; }   /* 手機版首頁會重排順序，有共鳴要跟著排在最後 */
+  .home .first-read { order: 2; }
+  .home .news { order: 3; margin: 24px 0 0; }
+  .home .motto { order: 4; }
+  .home .resonate { order: 5; }   /* 手機版首頁會重排順序，有共鳴要跟著排在最後 */
   .gate-media { aspect-ratio: 16 / 8; }
 }
 
@@ -490,14 +496,15 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 
 .sign { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule); }
 .sign p { margin: 0 0 4px; }
+.sign .author-note { margin: 0 0 1em; color: var(--ink); }   /* Robert 本人的附註（不是署名），用正文字體 */
 
 .subscribe { margin-top: 40px; padding: 24px 0; border-top: 1px solid var(--rule); }
 .subscribe h2 { font-size: 1.1rem; margin: 0 0 6px; }
 .subscribe p { margin: 0; color: var(--muted); }
 
 /* ---------- 即將上映：電影海報牆 ----------
-   海報整張可點，點了跳到下方的劇情簡介（真的有反應，不是裝飾）。
-   有滑鼠：hover 時角色劇照浮現；手機沒有 hover：劇照一直淡淡顯示。 */
+   海報整張可點，點了直接開始試玩。
+   劇照一直完整顯示（Robert 2026-11-06）；有滑鼠時，hover 才滑出一句玩法說明；手機的說明在下方簡介。 */
 .lineup {
   list-style: none; margin: 32px 0 0; padding: 0;
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
@@ -509,24 +516,29 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
   background: var(--surface); color: var(--ink); text-decoration: none;
 }
 .poster > :not(.poster-art) { position: relative; z-index: 1; }
-.poster .log { position: absolute; top: 14px; left: 14px; }
-.poster-title { font-size: clamp(1.05rem, 3.6vw, 1.45rem); font-weight: 700; line-height: 1.35; }
-.poster-genre { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+.poster .log { position: absolute; top: 14px; left: 14px; color: #9be6f3; }
+.poster-title { color: #fff; font-size: clamp(1.05rem, 3.6vw, 1.45rem); font-weight: 700; line-height: 1.35; }
+.poster-genre { color: #d5d8da; font-size: 0.85rem; margin-top: 6px; }
 .poster-art {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
-  opacity: 0.18; transition: opacity .35s ease, transform .5s ease;
-  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 85%);
-          mask-image: linear-gradient(to bottom, #000 30%, transparent 85%);
+  transition: filter .35s ease, transform .5s ease;
+}
+/* 劇照上下的深色漸層：標題和編號疊在圖上也看得清楚；淺色主題同樣用深色，字才讀得到 */
+.poster::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(8, 10, 12, .78) 0, rgba(8, 10, 12, 0) 22%, rgba(8, 10, 12, 0) 45%, rgba(8, 10, 12, .92) 88%);
 }
 .poster:hover, .poster:focus-visible { border-color: var(--accent); }
-.poster:hover .poster-title { color: var(--accent); }
+.poster:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.poster-more { display: none; }
 @media (hover: hover) {
-  .poster-art { opacity: 0; transform: scale(1.03); }
-  .poster:hover .poster-art, .poster:focus-visible .poster-art { opacity: 0.38; transform: none; }
-  :root[data-theme="light"] .poster:hover .poster-art,
-  :root[data-theme="light"] .poster:focus-visible .poster-art { opacity: 0.45; }
+  .poster-more { display: grid; grid-template-rows: 0fr; opacity: 0; color: #eceeef; font-size: 0.9rem; line-height: 1.6; transition: grid-template-rows .3s ease, opacity .3s ease; }
+  .poster-more > span { overflow: hidden; min-height: 0; }
+  .poster-more b { display: block; margin-top: 6px; color: #ffb199; font-weight: 600; }
+  .poster:hover .poster-more, .poster:focus-visible .poster-more { grid-template-rows: 1fr; opacity: 1; margin-top: 10px; }
+  .poster:hover .poster-art, .poster:focus-visible .poster-art { filter: brightness(.62); transform: scale(1.05); }
 }
-@media (prefers-reduced-motion: reduce) { .poster-art { transition: none; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .poster-art, .poster-more { transition: none; } .poster:hover .poster-art, .poster:focus-visible .poster-art { transform: none; } }
 
 /* 劇情簡介 */
 .plot { display: grid; gap: 20px; padding-top: 56px; }
