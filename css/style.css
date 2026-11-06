@@ -1052,6 +1052,8 @@ button.btn.primary { background: var(--accent); }
 .art-time .t-new { width: 6%; background: var(--accent); }
 .art-time b { font-family: var(--font-log); font-size: 1rem; }
 .art-time .t-row:last-of-type b { color: var(--accent); }
+@keyframes t-delta-in { from { opacity: 0; } to { opacity: 1; } }
+.art-time .t-delta { font-family: var(--font-log); font-size: 1rem; font-weight: 700; color: var(--data); }   /* 試算表 650→48 的降低率（2026-11-06） */
 
 /* CASE 02：A、B 兩條線在合併點會合；虛線是帳面上衝高的成長，實線是擬制合併後 */
 .art-merge svg { display: block; width: 100%; max-width: 320px; height: auto; overflow: visible; }
@@ -1067,6 +1069,7 @@ button.btn.primary { background: var(--accent); }
   .case-card:hover, .case-card:focus-visible { transform: translateY(-2px); }
   .case-card:hover .t-old, .case-card:focus-visible .t-old { animation: t-fade .5s ease both; }
   .case-card:hover .t-new, .case-card:focus-visible .t-new { animation: t-grow .6s ease .25s both; }
+  .case-card:hover .t-delta, .case-card:focus-visible .t-delta { animation: t-delta-in .5s ease .7s both; }
   .art-merge .m-out { stroke-dasharray: 100; stroke-dashoffset: 0; }
   .case-card:hover .m-out, .case-card:focus-visible .m-out { animation: m-draw .7s ease .2s both; }
   .case-card:hover .m-fake, .case-card:focus-visible .m-fake { animation: m-dim .5s ease both; }
