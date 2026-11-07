@@ -1059,7 +1059,8 @@ button.btn.primary { background: var(--accent); }
 .art-time b { font-family: var(--font-log); font-size: 1rem; }
 .art-time .t-row:last-of-type b { color: var(--accent); }
 @keyframes t-delta-in { from { opacity: 0; } to { opacity: 1; } }
-.art-time .t-delta { font-family: var(--font-log); font-size: 1rem; font-weight: 700; color: var(--data); }   /* 試算表 650→48 的降低率（2026-11-06） */
+.art-time .t-delta { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-log); font-size: 1.5rem; font-weight: 700; color: var(--data); white-space: nowrap; }   /* 試算表 650→48 的降低率（2026-11-06）；11-07 Robert：加向下箭頭與「降低」、字放大 */
+.art-time .t-arrow { width: .9em; height: .9em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* CASE 02：A、B 兩條線在合併點會合；虛線是帳面上衝高的成長，實線是擬制合併後 */
 .art-merge svg { display: block; width: 100%; max-width: 320px; height: auto; overflow: visible; }
