@@ -448,6 +448,7 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .prose h2::before { content: "✦ "; color: var(--accent); }
 .prose h3 { font-size: 1.05rem; margin: 2.4em 0 0.8em; }
 .prose hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
+.prose hr + h2 { border-top: 0; margin-top: 0; padding-top: .2em; }   /* Robert 在小標前自己加的分隔線＋小標本身的上邊線會變成兩條：只留分隔線（2026-11-07） */
 .prose ul { padding-left: 1.2em; margin: 0 0 1.2em; }
 .prose li { margin: 0.4em 0; }
 .prose .note { color: var(--muted); font-size: 0.95rem; }
