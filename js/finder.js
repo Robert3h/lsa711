@@ -3,8 +3,7 @@
 // 拆詞方式要和 build_site.py 的 find_tokens 一樣：中文兩個字一組、英數字整個字。
 (function () {
   var form = document.querySelector('.finder-form');
-  if (!form) return;
-  var input = form.querySelector('input');
+  var input = form && form.querySelector('input');
   var out = document.querySelector('.finder-out');
   var MIN = 60;          // 分數太低＝只是剛好撞到一兩個常見詞，當作沒找到（2026-11-07 用 10 句測試句調出來的）
 
@@ -49,6 +48,10 @@
       .sort(function (a, b) { return score[b] - score[a]; }).slice(0, 3);
     return { ids: ids, hits: hits };
   }
+
+  // 小遊戲「38 光年航程」也用同一套比對（2026-11-07），不另外寫一份，免得兩邊算法不一樣
+  window.LSAFind = { search: search };
+  if (!form) return;
 
   // 「相關字」：把對到的兩字組接回讀者原本打的詞（說太＋太悲＋悲觀 → 太悲觀），不顯示碎片
   function words(q, hits) {

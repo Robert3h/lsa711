@@ -888,6 +888,36 @@ button.btn.primary { background: var(--accent); }
 .finder-moods li > span { display: block; font-size: .85rem; }
 .finder-more { margin-top: 14px; min-height: 44px; cursor: pointer; font: inherit; }
 
+/* ---------- 小遊戲 05：38 光年航程（2026-11-07 試作） ---------- */
+.voyage { max-width: 34rem; margin: 8px 0 40px; }
+.voy-start { display: grid; gap: 8px; }
+.voy-start label { font-weight: 600; }
+.voy-start .opt { font-weight: 400; font-size: .85rem; color: var(--muted); margin-left: 6px; }
+.voy-start input {
+  min-height: 44px; font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; width: 100%;
+}
+.voy-start input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.voy-note { margin: 0; font-size: .85rem; color: var(--muted); }
+.voy-start .actions { margin-top: 8px; }
+.voy-start .btn, .voy-pause, .voy-result .btn { min-height: 44px; cursor: pointer; font: inherit; }
+.voy-stage[hidden], .voy-start[hidden], .voy-result[hidden] { display: none; }
+.voy-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.voy-hud { margin: 0; font-size: .8rem; color: var(--data); }
+.voy-pause { white-space: nowrap; flex: none; }
+.voyage canvas { display: block; width: 100%; border-radius: 8px; touch-action: none; cursor: crosshair; background: #0b0d10; }
+.voyage canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.voy-toast { min-height: 3.2em; margin: 10px 0 0; font-size: .95rem; }
+.voy-toast .log { color: var(--data); margin-right: 6px; }
+.voy-mood { color: var(--muted); font-size: .85rem; }
+.voy-result h2 { margin: 4px 0 8px; outline: none; }
+.voy-result ol { padding-left: 1.4em; display: grid; gap: 14px; margin: 12px 0 20px; }
+.voy-result li > a { font-weight: 600; }
+.voy-result li > span { display: block; font-size: .85rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .voy-toast.is-on { animation: t-delta-in .4s ease both; }
+}
+
 /* ---------- 傳訊給我（2026-10-29） ---------- */
 .transmit { display: grid; gap: 6px; max-width: var(--measure); margin: 8px 0 40px; }
 .transmit[hidden] { display: none; }   /* display: grid 會蓋過 hidden，送出成功後表單要真的藏起來 */

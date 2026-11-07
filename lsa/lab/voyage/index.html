@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-Hant-TW" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>38 光年航程｜星羽號</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="駕駛星羽號從 The Loop 飛往 LSA-711，沿途接收真的傳訊。">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../../apple-touch-icon.png">
+<link rel="canonical" href="https://robert3h.github.io/lsa711/lsa/lab/voyage/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Robert Huang 黃星翰 × LSA-711">
+<meta property="og:title" content="38 光年航程｜星羽號">
+<meta property="og:description" content="駕駛星羽號從 The Loop 飛往 LSA-711，沿途接收真的傳訊。">
+<meta property="og:url" content="https://robert3h.github.io/lsa711/lsa/lab/voyage/">
+<meta property="og:image" content="https://robert3h.github.io/lsa711/assets/og/og-lsa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LSA 人生系統架構：AI 生成的子琦與雙宇">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<script>/* 在畫面出現前套用讀者上次選的主題，避免閃一下 */try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-name" href="../../../index.html">Robert Huang 黃星翰</a>
+    <nav class="site-nav" aria-label="主選單">
+      <ul>
+        <li><a href="../../../work/index.html">工作系統</a></li>
+        <li><a href="../../../lsa/index.html" aria-current="page">寫作系統 LSA</a></li>
+        <li><a href="../../../about/index.html">關於</a></li>
+      </ul>
+      <div class="lang-switch" role="group" aria-label="語言"><span aria-hidden="true">🌐</span><span class="lang-cur" aria-current="true">中文</span><span aria-hidden="true">｜</span><a hreflang="en" lang="en" href="https://robert3h-github-io.translate.goog/lsa711/lsa/lab/voyage/?_x_tr_sl=zh-TW&amp;_x_tr_tl=en&amp;_x_tr_hl=en"><span class="l-full">English</span><span class="l-short" aria-hidden="true">EN</span></a></div>
+    </nav>
+    <button type="button" class="theme-toggle" aria-pressed="false">切換淺色</button>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <header class="page-head">
+    <nav class="crumbs log" aria-label="目前位置"><ol><li class="crumb-menu"><a href="../../../lsa/index.html">LSA</a><button type="button" class="crumb-toggle" aria-expanded="false" aria-label="寫作系統的其他頁面">▾</button><ul class="crumb-list" hidden><li><a href="../../../lsa/index.html">寫作系統首頁</a></li><li><a href="../../../lsa/archive/index.html">全部傳訊</a></li><li><a href="../../../lsa/cybertron/index.html">賽博創界 設定集</a></li><li><a href="../../../lsa/lab/index.html">即將上映：小遊戲</a></li><li><a href="../../../lsa/toolkit/index.html">帶走五層提問</a></li></ul></li><li><a href="../../../lsa/lab/index.html">即將上映</a></li><li><span class="crumb-here" aria-current="page">05 38 光年航程</span></li></ol></nav>
+    <p class="log">05 / 試作中</p>
+    <h1>38 光年航程</h1>
+    <p class="sub">駕駛星羽號，從地球軌道上的 The Loop 出發，曲速飛越 38 光年，抵達雙星照亮的 LSA-711。沿途接收青色的訊號，每一則都是一篇真的傳訊；灰色方塊是雜訊，撞到只會讓船慢一下。一趟約 1 分鐘。</p>
+  </header>
+  <div class="voyage" data-ship="../../../assets/ship-progress.png">
+    <noscript><p>這個小遊戲需要開啟 JavaScript 才能玩。也可以直接看<a href="../../archive/index.html">全部傳訊</a>。</p></noscript>
+    <form class="voy-start" action="#">
+      <label for="voy-q">起飛前，用一句話說說你最近卡在什麼<span class="opt">（可以留白）</span></label>
+      <input id="voy-q" type="text" maxlength="200" autocomplete="off" placeholder="例：用 AI 寫作很心虛">
+      <p class="voy-note">有寫的話，航線會優先排進比較接近的訊號。你打的字只在這台裝置上比對，不會送出。</p>
+      <p class="voy-note">操作：電腦用滑鼠或 ← →（A／D），空白鍵暫停；手機用手指在畫面上左右滑。沒有音效。</p>
+      <div class="actions"><button class="btn primary" type="submit">起飛</button></div>
+    </form>
+    <div class="voy-stage" hidden>
+      <div class="voy-bar"><p class="log voy-hud" aria-hidden="true"></p><button type="button" class="btn voy-pause" aria-pressed="false">暫停</button></div>
+      <canvas tabindex="0" aria-label="星羽號航行畫面。左右方向鍵移動，空白鍵暫停。"></canvas>
+      <p class="voy-toast" role="status" aria-live="polite"></p>
+    </div>
+    <section class="voy-result" hidden tabindex="-1"></section>
+  </div>
+</div>
+<script src="../../archive/finder-data.js"></script>
+<script src="../../../js/finder.js"></script>
+<script src="../../../js/voyage.js"></script>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p>🌍 訊息來自 LSA-711 星球</p>
+    <p><a href="https://www.linkedin.com/in/roberthuang1987" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://lsa711.substack.com/" target="_blank" rel="noopener">Substack</a> · <a href="https://vocus.cc/user/robert-lsa" target="_blank" rel="noopener">Vocus</a> · <a href="mailto:lsa711.cybertron@gmail.com">Email</a> · <a href="../../../contact/index.html">📡 傳訊給我</a></p>
+    <p>© 2026 Robert Huang 黃星翰</p>
+    <p class="privacy">本站用 GoatCounter 計算匿名瀏覽人次：不使用 Cookie、不儲存 IP、不追蹤個人。</p>
+  </div>
+</footer>
+<script src="../../../js/site.js"></script>
+<script src="../../../js/resonate.js"></script>
+<!-- 瀏覽人次統計（GoatCounter，2026-10-22 起，代碼 lsa711）：不用 Cookie、不存 IP；後台 https://lsa711.goatcounter.com
+     寫 https:// 而不是 //：在本機直接打開檔案時才不會去找本機路徑而報錯（本機預覽本來就不計數） -->
+<!-- 同一頁有「…/cybertron」和「…/cybertron/index.html」兩種網址，GoatCounter 會拆成兩行算；統一去掉 index.html（2026-11-02） -->
+<script>window.goatcounter = {path: function(p) { return p.replace(/\/index\.html(?=$|\?)/, '') || '/'; }};</script>
+<script data-goatcounter="https://lsa711.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
