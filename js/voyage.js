@@ -8,7 +8,8 @@
   if (!root) return;
   var $ = function (s) { return root.querySelector(s); };
   var form = $('.voy-start'), input = $('#voy-q'), stage = $('.voy-stage'), cv = $('canvas');
-  var hud = $('.voy-hud'), toast = $('.voy-toast'), result = $('.voy-result'), pauseBtn = $('.voy-pause');
+  // 起飛前的說明也用 .voy-toast，所以只抓遊戲畫面下方那一個
+  var hud = $('.voy-hud'), toast = $('.voy-stage .voy-toast'), result = $('.voy-result'), pauseBtn = $('.voy-pause');
   var ctx = cv.getContext('2d');
   var SHIP = new Image(); SHIP.src = root.getAttribute('data-ship');
   var FLIGHT = 60, SIGNALS = 8;            // 一趟 60 秒、沿途 8 則訊號
@@ -58,8 +59,16 @@
     });
   }
 
-  function say(html) {
-    toast.innerHTML = html;
+  // 艦內廣播：機長雙宇報航行狀態，座艙長子琦對乘客說話（Robert 2026-11-07 確認台詞與分工）
+  var CREW = { julian: ['機長 雙宇', root.getAttribute('data-julian')], ginni: ['座艙長 子琦', root.getAttribute('data-ginni')] };
+  function comm(who, html) {
+    var c = CREW[who];
+    return '<span class="voy-comm voy-comm-' + who + '"><img src="' + c[1] + '" width="40" height="40" alt="">' +
+      '<span><span class="voy-who">' + c[0] + '</span>' + html + '</span></span>';
+  }
+  function say(who, html) {
+    toast.innerHTML = who ? comm(who, html) : html;
+    if (s) s.saidAt = s.t;
     toast.classList.remove('is-on'); void toast.offsetWidth; toast.classList.add('is-on');
   }
 
@@ -85,8 +94,10 @@
       if (st.y > H) { st.y -= H; st.x = Math.random() * W; }
     });
 
-    if (warp() && !s.warpShown) { s.warpShown = true; say('<span class="log">MODE</span> 離開地球重力井，曲速泡展開'); }
-    if (s.t >= WARP_OFF && !s.exitShown) { s.exitShown = true; say('<span class="log">MODE</span> 抵達曲速邊界（約 3 AU），解除曲速，三環點火減速'); }
+    if (warp() && !s.warpShown) { s.warpShown = true; say('julian', '離開地球重力井，曲速泡展開。目標 LSA-711，38 光年。'); }
+    if (s.t >= (WARP_ON + WARP_OFF) / 2 && !s.halfShown) { s.halfShown = true; if (s.t - s.saidAt > 2) say('julian', '航程過半，剩下 19 光年。'); }
+    if (s.t >= WARP_OFF && !s.exitShown) { s.exitShown = true; say('julian', '抵達曲速邊界，解除曲速。三環點火，開始減速。'); }
+    if (s.t >= WARP_OFF + 3.5 && !s.sunShown) { s.sunShown = true; say('ginni', '你看，白羽和金羽！'); }
 
     // 雜訊：撞到不會結束航程，只會減速 1 秒（LSA 不是在比誰比較厲害）
     if (s.t > s.nextNoise && s.t < WARP_OFF - 2) {
@@ -98,6 +109,8 @@
       n.y += 260 * sp * dt + 40 * dt;
       if (!n.done && n.y + n.h > shipY - 26 && n.y < shipY + 26 && s.x + 7 > n.x && s.x - 7 < n.x + n.w) {
         n.done = true; s.hit = 1; s.slow = 0.45;
+        // 剛接到訊號時不要馬上蓋掉那則訊號的標題
+        if (s.t - s.saidAt > 2.5) say('ginni', '哎呀，被雜訊擋到了，等一下就好～');
       }
     });
     s.noise = s.noise.filter(function (n) { return n.y < H + 40; });
@@ -110,7 +123,7 @@
       if (dx * dx + dy * dy < 30 * 30) {
         g.taken = true; s.got.push(g.id);
         var d = window.LSA_FINDER.docs[g.id];
-        say('<span class="log">SIGNAL ' + s.got.length + '</span> ' + esc(d.t) + (d.m ? '<br><span class="voy-mood">適合：' + esc(d.m) + '</span>' : ''));
+        say('ginni', '收到一則訊號<span class="log"> · SIGNAL ' + s.got.length + '</span>：' + esc(d.t) + (d.m ? '<br><span class="voy-mood">適合：' + esc(d.m) + '</span>' : ''));
       }
     });
 
@@ -235,6 +248,7 @@
     stage.hidden = true;
     var n = s.got.length;
     result.innerHTML = '<p class="log">ARRIVED · LSA-711 軌道站</p><h2>抵達 LSA-711</h2>' +
+      '<p class="voy-toast">' + comm('julian', '抵達 LSA-711 軌道站。') + '</p>' +
       '<p>38 光年，設定上約 7 天的航程。' + (n ? '這趟你接收了 ' + n + ' / ' + SIGNALS + ' 則傳訊：' : '這趟的訊號都擦身而過了。') + '</p>' +
       (n ? list(s.got) : '') +
       '<div class="actions"><button type="button" class="btn primary voy-again">再飛一次</button>' +
@@ -266,16 +280,20 @@
     var top = stage.getBoundingClientRect().top + window.pageYOffset - 72;
     window.scrollTo(0, Math.max(0, top));
     toast.innerHTML = ''; pauseBtn.textContent = '暫停'; pauseBtn.setAttribute('aria-pressed', 'false');
-    say('<span class="log">DEPART</span> 從地球軌道上的 The Loop 出港，常規模式');
+    s.saidAt = -9;
+    say('julian', '已脫離 The Loop，常規模式出港。');
     if (!raf) raf = requestAnimationFrame(loop);
     cv.focus();
   }
 
-  form.addEventListener('submit', function (ev) {
-    ev.preventDefault();
+  // 不用 <form> 送出：沒有英文版的頁面按 English 會走 Google 翻譯（translate.goog），它會擋下所有表單（2026-11-07）。
+  // 改成一般按鈕＋在輸入框按 Enter（注音選字中的 Enter 不算）
+  function start() {
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     launch(input.value.trim(), !reduce);
-  });
+  }
+  form.querySelector('.actions button').addEventListener('click', start);
+  input.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' && !ev.isComposing) { ev.preventDefault(); start(); } });
 
   // 操作：滑鼠移動或手指拖曳 → 船跟著左右；鍵盤 ← → A D；空白鍵暫停
   function pointer(ev) {

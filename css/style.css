@@ -908,6 +908,14 @@ button.btn.primary { background: var(--accent); }
 .voyage canvas { display: block; width: 100%; border-radius: 8px; touch-action: none; cursor: crosshair; background: #0b0d10; }
 .voyage canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .voy-toast { min-height: 3.2em; margin: 10px 0 0; font-size: .95rem; }
+/* 艦內廣播：頭像＋職稱＋一句話；顏色跟網站對話頁一樣（子琦橘、雙宇青），只用在邊線，文字維持一般色 */
+.voy-comm { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-left: 3px solid var(--rule); background: var(--surface); border-radius: 4px; }
+.voy-comm-ginni { border-left-color: var(--accent); }
+.voy-comm-julian { border-left-color: var(--data); }
+.voy-comm img { width: 40px; height: 40px; border-radius: 50%; flex: none; object-fit: cover; }
+.voy-who { display: block; font-size: .78rem; color: var(--muted); }
+.voy-brief { display: grid; gap: 0; margin-bottom: 8px; }
+.voy-brief .voy-toast { min-height: 0; margin: 0 0 8px; }
 .voy-toast .log { color: var(--data); margin-right: 6px; }
 .voy-mood { color: var(--muted); font-size: .85rem; }
 .voy-result h2 { margin: 4px 0 8px; outline: none; }

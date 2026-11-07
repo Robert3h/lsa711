@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>38 光年航程｜星羽號</title>
-<meta name="robots" content="noindex">
 <meta name="description" content="駕駛星羽號從 The Loop 飛往 LSA-711，沿途接收真的傳訊。">
 <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
 <link rel="icon" href="../../../favicon-32.png" sizes="32x32" type="image/png">
@@ -44,19 +43,23 @@
 <div class="wrap">
   <header class="page-head">
     <nav class="crumbs log" aria-label="目前位置"><ol><li class="crumb-menu"><a href="../../../lsa/index.html">LSA</a><button type="button" class="crumb-toggle" aria-expanded="false" aria-label="寫作系統的其他頁面">▾</button><ul class="crumb-list" hidden><li><a href="../../../lsa/index.html">寫作系統首頁</a></li><li><a href="../../../lsa/archive/index.html">全部傳訊</a></li><li><a href="../../../lsa/cybertron/index.html">賽博創界 設定集</a></li><li><a href="../../../lsa/lab/index.html">即將上映：小遊戲</a></li><li><a href="../../../lsa/toolkit/index.html">帶走五層提問</a></li></ul></li><li><a href="../../../lsa/lab/index.html">即將上映</a></li><li><span class="crumb-here" aria-current="page">05 38 光年航程</span></li></ol></nav>
-    <p class="log">05 / 試作中</p>
+    <p class="log">05 / 試映中</p>
     <h1>38 光年航程</h1>
     <p class="sub">駕駛星羽號，從地球軌道上的 The Loop 出發，曲速飛越 38 光年，抵達雙星照亮的 LSA-711。沿途接收青色的訊號，每一則都是一篇真的傳訊；灰色方塊是雜訊，撞到只會讓船慢一下。一趟約 1 分鐘。</p>
   </header>
-  <div class="voyage" data-ship="../../../assets/ship-progress.png">
+  <div class="voyage" data-ship="../../../assets/ship-progress.png" data-julian="../../../assets/lab/avatar-julian.jpg" data-ginni="../../../assets/lab/avatar-ginni.jpg">
     <noscript><p>這個小遊戲需要開啟 JavaScript 才能玩。也可以直接看<a href="../../archive/index.html">全部傳訊</a>。</p></noscript>
-    <form class="voy-start" action="#">
+    <div class="voy-start">
+      <div class="voy-brief">
+        <p class="voy-toast"><span class="voy-comm voy-comm-julian"><img src="../../../assets/lab/avatar-julian.jpg" width="40" height="40" alt=""><span><span class="voy-who">機長 雙宇</span>青色圓圈是訊號，每一顆都是一篇真的傳訊。靠近就能接收。</span></span></p>
+        <p class="voy-toast"><span class="voy-comm voy-comm-ginni"><img src="../../../assets/lab/avatar-ginni.jpg" width="40" height="40" alt=""><span><span class="voy-who">座艙長 子琦</span>灰色方塊是雜訊，撞到只會讓船慢一下下，不用緊張啦～</span></span></p>
+      </div>
       <label for="voy-q">起飛前，用一句話說說你最近卡在什麼<span class="opt">（可以留白）</span></label>
       <input id="voy-q" type="text" maxlength="200" autocomplete="off" placeholder="例：用 AI 寫作很心虛">
       <p class="voy-note">有寫的話，航線會優先排進比較接近的訊號。你打的字只在這台裝置上比對，不會送出。</p>
       <p class="voy-note">操作：電腦用滑鼠或 ← →（A／D），空白鍵暫停；手機用手指在畫面上左右滑。沒有音效。</p>
-      <div class="actions"><button class="btn primary" type="submit">起飛</button></div>
-    </form>
+      <div class="actions"><button class="btn primary" type="button">起飛</button></div>
+    </div>
     <div class="voy-stage" hidden>
       <div class="voy-bar"><p class="log voy-hud" aria-hidden="true"></p><button type="button" class="btn voy-pause" aria-pressed="false">暫停</button></div>
       <canvas tabindex="0" aria-label="星羽號航行畫面。左右方向鍵移動，空白鍵暫停。"></canvas>

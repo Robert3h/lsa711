@@ -81,8 +81,11 @@
       (d.m ? '<span class="finder-mood">適合：' + esc(d.m) + '</span>' : '') + why + '</li>';
   }
 
-  form.addEventListener('submit', function (ev) {
-    ev.preventDefault();
+  // 不用 <form> 送出：全部傳訊頁按 English 會走 Google 翻譯（translate.goog），它會擋下所有表單（2026-11-07）。
+  // 改成一般按鈕＋在輸入框按 Enter（注音選字中的 Enter 不算）
+  form.querySelector('button').addEventListener('click', run);
+  input.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' && !ev.isComposing) { ev.preventDefault(); run(); } });
+  function run() {
     var q = input.value.trim();
     if (!q) { show('<p>先寫一句話再按「找 3 篇」。</p>'); input.focus(); return; }
     load(function () {
@@ -110,5 +113,5 @@
         return item(F.docs[i], words(q, r.hits[i]));
       }).join('') + '</ol>');
     });
-  });
+  }
 })();

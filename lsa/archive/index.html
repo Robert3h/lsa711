@@ -51,11 +51,11 @@
   <section class="finder" aria-labelledby="finder-h">
     <h2 id="finder-h">不知道從哪篇開始？</h2>
     <p>用一句話說說你最近卡在什麼，依文字相似度找 3 篇給你。</p>
-    <form class="finder-form" action="#" data-src="finder-data.js">
+    <div class="finder-form" role="search" data-src="finder-data.js">
       <label class="visually-hidden" for="finder-q">你最近卡在什麼</label>
       <input id="finder-q" type="text" maxlength="200" autocomplete="off" placeholder="例：用 AI 寫作很心虛">
-      <button class="btn primary" type="submit">找 3 篇</button>
-    </form>
+      <button class="btn primary" type="button">找 3 篇</button>
+    </div>
     <p class="finder-note">你打的字只在這台裝置上比對，不會送出，也不會被記錄。</p>
     <div class="finder-out" aria-live="polite"></div>
   </section>
