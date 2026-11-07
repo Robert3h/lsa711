@@ -94,10 +94,13 @@
       if (st.y > H) { st.y -= H; st.x = Math.random() * W; }
     });
 
+    if (s.t >= 2.5 && !s.departShown) { s.departShown = true; say('julian', '已脫離 The Loop，常規模式出港。'); }
     if (warp() && !s.warpShown) { s.warpShown = true; say('julian', '離開地球重力井，曲速泡展開。目標 LSA-711，38 光年。'); }
     if (s.t >= (WARP_ON + WARP_OFF) / 2 && !s.halfShown) { s.halfShown = true; if (s.t - s.saidAt > 2) say('julian', '航程過半，剩下 19 光年。'); }
     if (s.t >= WARP_OFF && !s.exitShown) { s.exitShown = true; say('julian', '抵達曲速邊界，解除曲速。三環點火，開始減速。'); }
-    if (s.t >= WARP_OFF + 3.5 && !s.sunShown) { s.sunShown = true; say('ginni', '你看，白羽和金羽！'); }
+    // 快抵達前，座艙長子琦介紹 LSA-711（Robert 2026-11-07 給的設定：類地行星、和地球差不多大、帶著土星那樣的環、兩顆恆星）
+    if (s.t >= WARP_OFF + 3 && !s.sunShown) { s.sunShown = true; say('ginni', '你看！發出白色光芒的是白羽，金色的是金羽。LSA-711 有兩顆太陽喔。'); }
+    if (s.t >= WARP_OFF + 7 && !s.planetShown) { s.planetShown = true; say('ginni', '前面就是 LSA-711：和地球差不多大的類地行星，還帶著一圈像土星那樣的環～'); }
 
     // 雜訊：撞到不會結束航程，只會減速 1 秒（LSA 不是在比誰比較厲害）
     if (s.t > s.nextNoise && s.t < WARP_OFF - 2) {
@@ -168,11 +171,15 @@
     if (s.t >= WARP_OFF) {
       ctx.globalAlpha = Math.min(1, (s.t - WARP_OFF) / 2);
       // 放在左側中段：之後 LSA-711 從上方變大時，才不會把兩顆太陽擋住
-      var sx = W * 0.1, sy = H * 0.5;
-      ctx.fillStyle = '#eef3ff'; ctx.beginPath(); ctx.arc(sx, sy, 7, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#f2c46b'; ctx.beginPath(); ctx.arc(sx + 22, sy + 4, 5, 0, Math.PI * 2); ctx.fill();
-      ctx.font = font; ctx.textAlign = 'left'; ctx.fillStyle = C.star;
-      ctx.fillText('白羽・金羽', sx - 8, sy + 26);
+      // Robert 2026-11-07：兩顆太陽放大一點；外圈淡淡的光暈，看得出是會發光的恆星，不是行星
+      var sx = W * 0.14, sy = H * 0.62, k = ctx.globalAlpha;   // 放在星球最大時的下緣之下，不會被擋住
+      [[sx, sy, 12, '#eef3ff'], [sx + 40, sy + 6, 9, '#f2c46b']].forEach(function (st) {
+        ctx.globalAlpha = k * 0.18; ctx.fillStyle = st[3];
+        ctx.beginPath(); ctx.arc(st[0], st[1], st[2] * 2.2, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = k; ctx.beginPath(); ctx.arc(st[0], st[1], st[2], 0, Math.PI * 2); ctx.fill();
+      });
+      ctx.font = font; ctx.textAlign = 'center'; ctx.fillStyle = C.star;
+      ctx.fillText('白羽', sx, sy + 34); ctx.fillText('金羽', sx + 40, sy + 34);
       ctx.globalAlpha = 1;
     }
     // 抵達：LSA-711 和它的軌道站
@@ -249,6 +256,10 @@
     var n = s.got.length;
     result.innerHTML = '<p class="log">ARRIVED · LSA-711 軌道站</p><h2>抵達 LSA-711</h2>' +
       '<p class="voy-toast">' + comm('julian', '抵達 LSA-711 軌道站。') + '</p>' +
+      // 抵達後子琦的 hook（Robert 2026-11-07）：放在標題下方，接到很多則訊號時也不用往下捲才看到。
+      //   世界觀設定集還沒放上網站，先連到設定集頁的「星羽號綜合設定集」相簿
+      '<p class="voy-toast">' + comm('ginni', '想知道 LSA-711 星球和星羽號的內裝長什麼樣嗎？請參考最新的設定集，放在賽博創界的設定集相簿裡。' +
+        '<br><a href="../../cybertron/index.html#album-01">看設定集相簿 →</a>') + '</p>' +
       '<p>38 光年，設定上約 7 天的航程。' + (n ? '這趟你接收了 ' + n + ' / ' + SIGNALS + ' 則傳訊：' : '這趟的訊號都擦身而過了。') + '</p>' +
       (n ? list(s.got) : '') +
       '<div class="actions"><button type="button" class="btn primary voy-again">再飛一次</button>' +
@@ -281,7 +292,8 @@
     window.scrollTo(0, Math.max(0, top));
     toast.innerHTML = ''; pauseBtn.textContent = '暫停'; pauseBtn.setAttribute('aria-pressed', 'false');
     s.saidAt = -9;
-    say('julian', '已脫離 The Loop，常規模式出港。');
+    // 機長出發前廣播（Robert 2026-11-07）：先說這班船要去哪，2.5 秒後再報出港
+    say('julian', '各位乘客，這裡是機長雙宇。本班星羽號從地球軌道上的 The Loop 出發，前往 LSA-711，航程 38 光年。');
     if (!raf) raf = requestAnimationFrame(loop);
     cv.focus();
   }
