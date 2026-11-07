@@ -863,6 +863,31 @@ button.btn.primary { background: var(--accent); }
 .prose .fig-link { margin: 1.2em 0; font-weight: 600; }
 .prose .yt-note { font-size: 0.85em; color: var(--muted); }
 
+/* ---------- 全部傳訊：找 3 篇（2026-11-07）：一個輸入框＋一顆按鈕，結果是普通的文字清單，不做卡片 ---------- */
+.finder { max-width: var(--measure); margin: 8px 0 32px; padding: 18px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.finder h2 { font-size: 1.1rem; margin: 0 0 4px; }
+.finder > p { margin: 0 0 12px; color: var(--muted); }
+.finder-form { display: flex; gap: 8px; }
+.finder-form input {
+  flex: 1; min-width: 0; min-height: 44px; font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px;
+}
+.finder-form input::placeholder { color: var(--muted); opacity: .8; }
+.finder-form input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.finder-form .btn { min-height: 44px; white-space: nowrap; cursor: pointer; font: inherit; }
+.finder .finder-note { font-size: .8rem; margin: 8px 0 0; }
+.finder-out:empty { display: none; }
+.finder-out { margin-top: 16px; }
+.finder-out > p { margin: 0 0 8px; }
+.finder-out ol { margin: 0; padding-left: 1.4em; display: grid; gap: 14px; }
+.finder-out li > a { font-weight: 600; }
+.finder-out li > span { display: block; font-size: .85rem; }
+.finder-mood, .finder-why { color: var(--muted); }
+.finder-out ul.finder-moods { margin: 0; padding-left: 1.2em; display: grid; gap: 12px; }
+.finder-moods li > a { font-weight: 600; }
+.finder-moods li > span { display: block; font-size: .85rem; }
+.finder-more { margin-top: 14px; min-height: 44px; cursor: pointer; font: inherit; }
+
 /* ---------- 傳訊給我（2026-10-29） ---------- */
 .transmit { display: grid; gap: 6px; max-width: var(--measure); margin: 8px 0 40px; }
 .transmit[hidden] { display: none; }   /* display: grid 會蓋過 hidden，送出成功後表單要真的藏起來 */

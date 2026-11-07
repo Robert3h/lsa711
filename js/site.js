@@ -174,7 +174,8 @@
     if (!header || !main) return;
     var heads = Array.prototype.filter.call(main.querySelectorAll('h2'), function (h) {
       // 文末的訂閱框、頁尾、隱藏標題不算段落；小說試讀的章名也不算（閱讀模式自己有目錄，翻頁不是往下捲）
-      return !h.closest('aside, footer, .visually-hidden, [hidden], .reader') && h.textContent.trim();
+      // 全部傳訊的「找 3 篇」是工具，不是月份段落（2026-11-07）
+      return !h.closest('aside, footer, .visually-hidden, [hidden], .reader, .finder') && h.textContent.trim();
     });
     if (heads.length < 3) return;
     heads.forEach(function (h, i) { if (!h.id) h.id = 'sec-' + (i + 1); });
