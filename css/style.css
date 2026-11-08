@@ -926,6 +926,51 @@ button.btn.primary { background: var(--accent); }
   .voy-toast.is-on { animation: t-delta-in .4s ease both; }
 }
 
+/* ---------- 常見問題 /qa/（2026-11-08）：分類是圓角矩形（全部傳訊是膠囊）；卡片點開變成聊天 ---------- */
+.qa-filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 20px; }
+.qa-filter {
+  font: inherit; font-size: 0.95rem; min-height: 44px; padding: 8px 14px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--surface); color: var(--ink);
+}
+.qa-filter:hover { border-color: var(--muted); }
+.qa-filter[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.qa-filter[aria-pressed="true"] .log { color: inherit; }
+.qa-filter:focus-visible, .qa-card summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.qa-list { list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 14px; }
+@media (min-width: 760px) { .qa-list { grid-template-columns: 1fr 1fr; } .qa-item:has(details[open]) { grid-column: 1 / -1; } }
+.qa-item[hidden] { display: none; }
+.qa-card { border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); height: 100%; }
+.qa-card summary { list-style: none; cursor: pointer; padding: 16px 44px 16px 16px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; position: relative; min-height: 44px; }
+.qa-card summary::-webkit-details-marker { display: none; }
+.qa-card summary::after { content: "＋"; position: absolute; right: 16px; top: 16px; color: var(--accent); font-weight: 700; }
+.qa-card[open] summary::after { content: "－"; }
+.qa-card summary:hover { background: color-mix(in srgb, var(--surface) 70%, var(--rule)); border-radius: 12px; }
+.qa-emoji { grid-row: span 2; font-size: 1.5rem; line-height: 1.2; }
+.qa-q { font-weight: 700; line-height: 1.5; }
+.qa-peek { color: var(--muted); font-size: 0.88rem; }
+/* 有滑鼠的裝置：一句話預覽平常收起來，滑上去或鍵盤選到才浮出（像遊戲卡片）；手機沒有 hover，一律直接顯示 */
+@media (hover: hover) {
+  .qa-card:not([open]) .qa-peek { max-height: 0; opacity: 0; overflow: hidden; transition: max-height .2s ease, opacity .2s ease; }
+  .qa-card:not([open]) summary:hover .qa-peek, .qa-card:not([open]) summary:focus-visible .qa-peek { max-height: 3em; opacity: 1; }
+}
+.qa-chat { padding: 4px 16px 18px; display: grid; gap: 12px; }
+.qa-who { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+.qa-me { justify-self: end; max-width: 85%; margin: 0; padding: 10px 14px; border-radius: 14px 14px 4px 14px; background: var(--bg); border: 1px solid var(--rule); }
+.qa-crew { display: flex; gap: 10px; align-items: flex-start; max-width: 92%; }
+.qa-crew img { width: 40px; height: 40px; border-radius: 50%; flex: none; object-fit: cover; }
+.qa-crew > div { border-left: 3px solid var(--rule); padding-left: 10px; }
+.qa-crew-ginni > div { border-left-color: var(--accent); }
+.qa-crew-julian > div { border-left-color: var(--data); }
+.qa-crew blockquote { margin: 0; }
+.qa-bubble { margin: 6px 0 0; padding: 8px 12px; border-radius: 4px 14px 14px 14px; background: var(--bg); line-height: 1.7; }
+.qa-crew blockquote .qa-bubble { border: 1px solid var(--rule); }
+.qa-more { margin: 10px 0 0; font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.qa-more .qa-link { color: var(--muted); }
+.qa-foot { color: var(--muted); }
+.first-qa { margin: 12px 0 0; }
+/* 「常見問題」只在電腦版導覽列出現；手機頁首放不下，改由頁尾進入 */
+@media (max-width: 759px) { .site-nav .nav-wide { display: none; } }
+
 /* ---------- 傳訊給我（2026-10-29） ---------- */
 .transmit { display: grid; gap: 6px; max-width: var(--measure); margin: 8px 0 40px; }
 .transmit[hidden] { display: none; }   /* display: grid 會蓋過 hidden，送出成功後表單要真的藏起來 */
