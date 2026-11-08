@@ -458,6 +458,8 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .prose .line { margin: 0; padding: 0.15em 0 0.15em 14px; border-left: 3px solid var(--rule); }
 .prose .line-ginni { border-left-color: var(--accent); }
 .prose .line-julian { border-left-color: var(--data); }
+.prose .said-ginni { margin: 0 0 1.2em; }   /* 一般文章裡用子琦色條標記的段落：保留段落間距（2026-11-08 LSA_013 開頭引言） */
+.nowrap { white-space: nowrap; }            /* 英文片語不從中間斷行（2026-11-08 Best or Nothing） */
 .prose .stage { color: var(--muted); font-size: 0.95rem; }
 .prose .line + figure, .prose .line + .note { margin-top: 1.8em; }
 .prose .callout { list-style: none; padding: 0; }
@@ -494,6 +496,10 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .slides-bar button:hover { background: var(--surface); }
 .slides-bar button:disabled { border-color: var(--rule); color: var(--muted); cursor: default; }
 .slides-bar .log { font-size: 0.9rem; min-width: 4.5em; text-align: center; }
+/* 16:9 導讀投影片（2026-11-08 LSA_013）：放在文章最前面，圖撐滿內文寬；上方一行提示可以滑動 */
+.slides.is-wide { margin: 0 0 2.4em; }
+.slides.is-wide .slides-track img { max-width: 100%; border: 1px solid var(--rule); -webkit-user-drag: none; user-select: none; }
+.slides-hint { margin: 0 0 10px; font-size: 0.92rem; color: var(--muted); }
 
 .sign { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule); }
 .sign p { margin: 0 0 4px; }
