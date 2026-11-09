@@ -123,14 +123,19 @@
       current = Math.round(track.scrollLeft / track.clientWidth);
       count.textContent = (current + 1) + ' / ' + items.length;
       prev.disabled = current === 0;
-      next.disabled = current === items.length - 1;
+      // 最後一頁的 → 改成「回第一頁」（Robert 2026-11-09）：看完想再從頭看，不用一路往回滑；
+      // 第一頁的 ← 仍然停用，因為導讀有開頭有結尾，從封面跳到最後一頁會打亂順序
+      var last = current === items.length - 1;
+      next.textContent = last ? '↺' : '→';
+      next.setAttribute('aria-label', last ? '回第一頁' : '下一頁');
+      next.title = last ? '回第一頁' : '';
     }
     function go(i) {
       i = Math.max(0, Math.min(items.length - 1, i));
       track.scrollTo({ left: i * track.clientWidth });
     }
     prev.addEventListener('click', function () { go(current - 1); });
-    next.addEventListener('click', function () { go(current + 1); });
+    next.addEventListener('click', function () { go(current === items.length - 1 ? 0 : current + 1); });
     track.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
