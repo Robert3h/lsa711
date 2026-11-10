@@ -500,6 +500,29 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .slides.is-wide { margin: 0 0 2.4em; }
 .slides.is-wide .slides-track img { max-width: 100%; border: 1px solid var(--rule); -webkit-user-drag: none; user-select: none; }
 .slides-hint { margin: 0 0 10px; font-size: 0.92rem; color: var(--muted); }
+/* 全螢幕看幻燈片（Robert 2026-11-10：投影片字小，滿版才看得清楚）。
+   iPhone 的 Safari 不支援把一般區塊切成真正的全螢幕，所以一律先用 CSS 把幻燈片蓋滿整個畫面；
+   支援真全螢幕的電腦和 Android 再加上瀏覽器的全螢幕，把網址列也藏起來。 */
+.slides-track img { cursor: zoom-in; }
+.slides-bar .slides-full { width: auto; padding: 0 16px; border-radius: 22px; font-size: 0.92rem; }
+.slides.is-full {
+  position: fixed; inset: 0; z-index: 1000; margin: 0; background: #000;
+  display: flex; flex-direction: column;
+  padding: max(8px, env(safe-area-inset-top)) 0 max(10px, env(safe-area-inset-bottom));
+}
+.slides.is-full .slides-hint, .slides.is-full .caption { display: none; }
+.slides.is-full .slides-track { flex: 1 1 auto; min-height: 0; border-radius: 0; outline: none; }  /* 滿版時整個畫面就是焦點所在，外框只會變成多餘的橘線 */
+.slides.is-full .slides-track figure { display: flex; align-items: center; justify-content: center; height: 100%; }
+.slides.is-full .slides-track img {
+  width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain;
+  margin: 0; border: 0; border-radius: 0; cursor: default;
+}
+/* 黑底上固定用白字，不跟深淺色主題走（淺色主題的深色字放在黑底上會看不見） */
+.slides.is-full .slides-bar { margin-top: 8px; color: #fff; }
+.slides.is-full .slides-bar button { color: #fff; border-color: rgba(255, 255, 255, 0.6); }
+.slides.is-full .slides-bar button:hover { background: rgba(255, 255, 255, 0.12); }
+.slides.is-full .slides-bar button:disabled { color: rgba(255, 255, 255, 0.35); border-color: rgba(255, 255, 255, 0.25); }
+html.slides-lock, html.slides-lock body { overflow: hidden; }
 
 .sign { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule); }
 .sign p { margin: 0 0 4px; }

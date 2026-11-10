@@ -144,8 +144,48 @@
     track.addEventListener('scroll', function () {
       cancelAnimationFrame(raf); raf = requestAnimationFrame(update);
     });
-    window.addEventListener('resize', update);
+    window.addEventListener('resize', function () {
+      // 切換全螢幕、手機轉橫向時寬度會變：先停在原本那一頁，不然會跑到兩頁中間
+      track.style.scrollBehavior = 'auto';
+      track.scrollLeft = current * track.clientWidth;
+      track.style.scrollBehavior = '';
+      update();
+    });
     update();
+
+    // 全螢幕（Robert 2026-11-10）：按鈕由這裡加上去，沒有 JS 時不會出現一個按了沒反應的按鈕。
+    // 點圖片也能打開，因為讀者看不清楚時，第一個反應通常是點那張圖。
+    var full = document.createElement('button');
+    full.type = 'button';
+    full.className = 'slides-full';
+    var bar = box.querySelector('.slides-bar');
+    bar.appendChild(full);
+    function isFull() { return box.classList.contains('is-full'); }
+    function label(on) {
+      full.textContent = on ? '✕ 關閉' : '⛶ 全螢幕';
+      full.setAttribute('aria-label', on ? '關閉全螢幕' : '全螢幕看幻燈片');
+      full.setAttribute('aria-pressed', String(on));
+    }
+    function setFull(on) {
+      var keep = current;
+      box.classList.toggle('is-full', on);
+      document.documentElement.classList.toggle('slides-lock', on);
+      label(on);
+      if (on && box.requestFullscreen && !document.fullscreenElement) {
+        box.requestFullscreen().catch(function () {});   // 不支援或被擋時，CSS 的滿版照樣有效
+      } else if (!on && document.fullscreenElement === box) {
+        document.exitFullscreen().catch(function () {});
+      }
+      requestAnimationFrame(function () { go(keep); track.focus({ preventScroll: true }); });
+    }
+    label(false);
+    full.addEventListener('click', function () { setFull(!isFull()); });
+    track.addEventListener('click', function (e) { if (e.target.tagName === 'IMG' && !isFull()) setFull(true); });
+    box.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isFull()) setFull(false); });
+    // 讀者用瀏覽器自己的方式離開全螢幕（Esc、手機返回鍵）時，滿版也一起關掉
+    document.addEventListener('fullscreenchange', function () {
+      if (!document.fullscreenElement && isFull()) setFull(false);
+    });
   });
 
   // 麵包屑「LSA ▾」的同層頁面選單：點 ▾ 開關（手機也能用）；有滑鼠的電腦，移上去就打開、移開稍等一下才關，
