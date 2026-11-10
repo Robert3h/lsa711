@@ -118,6 +118,8 @@
 .sm-card-title.is-title { font-weight: 700; font-size: 1.08rem; }
 .sm-card-go { margin: 0; }
 .sm-card-go a { display: inline-block; padding: 6px 0; }
+/* 全站 ↗ 代表「外站」；本站文章雖然也開新分頁，但不是離開網站，不掛 ↗（Robert 2026-11-10） */
+.sm-onsite[target="_blank"]::after { content: none; }
 .sm-zoomhint { display: none; margin: 0 0 10px; color: var(--muted); font-size: .9rem; }
 /* 全部傳訊頁的「清單／星海圖」切換（2026-11-10）：長得像分頁標籤，和下方圓角的艙房篩選鈕分開，才不會被當成同一組篩選 */
 .arc-view { display: flex; gap: 4px; margin: 28px 0 14px; border-bottom: 1px solid var(--rule); }
@@ -189,9 +191,9 @@
     else { mood.className = 'sm-mood none'; mood.textContent = '這則還沒有寫「適合什麼情境」。'; }
     go.innerHTML = '';
     if (s.h) {
-      // 本站、外站都另開新分頁（Robert 2026-11-10）；箭頭 ↗ 由 style.css 對 target="_blank" 自動加上
+      // 本站、外站都另開新分頁（Robert 2026-11-10）；外站的 ↗ 由 style.css 自動加上，本站用 sm-onsite 拿掉 ↗、改用 →
       var a = document.createElement('a'); a.href = s.h; a.target = '_blank'; a.rel = 'noopener';
-      a.textContent = s.o ? '本站閱讀' : '在 Vocus 閱讀';
+      if (s.o) { a.className = 'sm-onsite'; a.textContent = '本站閱讀 →'; } else { a.textContent = '在 Vocus 閱讀'; }
       go.appendChild(a); go.style.color = '';
       if (el === pin) { var p = document.createElement('p'); p.className = 'sm-hint'; p.textContent = '（再點一次這顆星，也會在新分頁打開）'; go.appendChild(p); }
     } else { go.textContent = '這則還沒有線上連結。'; go.style.color = 'var(--muted)'; }
