@@ -909,6 +909,8 @@ button.btn.primary { background: var(--accent); }
 /* 文章裡的 YouTube 封面卡（插圖清單.csv，2026-10-28）：封面上已經寫「在 YouTube 觀看 →」，不再加外部連結的 ↗ */
 .prose .yt .video-card::after { content: none; }
 .prose .fig-link { margin: 1.2em 0; font-weight: 600; }
+/* 素材待補（2026-11-12）：只是告訴讀者「原文這裡有東西，本站還沒放」，不是內文，所以降低對比、不加粗 */
+.prose .fig-todo { font-weight: 400; font-size: 0.875rem; color: var(--muted); }
 .prose .yt-note { font-size: 0.85em; color: var(--muted); }
 
 /* ---------- 全部傳訊：找 3 篇（2026-11-07）：一個輸入框＋一顆按鈕，結果是普通的文字清單，不做卡片 ---------- */
