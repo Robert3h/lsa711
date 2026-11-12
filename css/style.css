@@ -741,6 +741,19 @@ button.btn.primary { background: var(--accent); }
 .album-soon span { font-family: var(--font-log); font-size: 0.8rem; letter-spacing: .1em; color: var(--muted); }
 .album-note { margin: 6px 0 0; font-size: 0.85rem; color: var(--muted); line-height: 1.6; overflow-wrap: anywhere; }   /* 長網址可以換行 */
 .album-target .album-cover { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* 網站導覽（2026-11-12）：一本相簿兩種比例。手機上兩欄太窄、兩顆按鈕會擠，所以導覽獨佔一整列——它也是第一次來的人該先看的那本 */
+@media (max-width: 759px) { .album-tour { grid-column: 1 / -1; } }
+.album-vers { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+.album-open.album-ver {
+  display: inline-flex; align-items: center; gap: 6px; width: auto; min-height: 44px; padding: 8px 14px;
+  border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); color: var(--ink);
+  font: inherit; font-size: 0.9rem; cursor: pointer;
+}
+.album-open.album-ver:hover, .album-open.album-ver:focus-visible { border-color: var(--accent); color: var(--accent); }
+/* 「建議」只出現在適合目前螢幕的那顆，並排到前面：手機直拿＝4:5，其他＝16:9（和 gallery.js 點封面的判斷一樣） */
+.ver-tag { display: none; font-family: var(--font-log); font-size: 0.75rem; padding: 1px 6px; border-radius: 3px; background: var(--accent); color: var(--on-accent); }
+@media (orientation: landscape) { .ver-wide { border-color: var(--accent); } .ver-wide .ver-tag { display: inline; } }
+@media (orientation: portrait) { .ver-tall { order: -1; border-color: var(--accent); } .ver-tall .ver-tag { display: inline; } }
 @media (prefers-reduced-motion: reduce) { .album-cover img { transition: none; } .album-open:hover .album-cover img { transform: none; } }
 
 /* 放大檢視 */

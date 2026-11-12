@@ -39,13 +39,25 @@
 
   // 相簿
   var EN_PAGE = (document.documentElement.lang || '').indexOf('en') === 0;
-  document.querySelectorAll('.album-open').forEach(function (b) {
-    var t = b.getAttribute('data-title');
-    var items = JSON.parse(b.getAttribute('data-album')).map(function (src, k) {
+  function albumItems(json, t) {
+    return JSON.parse(json).map(function (src, k) {
       // 英文版設定集（en.html）用英文報讀
       return { src: src, alt: EN_PAGE ? t + ', image ' + (k + 1) : t + ' 第 ' + (k + 1) + ' 張', cap: '' };
     });
-    b.addEventListener('click', function () { open(items, 0, t, b); });
+  }
+  // 網站導覽（2026-11-12）：封面同時帶 16:9 和 4:5 兩組，點下去時才看螢幕是直是橫，
+  // 讀者中途把手機轉橫，下一次點就會換成適合的那組；條件和 CSS 的 (orientation: portrait) 一樣
+  var PORTRAIT = window.matchMedia ? window.matchMedia('(orientation: portrait)') : null;
+  document.querySelectorAll('.album-open').forEach(function (b) {
+    var t = b.getAttribute('data-title');
+    var items = albumItems(b.getAttribute('data-album'), t);
+    var tallJson = b.getAttribute('data-album-tall');
+    var tt = b.getAttribute('data-title-tall');
+    var tall = tallJson ? albumItems(tallJson, tt) : null;
+    b.addEventListener('click', function () {
+      if (tall && PORTRAIT && PORTRAIT.matches) open(tall, 0, tt, b);
+      else open(items, 0, t, b);
+    });
   });
 
   box.querySelector('.lb-close').addEventListener('click', close);
