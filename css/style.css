@@ -763,8 +763,14 @@ button.btn.primary { background: var(--accent); }
 .lightbox img { max-width: 100%; max-height: calc(100vh - 140px); object-fit: contain; border-radius: 3px; }
 .lightbox figcaption { margin-top: 10px; color: #c9ced2; }
 .lightbox button { position: absolute; width: 48px; height: 48px; border-radius: 50%; border: 1px solid #555; background: rgba(20, 22, 25, .8); color: #eee; font-size: 1.2rem; cursor: pointer; }
-.lightbox button:hover { border-color: #d97757; color: #d97757; }
+.lightbox button:hover, .lightbox button:focus-visible { border-color: #d97757; color: #d97757; }
 .lb-close { top: 12px; right: 12px; }
+/* 全螢幕按鈕（2026-11-12）：字比較長，用膠囊形放左上角，和右上角的 ✕ 分開，不會誤按成關閉 */
+.lightbox .lb-full { top: 12px; left: 12px; width: auto; height: 44px; padding: 0 16px; border-radius: 22px; font-size: 0.9rem; }
+/* 全螢幕時拿掉 1100px 上限：螢幕多大，投影片就放多大 */
+.lightbox.is-full { background: #050608; }
+.lightbox.is-full figure { max-width: 100%; }
+.lightbox.is-full img { max-height: calc(100vh - 110px); }
 .lb-prev { left: 12px; top: 50%; transform: translateY(-50%); }
 .lb-next { right: 12px; top: 50%; transform: translateY(-50%); }
 @media (prefers-reduced-motion: reduce) { .gal-open img { transition: none; } .gal-open:hover img { transform: none; } }

@@ -8,6 +8,32 @@
   var img = box.querySelector('img');
   var cap = box.querySelector('figcaption');
   var list = [], i = 0, title = '', opener = null;
+  var EN = (document.documentElement.lang || '').indexOf('en') === 0;
+  var next = box.querySelector('.lb-next');
+
+  // 全螢幕（Robert 2026-11-12，比照文章幻燈片的「⛶ 全螢幕」）：檢視框本來就鋪滿瀏覽器視窗，
+  // 這顆按鈕再把網址列、分頁列也藏起來，投影片的字才夠大。
+  // 瀏覽器不支援（例如 iPhone 的 Safari）就不放按鈕：看起來能按、按了卻沒反應，比沒有按鈕更糟。
+  var full = null;
+  if (document.fullscreenEnabled && box.requestFullscreen) {
+    full = document.createElement('button');
+    full.type = 'button';
+    full.className = 'lb-full';
+    box.appendChild(full);
+    full.addEventListener('click', function () {
+      if (document.fullscreenElement === box) document.exitFullscreen().catch(function () {});
+      else box.requestFullscreen().catch(function () {});
+    });
+  }
+  function fullLabel() {
+    if (!full) return;
+    var on = document.fullscreenElement === box;
+    box.classList.toggle('is-full', on);
+    full.textContent = on ? (EN ? '✕ Exit full screen' : '✕ 離開全螢幕') : (EN ? '⛶ Full screen' : '⛶ 全螢幕');
+  }
+  // 不管是按鈕、Esc 還是手機返回鍵離開全螢幕，按鈕的字都跟著換回來
+  document.addEventListener('fullscreenchange', fullLabel);
+  fullLabel();
 
   function show(n) {
     i = (n + list.length) % list.length;
@@ -15,6 +41,12 @@
     img.src = it.src;
     img.alt = it.alt || '';
     cap.textContent = (title ? title + ' · ' : '') + (i + 1) + ' / ' + list.length + (it.cap ? ' · ' + it.cap : '');
+    // 最後一張的 → 改成 ↺（Robert 2026-11-12，比照幻燈片）：本來按下去就會繞回第一張，
+    // 但箭頭看不出來；換成 ↺ 讀者才知道「看完了，按這裡從頭再看」
+    var last = list.length > 1 && i === list.length - 1;
+    next.textContent = last ? '↺' : '→';
+    next.setAttribute('aria-label', last ? (EN ? 'Back to the first image' : '回第一張') : (EN ? 'Next image' : '下一張'));
+    next.title = last ? (EN ? 'Back to the first image' : '回第一張') : '';
   }
   function open(items, n, t, btn) {
     list = items; title = t || ''; opener = btn;
@@ -24,6 +56,7 @@
     box.querySelector('.lb-close').focus();
   }
   function close() {
+    if (document.fullscreenElement === box) document.exitFullscreen().catch(function () {});
     box.hidden = true;
     document.body.style.overflow = '';
     if (opener) opener.focus();
@@ -69,6 +102,7 @@
     // 焦點留在放大視窗裡：Tab 只在三顆按鈕之間繞，不會跑到背後的頁面（健檢 C4）
     if (e.key === 'Tab') {
       var f = [box.querySelector('.lb-close'), box.querySelector('.lb-prev'), box.querySelector('.lb-next')];
+      if (full) f.unshift(full);
       var k = f.indexOf(document.activeElement);
       e.preventDefault();
       f[(k + (e.shiftKey ? f.length - 1 : 1)) % f.length].focus();
