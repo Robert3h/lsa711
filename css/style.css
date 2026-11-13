@@ -439,9 +439,11 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 
 .prose { font-size: 18px; line-height: 1.95; }
 .prose p { margin: 0 0 1.1em; }
-/* Word 原稿裡的粗體與橘色字（2026-11-13）：顏色用主題的橘色，淺色主題會自動換成對比夠的深橘 */
+/* Word 原稿裡的粗體與橘色字（2026-11-13）：網站上改用青色，不用橘色。
+   Robert：橘色在全站代表「可以點」，重點字也用橘色會被當成連結；青色本來就是「數字與標記」的顏色，不會被誤認。
+   對比：深色 10.9、淺色 5.59（橘色只有 6.06、4.98） */
 .prose strong { color: var(--ink); }
-.prose .w-hi { color: var(--accent); }
+.prose .w-hi { color: var(--data); }
 /* 小標：上方留大空白、加分段記號，讓讀者一眼看出「換段落了」 */
 .prose h2 {
   font-size: 1.2rem; line-height: 1.5;
