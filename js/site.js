@@ -120,7 +120,8 @@
     var count = box.querySelector('.slides-count');
     var current = 0;
     function update() {
-      current = Math.round(track.scrollLeft / track.clientWidth);
+      // 藏起來的那一組（16:9／4:5 二選一）寬度是 0，不能拿來除，先當第一頁
+      current = track.clientWidth ? Math.round(track.scrollLeft / track.clientWidth) : 0;
       count.textContent = (current + 1) + ' / ' + items.length;
       prev.disabled = current === 0;
       // 最後一頁的 → 改成「回第一頁」（Robert 2026-11-09）：看完想再從頭看，不用一路往回滑；
@@ -209,6 +210,26 @@
       else unturn();
       if (!document.fullscreenElement && isFull()) setFull(false);
     });
+  });
+
+  // 同一組圖卡有 16:9 和 4:5 兩個版本（Robert 2026-11-13）：依讀者的螢幕先挑一組，讀者也可以自己切換。
+  // 判斷用「螢幕直拿還是橫放」，和網站導覽相簿（gallery.js）同一個條件：手機直拿看 4:5 字比較大，
+  // 電腦和橫放的手機看 16:9。不認瀏覽器名稱，因為同一個瀏覽器在手機和電腦上的畫面完全不同。
+  var PORTRAIT_PAIR = window.matchMedia ? window.matchMedia('(orientation: portrait)') : null;
+  document.querySelectorAll('.deck-pair').forEach(function (pair) {
+    var pick = pair.querySelector('.deck-pick');
+    var btns = pick.querySelectorAll('button');
+    var note = pick.querySelector('.deck-note');
+    function show(which, auto) {
+      pair.querySelectorAll('[data-ratio]').forEach(function (d) { d.hidden = d.getAttribute('data-ratio') !== which; });
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-pick') === which)); });
+      note.textContent = auto ? (which === 'tall' ? '已依你的螢幕選直式' : '已依你的螢幕選橫式') : '';
+      // 剛露出來的那組寬度從 0 變成正常，讓幻燈片重新對齊頁碼
+      window.dispatchEvent(new Event('resize'));
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-pick'), false); }); });
+    pick.hidden = false;
+    show(PORTRAIT_PAIR && PORTRAIT_PAIR.matches ? 'tall' : 'wide', true);
   });
 
   // 麵包屑「LSA ▾」的同層頁面選單：點 ▾ 開關（手機也能用）；有滑鼠的電腦，移上去就打開、移開稍等一下才關，

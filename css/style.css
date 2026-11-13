@@ -500,6 +500,18 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .slides.is-wide { margin: 0 0 2.4em; }
 .slides.is-wide .slides-track img { max-width: 100%; border: 1px solid var(--rule); -webkit-user-drag: none; user-select: none; }
 .slides-hint { margin: 0 0 10px; font-size: 0.92rem; color: var(--muted); }
+/* 16:9／4:5 兩版圖卡的切換（2026-11-13）：選中的那顆填滿底色，一眼看出現在是哪一版；
+   4:5 那組在文章欄裡維持手機大小，上下留白比較多，所以下面多留一點距離 */
+.deck-pair { margin: 0 0 2.4em; }
+.deck-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 12px; }
+.deck-pick button {
+  font: inherit; font-size: 0.92rem; min-height: 44px; padding: 0 16px; border-radius: 22px;
+  border: 1px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer;
+}
+.deck-pick button:hover { background: var(--surface); }
+.deck-pick button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+.deck-note { font-size: 0.85rem; color: var(--muted); }
+.deck-pair .slides { margin: 0; }
 /* 全螢幕看幻燈片（Robert 2026-11-10：投影片字小，滿版才看得清楚）。
    iPhone 的 Safari 不支援把一般區塊切成真正的全螢幕，所以一律先用 CSS 把幻燈片蓋滿整個畫面；
    支援真全螢幕的電腦和 Android 再加上瀏覽器的全螢幕，把網址列也藏起來。 */
