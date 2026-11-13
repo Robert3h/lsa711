@@ -25,15 +25,39 @@
       else box.requestFullscreen().catch(function () {});
     });
   }
+  // 手機直拿看橫圖時，按全螢幕就自動轉成橫向（Robert 2026-11-13：「貼心的 UI 就決定做」）。
+  // 只在「手機、直拿、橫圖、已進入全螢幕」時鎖橫向：瀏覽器規定要在全螢幕裡才能鎖方向；
+  // 直圖（4:5）本來就適合直拿，不轉；電腦、平板不轉。iPhone 的 Safari 不支援，lock 不存在就什麼都不做。
+  // 離開全螢幕就解除，讀者的手機回到原本的自動旋轉設定。
+  var turned = false;
+  function turnFor(pic) {
+    var o = screen.orientation;
+    if (!o || !o.lock || !pic || !pic.naturalWidth) return;
+    var wide = pic.naturalWidth > pic.naturalHeight * 1.1;
+    var phone = Math.min(screen.width, screen.height) < 600;
+    if (wide && phone && !turned && o.type.indexOf('portrait') === 0) {
+      o.lock('landscape').then(function () { turned = true; }).catch(function () {});
+    } else if (!wide && turned) {
+      unturn();
+    }
+  }
+  function unturn() {
+    if (!turned) return;
+    turned = false;
+    try { screen.orientation.unlock(); } catch (e) {}
+  }
   function fullLabel() {
-    if (!full) return;
     var on = document.fullscreenElement === box;
+    if (on) turnFor(img); else unturn();
+    if (!full) return;
     box.classList.toggle('is-full', on);
     full.textContent = on ? (EN ? '✕ Exit full screen' : '✕ 離開全螢幕') : (EN ? '⛶ Full screen' : '⛶ 全螢幕');
   }
   // 不管是按鈕、Esc 還是手機返回鍵離開全螢幕，按鈕的字都跟著換回來
   document.addEventListener('fullscreenchange', fullLabel);
   fullLabel();
+  // 全螢幕裡翻到另一張（例如從橫圖翻到直圖）：等新圖載入、知道長寬後再決定轉不轉
+  img.addEventListener('load', function () { if (document.fullscreenElement === box) turnFor(img); });
 
   function show(n) {
     i = (n + list.length) % list.length;
