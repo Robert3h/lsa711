@@ -1342,3 +1342,69 @@ button.btn.primary { background: var(--accent); }
 .guide-chip a:hover, .guide-chip a:focus-visible { background: var(--accent); color: var(--on-accent); }
 .guide-chip a:hover .log, .guide-chip a:focus-visible .log { color: var(--on-accent); }
 @media (prefers-reduced-motion: reduce) { .guide-chip a { transition: none; } }
+
+/* ---------- 星羽號維修日誌 /logbook/ 與兩邊的入口卡（2026-11-14）----------
+   錯位疊在一起的卡片：露出來的邊讓讀者知道「後面還有」，不用寫說明（CLAUDE.md v2.6）。
+   可以點的疊卡照全站規則：框線平常是灰的，滑鼠移上去變橘；初衷的小標用青色（標記）。 */
+.lb-head { display: grid; gap: 28px; align-items: center; }
+@media (min-width: 900px) { .lb-head { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 44px; } }
+.lb-cover { margin: 0; }
+.lb-cover img { display: block; width: 100%; height: auto; border-radius: 4px; }
+.lb-cover figcaption { margin-top: 8px; color: var(--muted); font-size: 0.8rem; }
+.lb-stack { list-style: none; margin: 26px 0 0; padding: 0; max-width: 30rem; }
+.lb-stack li { position: relative; }
+.lb-stack li + li { margin-top: -6px; }
+.lb-stack li:nth-child(2) { margin-left: 22px; }
+.lb-stack li:nth-child(3) { margin-left: 44px; }
+.lb-stack a { display: block; min-height: 44px; padding: 12px 16px; border: 1px solid var(--rule); border-radius: 4px;
+  background: var(--surface); color: var(--ink); text-decoration: none; box-shadow: 0 6px 14px rgba(0, 0, 0, .28);
+  transition: border-color .2s ease, transform .2s ease; }
+.lb-stack a:hover, .lb-stack a:focus-visible { border-color: var(--accent); transform: translateX(4px); position: relative; z-index: 1; }
+.lb-stack .log { display: block; font-size: 0.75rem; }
+.lb-stack b { font-size: 1.08rem; margin-right: 10px; }
+.lb-stack a:hover b, .lb-stack a:focus-visible b { color: var(--accent); }
+.lb-stack a span:last-child { color: var(--muted); font-size: 0.9rem; }
+[data-theme="light"] .lb-stack a { box-shadow: 0 4px 10px rgba(0, 0, 0, .08); }
+
+.mx-list { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 800px) { .mx-list { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+.mx-card { display: flex; flex-direction: column; height: 100%; padding: 18px 20px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); }
+.mx-card > .log { margin: 0; }
+.mx-card h3 { margin: 4px 0 12px; font-size: 1.15rem; line-height: 1.45; }
+.mx-dl { margin: 0; }
+.mx-dl div { margin: 0 0 10px; }
+.mx-dl dt { font-family: var(--font-log); font-size: 0.75rem; color: var(--muted); }
+.mx-dl dd { margin: 2px 0 0; line-height: 1.7; }
+.mx-dl .mx-mine dt { color: var(--data); }
+.mx-dl .mx-no dd { color: var(--muted); }
+.mx-quote { margin: 8px 0 0; padding: 2px 0 2px 14px; border-left: 3px solid var(--data); }
+.mx-quote p { margin: 0; font-size: 1.1rem; font-weight: 700; line-height: 1.5; }
+.mx-quote footer { margin-top: 4px; color: var(--muted); font-size: 0.75rem; }
+.mx-go { align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; margin-top: auto; padding-top: 10px; }
+.lb-ground { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 700px) { .lb-ground { grid-template-columns: repeat(2, 1fr); gap: 18px 24px; } }
+.lb-ground li { padding: 2px 0 2px 14px; border-left: 3px solid var(--rule); }
+.lb-ground .log { margin: 0; }
+.lb-ground h3 { margin: 2px 0 4px; font-size: 1rem; }
+.lb-ground li > p:last-child { margin: 0; color: var(--muted); font-size: 0.92rem; }
+.lb-deck summary { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent); cursor: pointer; }
+.lb-bridge { margin: 48px 0 24px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.lb-bridge p { margin: 0 0 12px; }
+
+/* 工作頁、寫作頁的入口卡：左邊三張錯位的小卡只是裝飾（aria-hidden），整張卡是一個連結 */
+.lb-entry { display: flex; gap: 18px; align-items: center; margin: 20px 0 0; padding: 16px 18px; border: 1px solid var(--rule);
+  border-radius: 4px; background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color .2s ease; }
+.lb-entry:hover, .lb-entry:focus-visible { border-color: var(--accent); }
+.lb-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lb-entry:hover .case-card-title, .lb-entry:focus-visible .case-card-title { color: var(--accent); }
+.lb-entry-text { display: flex; flex-direction: column; min-width: 0; }
+.lb-mini { flex: none; position: relative; width: 104px; height: 88px; }
+.lb-mini span { position: absolute; display: flex; align-items: flex-start; justify-content: flex-start; padding: 3px 6px; width: 70px; height: 44px;   /* 字放左上角：後面那張只蓋住下半部，每張的字都露得出來 */
+  border: 1px solid var(--rule); border-radius: 3px; background: var(--bg); color: var(--muted); font-size: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .25); }
+.lb-mini span:nth-child(1) { left: 0; top: 0; }
+.lb-mini span:nth-child(2) { left: 16px; top: 22px; }
+.lb-mini span:nth-child(3) { left: 32px; top: 44px; border-color: var(--data); color: var(--data); }
+[data-theme="light"] .lb-mini span { box-shadow: 0 3px 8px rgba(0, 0, 0, .08); }
+@media (max-width: 420px) { .lb-mini { width: 84px; } .lb-mini span { width: 58px; } .lb-mini span:nth-child(2) { left: 12px; } .lb-mini span:nth-child(3) { left: 24px; } }
+@media (prefers-reduced-motion: reduce) { .lb-stack a, .lb-entry { transition: none; } .lb-stack a:hover, .lb-stack a:focus-visible { transform: none; } }

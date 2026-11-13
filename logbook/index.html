@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-Hant-TW" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星羽號維修日誌：這個網站是怎麼設計的｜Robert Huang × LSA-711</title>
+<meta name="description" content="好讀、好找，有一點樂趣但不堆砌、不轟炸：這個網站每一次改裝時，替讀者做的判斷與取捨。">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="canonical" href="https://robert3h.github.io/lsa711/logbook/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Robert Huang 黃星翰 × LSA-711">
+<meta property="og:title" content="星羽號維修日誌：這個網站是怎麼設計的｜Robert Huang × LSA-711">
+<meta property="og:description" content="好讀、好找，有一點樂趣但不堆砌、不轟炸：這個網站每一次改裝時，替讀者做的判斷與取捨。">
+<meta property="og:url" content="https://robert3h.github.io/lsa711/logbook/">
+<meta property="og:image" content="https://robert3h.github.io/lsa711/assets/og/og-home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Robert Huang 黃星翰：工作系統與 LSA 寫作系統">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<script>/* 在畫面出現前套用讀者上次選的主題，避免閃一下 */try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
+<link rel="stylesheet" href="../css/style.css?v=e93b4fd8">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-name" href="../index.html">Robert Huang 黃星翰</a>
+    <nav class="site-nav" aria-label="主選單">
+      <ul>
+        <li><a href="../work/index.html">工作系統</a></li>
+        <li><a href="../lsa/index.html">寫作系統 LSA</a></li>
+        <li><a href="../about/index.html">關於</a></li>
+        <li class="nav-wide"><a href="../qa/index.html">常見問題</a></li>
+      </ul>
+      <div class="lang-switch" role="group" aria-label="語言"><span aria-hidden="true">🌐</span><span class="lang-cur" aria-current="true">中文</span><span aria-hidden="true">｜</span><a hreflang="en" lang="en" href="https://robert3h-github-io.translate.goog/lsa711/logbook/?_x_tr_sl=zh-TW&amp;_x_tr_tl=en&amp;_x_tr_hl=en"><span class="l-full">English</span><span class="l-short" aria-hidden="true">EN</span></a></div>
+    </nav>
+    <button type="button" class="theme-toggle" aria-pressed="false">切換淺色</button>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <header class="page-head lb-head">
+    <div class="lb-text">
+      <p class="log">SW711 TECH LOG // 星羽號維修日誌</p>
+      <h1>這個網站是怎麼設計的</h1>
+      <p class="lead">首航以來，這艘船進廠改裝過很多次。每一次，都在回答同樣三件事。</p>
+      <ol class="lb-stack"><li><a href="#read"><span class="log">初衷 01</span><b>好讀</b><span>讀起來不費力</span></a></li><li><a href="#find"><span class="log">初衷 02</span><b>好找</b><span>想讀的那篇找得到</span></a></li><li><a href="#fun"><span class="log">初衷 03</span><b>有樂趣，但不堆砌、不轟炸</b><span>好玩是加分，不是干擾</span></a></li></ol>
+    </div>
+    <figure class="lb-cover">
+      <img src="../assets/logbook/cover-6db1afa4.jpg" width="1280" height="720" alt="AI 生成的角色圖：機長陳雙宇穿深灰色制服、手上拿著發光的星圖，座艙長永瀨子琦穿白色制服站在旁邊，背後是星羽號客艙的大窗和星空。">
+      <figcaption>機長雙宇與座艙長子琦。角色為虛構，影像由 AI 生成。</figcaption>
+    </figure>
+  </header>
+
+  <section aria-labelledby="read">
+    <h2 id="read"><span class="log">初衷 01</span> 好讀</h2>
+    <p class="sub">讀起來不費力：知道讀到哪、看得出重點、橫圖轉得過來。</p>
+    <ul class="mx-list">
+      <li><article class="mx-card" id="mx-1113-10">
+        <p class="log">MX-1113-10 · 2026-11-13</p>
+        <h3>幻燈片：下一張露出一截</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>每組幻燈片下面都有一段「手機可以左右滑」，要先讀說明，才知道怎麼用。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>讓介面自己說話：每張不佔滿整排，右邊露出下一張的邊，看到就知道可以往右滑。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>拿掉 22 頁的操作說明。需要寫說明，代表介面還不夠清楚。</dd></div>
+        </dl>
+        <blockquote class="mx-quote"><p>「最好的 UI 是不需要說明」</p><footer class="log">改裝當天 Robert 說的話</footer></blockquote><a class="mx-go" href="../lsa/gossip-flowchart/index.html">看一組幻燈片 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1102-06">
+        <p class="log">MX-1102-06 · 2026-11-02</p>
+        <h3>長頁面的位置條</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>長頁面讀到一半，不知道自己在哪一段、還剩多少。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>頁首下面一行就夠：目前段落、第幾段、閱讀進度線，點 ▾ 就能跳段。線的最前面，放一架跟著往右飛的小星羽號。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>段落少於 3 個的頁面不出現；出現、收起都不推動內文。</dd></div>
+        </dl>
+        <blockquote class="mx-quote"><p>「騷包一點」</p><footer class="log">改裝當天 Robert 說的話</footer></blockquote><a class="mx-go" href="../lsa/cybertron/index.html">到設定集往下捲 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1113-22">
+        <p class="log">MX-1113-22 · 2026-11-13</p>
+        <h3>作者畫的重點，讀者看得出來</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>在 Word 裡加粗、上色的金句，到了網站和一般句子長得一樣。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>照 Word 搬上網站，但重點字改用青色：橘色在全站代表「可以點」，重點不能讓人誤以為是連結。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>整篇都加粗的 3 篇不套：全部都是重點，就等於沒有重點。</dd></div>
+        </dl>
+        <a class="mx-go" href="../lsa/gossip-flowchart/index.html">看一篇有重點字的文章 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1113-02">
+        <p class="log">MX-1113-02 · 2026-11-13</p>
+        <h3>全螢幕時，橫圖自動轉過來</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>手機直拿看 16:9 的橫圖，圖只剩畫面中間一小條。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>替讀者轉好，但只在他自己按了全螢幕之後；翻到直圖、離開全螢幕，就還原成原本的設定。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>不先跳視窗問「要不要轉」；電腦、平板不轉。</dd></div>
+        </dl>
+        <blockquote class="mx-quote"><p>「做，貼心的 UI 就決定做」</p><footer class="log">改裝當天 Robert 說的話</footer></blockquote><a class="mx-go" href="../lsa/cybertron/index.html">用手機打開一本相簿 →</a>
+      </article></li>
+    </ul>
+  </section>
+  <section aria-labelledby="find">
+    <h2 id="find"><span class="log">初衷 02</span> 好找</h2>
+    <p class="sub">想讀的那篇找得到：第一次來有起點，說一句話就推薦。</p>
+    <ul class="mx-list">
+      <li><article class="mx-card" id="mx-1106-01">
+        <p class="log">MX-1106-01 · 2026-11-06</p>
+        <h3>第一次來，從這三篇開始</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>第一次來的人，面對幾十篇文章，不知道從哪一篇讀起。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>首頁直接推薦三篇：一個工作案例、一篇文章、一段角色對話，三種內容各挑一篇。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>不挑最新的，挑沒有前情也讀得懂的。</dd></div>
+        </dl>
+        <a class="mx-go" href="../index.html#h-first">看首頁的三篇 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1022-08">
+        <p class="log">MX-1022-08 · 2026-10-22</p>
+        <h3>全部傳訊：一頁看完所有航線</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>文章散在 LinkedIn、Vocus、Substack，想找一篇要翻好幾個平台。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>一頁列出所有已發布的傳訊，依月份排，可以只看生活隨筆、電子報或小劇場；能在本站讀的，直接點開。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>草稿和私人筆記不列：Word 目錄有日期的，才算發布。</dd></div>
+        </dl>
+        <a class="mx-go" href="../lsa/archive/index.html">看全部傳訊 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1107-08">
+        <p class="log">MX-1107-08 · 2026-11-07</p>
+        <h3>找 3 篇：說一句話，推薦三篇</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>不知道哪一篇和自己有關，只能從標題猜。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>打一句最近卡住的事，網站依文字相似度推薦 3 篇；找不到很接近的，就列出每篇文章的「情境」讓讀者自己挑。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>打的字不送出、不記錄，只在讀者自己的瀏覽器裡比對。</dd></div>
+        </dl>
+        <a class="mx-go" href="../lsa/archive/index.html#finder-h">試試找 3 篇 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1113-17">
+        <p class="log">MX-1113-17 · 2026-11-13</p>
+        <h3>星海圖：重播與巡航</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>清單只看得到標題，看不出 71 則傳訊之間有什麼關係。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>畫成七個星系，同類主題聚在一起。兩顆播放鈕：一顆讓星星照發布日期一顆顆亮起，一顆讓星羽號沿主航道一站一站飛。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>減少動態效果的讀者，直接看結果，不播動畫。</dd></div>
+        </dl>
+        <blockquote class="mx-quote"><p>「還滿喜歡的，放入正式網頁」</p><footer class="log">改裝當天 Robert 說的話</footer></blockquote><a class="mx-go" href="../lsa/archive/index.html">到全部傳訊切換星海圖 →</a>
+      </article></li>
+    </ul>
+  </section>
+  <section aria-labelledby="fun">
+    <h2 id="fun"><span class="log">初衷 03</span> 有樂趣，但不堆砌、不轟炸</h2>
+    <p class="sub">好玩是加分，不是干擾：遊戲、3D、音樂，都等讀者自己按。</p>
+    <ul class="mx-list">
+      <li><article class="mx-card" id="mx-1112-09">
+        <p class="log">MX-1112-09 · 2026-11-12</p>
+        <h3>最新傳訊：只留最近 5 天</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>寫作系統頁一打開，75 篇傳訊全部攤在眼前。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>只列最近 5 個發布日期，同一天的一起出現；想看全部，下面一個入口就到。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>不把所有內容都塞進第一眼。</dd></div>
+        </dl>
+        <blockquote class="mx-quote"><p>「展示太多了，大概 TOP5 個日期就好」</p><footer class="log">改裝當天 Robert 說的話</footer></blockquote><a class="mx-go" href="../lsa/index.html#h-latest">看寫作系統的最新傳訊 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1023-02">
+        <p class="log">MX-1023-02 · 2026-10-23</p>
+        <h3>音樂和影片，按了才開始</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>打開網頁突然冒出音樂，或是手機在背景偷偷下載影片。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>設定集頁右下角滑出一張小卡，讀者自己選［▶ 播放］或［■ 不用了］；影片按了播放才下載。選擇只記在讀者自己的瀏覽器。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>不自動播放；卡片說有音樂，就一定真的有音樂。</dd></div>
+        </dl>
+        <a class="mx-go" href="../lsa/cybertron/index.html">到設定集聽聽看 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1107-09">
+        <p class="log">MX-1107-09 · 2026-11-07</p>
+        <h3>小遊戲：38 光年航程</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>文章都很長，想先輕鬆看看這裡有什麼。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>做成 60 秒的小遊戲：駕駛星羽號飛往 LSA-711，沿途接到的訊號都是真的文章，抵達後列出這趟收到的幾篇。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>撞到雜訊只減速、不會失敗；沒有音效；減少動態效果的讀者，直接看清單。</dd></div>
+        </dl>
+        <a class="mx-go" href="../lsa/lab/voyage/index.html">開船 →</a>
+      </article></li>
+      <li><article class="mx-card" id="mx-1030-01">
+        <p class="log">MX-1030-01 · 2026-10-30</p>
+        <h3>3D 導覽：想逛的人才進去</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>設定集只有平面照片，看不出船裡長什麼樣子。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>放在設定集裡，用新分頁打開，想逛的人才進去；手機也能玩，但提醒用電腦比較順。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>不連外部網站、不存讀者資料：上架前先把程式讀過一遍。</dd></div>
+        </dl>
+        <a class="mx-go" href="../lsa/cybertron/index.html">到設定集找 3D 導覽 →</a>
+      </article></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="care">
+    <h2 id="care"><span class="log">初衷之外</span> 對文章裡的人</h2>
+    <ul class="mx-list mx-single">
+      <li><article class="mx-card" id="mx-1112-06">
+        <p class="log">MX-1112-06 · 2026-11-12</p>
+        <h3>文章裡的真實人物，名字不跟著上站</h3>
+        <dl class="mx-dl">
+          <div><dt>讀者遇到什麼</dt><dd>有些文章寫到真實的主辦人、講者和家人，他們沒有同意被寫進網站。</dd></div>
+          <div class="mx-mine"><dt>我的判斷</dt><dd>真名換成 A君～D君，家人只寫稱謂；原稿裡找不到要遮的字，程式就停下來，不會漏遮還照樣上線。</dd></div>
+          <div class="mx-no"><dt>✕ 刻意不做</dt><dd>還不確定能不能公開的，先暫緩，不先上再說。</dd></div>
+        </dl>
+        <blockquote class="mx-quote"><p>「公司名稱碼掉、講者用 A君 這類代號、可以上的先上」</p><footer class="log">改裝當天 Robert 說的話</footer></blockquote>
+      </article></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="ground">
+    <h2 id="ground"><span class="log">GROUND CREW</span> 看不見的地勤</h2>
+    <p class="sub">讀者看不到這些，但每一次準時起飛，都靠它們。</p>
+    <ul class="lb-ground"><li><p class="log">MX-1026-01</p><h3>改 Word 不怕網站抓錯</h3><p>網站用文字定位讀原稿，不靠「第幾行」；台詞改了，程式會停下來說是哪一句。</p></li><li><p class="log">MX-1023-01</p><h3>改壞了，隨時回得去</h3><p>每次修改前整個網站先備份一份，再存進 Git；兩套各自獨立。</p></li><li><p class="log">MX-1112-02</p><h3>上線前自動健檢</h3><p>手機排版、字級、替代文字、對比、公司名稱等 11 類，有一項要修就不推上線。</p></li><li><p class="log">MX-1113-06</p><h3>改版後，讀者打開就是新版</h3><p>JS、CSS 網址帶上檔案指紋，手機不會卡在舊的快取。</p></li></ul>
+  </section>
+
+  <section aria-labelledby="h-deck">
+    <h2 id="h-deck">投影片版</h2>
+    <details class="lb-deck"><summary>打開 17 頁投影片：機長雙宇 × 座艙長子琦的檢修紀錄</summary>
+<div class="slides is-wide" role="region" aria-roledescription="幻燈片" aria-label="機長雙宇 × 座艙長子琦的檢修紀錄，共 17 頁"><p class="slides-hint">機長雙宇 × 座艙長子琦的檢修紀錄・17 頁</p><div class="slides-track" tabindex="0"><figure><img src="../assets/decks/logbook/01-094707bd.jpg" width="1920" height="1080" loading="eager" draggable="false" alt="投影片 1／17：封面：SW711 TECH LOG 星羽號維修日誌，三個設計初衷：好讀、好找、有樂趣但不轟炸。機長陳雙宇與座艙長永瀨子琦。"></figure><figure><img src="../assets/decks/logbook/02-87dd3cf4.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 2／17：飛行紀錄：2026-10-20 首航到 11-13 的時間軸，以及三個設計初衷。"></figure><figure><img src="../assets/decks/logbook/03-4560c2b6.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 3／17：MX-1113-10：幻燈片：下一張露出一截"></figure><figure><img src="../assets/decks/logbook/04-0ed38dc7.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 4／17：MX-1102-06：長頁面的位置條"></figure><figure><img src="../assets/decks/logbook/05-c8db7f52.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 5／17：MX-1113-22：作者畫的重點，讀者看得出來"></figure><figure><img src="../assets/decks/logbook/06-6e400628.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 6／17：MX-1113-02：全螢幕時，橫圖自動轉過來"></figure><figure><img src="../assets/decks/logbook/07-7dd41a3c.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 7／17：MX-1106-01：第一次來，從這三篇開始"></figure><figure><img src="../assets/decks/logbook/08-28f50a08.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 8／17：MX-1022-08：全部傳訊：一頁看完所有航線"></figure><figure><img src="../assets/decks/logbook/09-d588315c.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 9／17：MX-1107-08：找 3 篇：說一句話，推薦三篇"></figure><figure><img src="../assets/decks/logbook/10-66296879.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 10／17：MX-1113-17：星海圖：重播與巡航"></figure><figure><img src="../assets/decks/logbook/11-1037efd7.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 11／17：MX-1112-09：最新傳訊：只留最近 5 天"></figure><figure><img src="../assets/decks/logbook/12-3cad21a2.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 12／17：MX-1023-02：音樂和影片，按了才開始"></figure><figure><img src="../assets/decks/logbook/13-f7682ee5.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 13／17：MX-1107-09：小遊戲：38 光年航程"></figure><figure><img src="../assets/decks/logbook/14-64805348.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 14／17：MX-1030-01：3D 導覽：想逛的人才進去"></figure><figure><img src="../assets/decks/logbook/15-82ab2352.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 15／17：MX-1112-06：文章裡的真實人物，名字不跟著上站"></figure><figure><img src="../assets/decks/logbook/16-fb8a304a.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 16／17：看不見的地勤：原稿讀取、雙重備份、自動健檢、檔案指紋。"></figure><figure><img src="../assets/decks/logbook/17-f703acb6.jpg" width="1920" height="1080" loading="lazy" draggable="false" alt="投影片 17／17：結尾：這艘船還在飛。好讀、好找，有一點樂趣，但不轟炸。"></figure></div><div class="slides-bar"><button type="button" data-dir="-1" aria-label="上一頁">←</button><span class="log slides-count" aria-live="polite">1 / 17</span><button type="button" data-dir="1" aria-label="下一頁">→</button></div></div>
+    </details>
+  </section>
+  <nav class="lb-bridge" aria-label="從這裡去">
+    <p>這一頁是工作和寫作的交界。想看哪一邊？</p>
+    <div class="actions">
+      <a class="btn" href="../work/index.html">工作系統：報表與作品集 →</a>
+      <a class="btn" href="../lsa/index.html">寫作系統：文章與故事 →</a>
+    </div>
+  </nav>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p>🌍 訊息來自 LSA-711 星球</p>
+    <p><a href="https://www.linkedin.com/in/roberthuang1987" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://lsa711.substack.com/" target="_blank" rel="noopener">Substack</a> · <a href="https://vocus.cc/user/robert-lsa" target="_blank" rel="noopener">Vocus</a> · <a href="mailto:lsa711.cybertron@gmail.com">Email</a> · <a href="../contact/index.html">📡 傳訊給我</a> · <a href="../qa/index.html">💬 常見問題</a></p>
+    <p>© 2026 Robert Huang 黃星翰</p>
+    <p class="privacy">本站用 GoatCounter 計算匿名瀏覽人次：不使用 Cookie、不儲存 IP、不追蹤個人。「❤️ 有共鳴」的讚數存在 Robert 的 Google 試算表，所以有這個按鈕的頁面會向 Google 讀取讚數。你選的深淺色、背景音樂、按過的讚和撿到的傳訊碎片，只記在你自己的瀏覽器裡。</p>
+  </div>
+</footer>
+<script src="../js/site.js?v=d279cc76"></script>
+<script src="../js/resonate.js?v=8cd5871a"></script>
+<!-- 瀏覽人次統計（GoatCounter，2026-10-22 起，代碼 lsa711）：不用 Cookie、不存 IP；後台 https://lsa711.goatcounter.com
+     寫 https:// 而不是 //：在本機直接打開檔案時才不會去找本機路徑而報錯（本機預覽本來就不計數） -->
+<!-- 同一頁有「…/cybertron」和「…/cybertron/index.html」兩種網址，GoatCounter 會拆成兩行算；統一去掉 index.html（2026-11-02） -->
+<script>window.goatcounter = {path: function(p) { return p.replace(/\/index\.html(?=$|\?)/, '') || '/'; }};</script>
+<script data-goatcounter="https://lsa711.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
