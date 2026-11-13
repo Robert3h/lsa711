@@ -482,12 +482,16 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .slides { margin: 2em 0; }
 .slides-track {
   display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
-  scroll-behavior: smooth; border-radius: 4px;  /* 不加 gap：JS 用「捲動距離 ÷ 寬度」算目前第幾張 */
-  scrollbar-width: none;
+  scroll-behavior: smooth; border-radius: 4px;
+  scrollbar-width: none; gap: 12px;
 }
 .slides-track::-webkit-scrollbar { display: none; }
-.slides-track figure { flex: 0 0 100%; margin: 0; scroll-snap-align: center; }
-.slides-track img { width: 100%; max-width: 480px; margin: 0 auto; border-radius: 4px; }
+/* 下一張露出一截（Robert 2026-11-13：最好的 UI 是不需要說明）：讀者看到右邊還有東西，自然會往右滑，
+   不必再寫「左右滑動」。每張不再佔滿整排，JS 改用「相鄰兩張的距離」算目前第幾張。
+   直的圖卡（4:5 等）最寬 480px、靠左，右邊露出下一張；只有一張時佔滿 */
+.slides-track figure { flex: 0 0 min(88%, 480px); margin: 0; scroll-snap-align: start; }
+.slides-track figure:only-child { flex-basis: 100%; }
+.slides-track img { width: 100%; border-radius: 4px; border: 1px solid var(--rule); }   /* 深色圖卡在深色底上，靠框線才看得出右邊露出的下一張 */
 .slides-bar { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 12px; }
 .slides-bar button {
   font: inherit; font-size: 1.1rem; width: 44px; height: 44px; border-radius: 50%;
@@ -498,6 +502,7 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .slides-bar .log { font-size: 0.9rem; min-width: 4.5em; text-align: center; }
 /* 16:9 導讀投影片（2026-11-08 LSA_013）：放在文章最前面，圖撐滿內文寬；上方一行提示可以滑動 */
 .slides.is-wide { margin: 0 0 2.4em; }
+.slides.is-wide .slides-track figure { flex-basis: 90%; }
 .slides.is-wide .slides-track img { max-width: 100%; border: 1px solid var(--rule); -webkit-user-drag: none; user-select: none; }
 .slides-hint { margin: 0 0 10px; font-size: 0.92rem; color: var(--muted); }
 /* 16:9／4:5 兩版圖卡的切換（2026-11-13）：選中的那顆填滿底色，一眼看出現在是哪一版；
@@ -522,9 +527,10 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
   display: flex; flex-direction: column;
   padding: max(8px, env(safe-area-inset-top)) 0 max(10px, env(safe-area-inset-bottom));
 }
-.slides.is-full .slides-hint, .slides.is-full .caption { display: none; }
+.slides.is-full .slides-hint { display: none; }
 .slides.is-full .slides-track { flex: 1 1 auto; min-height: 0; border-radius: 0; outline: none; }  /* 滿版時整個畫面就是焦點所在，外框只會變成多餘的橘線 */
-.slides.is-full .slides-track figure { display: flex; align-items: center; justify-content: center; height: 100%; }
+.slides.is-full .slides-track { gap: 0; }   /* 滿版時一次只看一張，不露出下一張 */
+.slides.is-full .slides-track figure { display: flex; align-items: center; justify-content: center; height: 100%; flex-basis: 100%; }
 .slides.is-full .slides-track img {
   width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain;
   margin: 0; border: 0; border-radius: 0; cursor: default;

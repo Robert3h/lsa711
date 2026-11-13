@@ -120,8 +120,11 @@
     var count = box.querySelector('.slides-count');
     var current = 0;
     function update() {
-      // 藏起來的那一組（16:9／4:5 二選一）寬度是 0，不能拿來除，先當第一頁
-      current = track.clientWidth ? Math.round(track.scrollLeft / track.clientWidth) : 0;
+      // 下一張會露出一截（2026-11-13），每張不再等於整排寬：用「相鄰兩張的距離」當一頁的寬度。
+      // 藏起來的那一組（16:9／4:5 二選一）寬度是 0，先當第一頁；捲到底時算最後一張（最後一張靠右對齊，到不了整數頁）
+      var s = step();
+      var end = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+      current = !s ? 0 : (end && track.scrollLeft > 0) ? items.length - 1 : Math.min(items.length - 1, Math.round(track.scrollLeft / s));
       count.textContent = (current + 1) + ' / ' + items.length;
       prev.disabled = current === 0;
       // 最後一頁的 → 改成「回第一頁」（Robert 2026-11-09）：看完想再從頭看，不用一路往回滑；
@@ -131,9 +134,12 @@
       next.setAttribute('aria-label', last ? '回第一頁' : '下一頁');
       next.title = last ? '回第一頁' : '';
     }
+    function step() {
+      return items.length > 1 ? items[1].offsetLeft - items[0].offsetLeft : track.clientWidth;
+    }
     function go(i) {
       i = Math.max(0, Math.min(items.length - 1, i));
-      track.scrollTo({ left: i * track.clientWidth });
+      track.scrollTo({ left: i * step() });
     }
     prev.addEventListener('click', function () { go(current - 1); });
     next.addEventListener('click', function () { go(current === items.length - 1 ? 0 : current + 1); });
@@ -148,7 +154,7 @@
     window.addEventListener('resize', function () {
       // 切換全螢幕、手機轉橫向時寬度會變：先停在原本那一頁，不然會跑到兩頁中間
       track.style.scrollBehavior = 'auto';
-      track.scrollLeft = current * track.clientWidth;
+      track.scrollLeft = current * step();
       track.style.scrollBehavior = '';
       update();
     });
