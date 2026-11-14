@@ -1355,7 +1355,7 @@ button.btn.primary { background: var(--accent); }
 .lb-cover img { display: block; width: 100%; height: auto; border-radius: 4px; }
 .lb-cover figcaption { margin-top: 8px; color: var(--muted); font-size: 0.8rem; }
 .lb-stack { list-style: none; margin: 26px 0 0; padding: 0; max-width: 30rem; }
-.lb-stack li { position: relative; }
+.lb-stack li { position: relative; width: calc(100% - 44px); }   /* 三張一樣長，只往右錯位（2026-11-14 Robert） */
 .lb-stack li + li { margin-top: -6px; }
 .lb-stack li:nth-child(2) { margin-left: 22px; }
 .lb-stack li:nth-child(3) { margin-left: 44px; }
@@ -1390,7 +1390,13 @@ button.btn.primary { background: var(--accent); }
 .lb-ground .log { margin: 0; }
 .lb-ground h3 { margin: 2px 0 4px; font-size: 1rem; }
 .lb-ground li > p:last-child { margin: 0; color: var(--muted); font-size: 0.92rem; }
-.lb-deck summary { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent); cursor: pointer; }
+/* 「投影片版」展開卡（2026-11-14 Robert）：和入口卡同一套（電腦右邊刷淡、手機頂端橫幅），圖用投影片封面，一看就知道這裡有投影片 */
+.lb-deck-card { list-style: none; cursor: pointer; margin-top: 18px; }
+.lb-deck-card::-webkit-details-marker { display: none; }
+.lb-deck-card .lb-entry-art { object-position: 85% 30%; }
+.lb-deck .lb-deck-close, .lb-deck[open] .lb-deck-open { display: none; }
+.lb-deck[open] .lb-deck-close { display: inline; }
+.lb-deck[open] > .lb-deck-card { border-color: var(--accent); margin-bottom: 18px; }
 .lb-bridge { margin: 48px 0 24px; padding-top: 24px; border-top: 1px solid var(--rule); }
 .lb-bridge p { margin: 0 0 12px; }
 
