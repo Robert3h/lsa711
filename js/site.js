@@ -407,6 +407,110 @@
     show(open);
   });
 
+  // ---------- 3d. 從維修日誌「去看看」過來（2026-11-15 Robert）----------
+  // 維修日誌卡片的連結帶 ?from=卡片編號。到了這一頁做兩件事：
+  //   ①目標閃一圈青色框再淡掉：讀者不用找就知道「就是這裡」。用青色不用橘色，因為橘色在全站代表「可以點」。
+  //   ②左下角放「← 回維修日誌」：看完功能一按就回到剛才那張卡；只能按瀏覽器上一頁的話，手機上常常就這樣離開了。
+  // 沒有 JS 時連結照樣到得了，只是少了這兩個便利。
+  (function () {
+    var m = /[?&]from=(mx-\d{4}-\d{2})(?:&|$)/.exec(location.search);
+    if (!m) return;
+    // 網址上的 ?from= 拿掉，重新整理或複製分享出去的網址保持乾淨（# 留著，星海圖靠它記住畫面）
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+    var me = document.querySelector('script[src*="js/site.js"]');
+    var ROOT = me ? me.getAttribute('src').replace(/js\/site\.js.*$/, '') : '';
+    var back = document.createElement('a');
+    back.className = 'mx-back';
+    back.href = ROOT + 'logbook/index.html#' + m[1];
+    back.textContent = '← 回維修日誌';
+    document.body.appendChild(back);
+
+    var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function flash(el, small) {
+      // 先加框再捲：.mx-here 帶 scroll-margin-top，框的上緣才不會被釘住的頁首蓋掉（瀏覽器自己跳的位置沒算到框）
+      // 換色示範會連閃好幾次：先拿掉再加回去（中間讀一次 offsetWidth），動畫才會從頭播；上一次的計時器也取消，免得半途把框收掉
+      clearTimeout(el.mxTimer);
+      el.classList.remove('mx-here');
+      void el.offsetWidth;
+      el.classList.add('mx-here');
+      // 一句重點字、一本相簿這種小東西放畫面中間；標題、幻燈片、星海圖從頂端開始，才看得到底下的內容
+      if (small === undefined) small = el.getBoundingClientRect().height < window.innerHeight * 0.4 && !/^H\d$/.test(el.tagName);
+      el.scrollIntoView({ block: small ? 'center' : 'start' });
+      el.mxTimer = setTimeout(function () { el.classList.remove('mx-here'); }, 2800);   // 計時器跟著元素走：兩顆按鈕輪流亮時互不干擾
+    }
+
+    // 有些功能要「示範」才看得出來（Robert 2026-11-15 一張一張點過後提的）：
+    // 輸入框＋按鈕的功能：框標題看不出要做什麼（Robert 2026-11-15），改成輸入框先亮、後面第一顆主要按鈕再亮：先打字、再按
+    function typeThenGo(id) {
+      var q = document.getElementById(id);
+      if (!q) return;
+      var go = Array.prototype.filter.call(document.querySelectorAll('button.primary'), function (b) {
+        return q.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING;
+      })[0];
+      flash(q, true);
+      if (go) setTimeout(function () { flash(go, true); }, 1200);
+    }
+    var FX = {
+      'finder-h': function () { typeThenGo('finder-q'); },     // 找 3 篇：輸入框 → 「找 3 篇」
+      'voyage': function () { typeThenGo('voy-q'); },          // 38 光年航程：輸入框 → 「起飛」
+      // 星海圖：框整張圖範圍太大（Robert 2026-11-15「框的範圍太奇怪了」），改成兩顆播放鈕輪流亮，讀者就知道要按什麼
+      'starmap': function () {
+        var b = document.querySelectorAll('[data-play]');
+        if (!b.length) return;
+        flash(b[0], true);
+        if (b[1]) setTimeout(function () { flash(b[1], true); }, 1200);
+      },
+      // 位置條：要往下捲才會出現，落地時什麼都看不到。子琦在右上角提示一句，星羽號發亮；讀者捲下去看到之後，子琦退場
+      'toc-demo': function () {
+        var ship = document.querySelector('.toc-ship'), bar = document.querySelector('.toc-bar');
+        if (!ship || !bar) return;
+        ship.classList.add('mx-glow');
+        var say = document.createElement('div');
+        say.className = 'mx-say';
+        say.setAttribute('role', 'status');
+        say.innerHTML = '<div class="qa-crew qa-crew-ginni"><img src="' + ROOT + 'assets/lab/avatar-ginni.jpg" width="40" height="40" alt="">' +
+          '<div><span class="qa-who">座艙長 永瀨子琦 · Ginni</span><p class="qa-bubble">往下捲捲看：頁首下面會出現一條細線，最前面的星羽號會跟著你往右飛喔。</p></div></div>';
+        document.body.appendChild(say);
+        function bye() {
+          window.removeEventListener('scroll', seen);
+          say.classList.add('bye');
+          setTimeout(function () { if (say.parentNode) say.parentNode.removeChild(say); }, 400);
+          setTimeout(function () { ship.classList.remove('mx-glow'); }, 6000);   // 星羽號多亮一會兒，讀者看得到它在飛
+        }
+        function seen() { if (bar.classList.contains('show')) setTimeout(bye, 2500); }
+        window.addEventListener('scroll', seen, { passive: true });
+        say.addEventListener('click', bye);
+      },
+      // 深色框線：同一張卡在深、淺兩種顏色各看一次才比得出差別。先切到讀者「沒選」的那一色、卡片亮一下，再切回讀者選的。
+      // 只是示範，不寫進讀者的設定；讀者自己按了切換鈕就停止示範；減少動態效果的讀者不整頁換色，只亮卡片。
+      'theme-demo': function (el) {
+        if (!el) return;
+        if (REDUCE) { flash(el, true); return; }
+        var mine = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        var other = mine === 'light' ? 'dark' : 'light';
+        var timers = [];
+        function set(t) { root.setAttribute('data-theme', t); paint(); }
+        flash(el, true);
+        root.classList.add('mx-fade');
+        timers.push(setTimeout(function () { set(other); say(other === 'dark' ? '先換成深色看看卡片的邊，等一下換回來' : '先換成淺色比比看，等一下換回深色'); flash(el, true); }, 1200));
+        timers.push(setTimeout(function () { set(mine); flash(el, true); }, 4600));
+        timers.push(setTimeout(function () { root.classList.remove('mx-fade'); }, 5400));
+        if (toggle) toggle.addEventListener('click', function () {
+          timers.forEach(clearTimeout); root.classList.remove('mx-fade');
+        }, { once: true });
+      }
+    };
+    // 目標：有 id 的直接找；沒有 id 的用代號（第一組幻燈片、第一句重點字、星海圖、作品集第一張卡）
+    var ALIAS = { slides: '.deck-pair, .slides', 'w-hi': '.w-hi', starmap: '.arc-map',
+                  'theme-demo': 'section[aria-labelledby="h-cases"] .case-card' };
+    var h = decodeURIComponent(location.hash.slice(1));
+    var el = !h ? null : ALIAS[h] ? document.querySelector(ALIAS[h]) : document.getElementById(h);
+    requestAnimationFrame(function () {
+      if (FX[h]) FX[h](el);
+      else if (el) flash(el);
+    });
+  })();
+
   // ---------- 4. Google 整頁翻譯的說明（2026-11-02） ----------
   // 沒有英文版的頁面，按 English 會打開 Google 翻譯版（網址是 …translate.goog）。
   // 在最上方加一行英文說明：機器翻譯、可能不準確、原文是台灣繁體中文。translate="no" 讓 Google 不去翻這一行。

@@ -682,6 +682,38 @@ button.btn.primary { background: var(--accent); }
 @media (min-width: 760px) { .float-nav { right: 28px; bottom: 28px; } }
 @media (prefers-reduced-motion: reduce) { .float-nav { transition: none; } }
 
+/* ---------- 從維修日誌「去看看」過來（2026-11-15，site.js 3d）----------
+   目標閃一圈青色框再淡掉（青色＝資料／提示，不用代表「可以點」的橘色）；回到維修日誌時，剛才那張卡也閃一下。
+   「← 回維修日誌」放左下角：右下角已經有文章頁的「全部文章」和設定集的音樂小卡 */
+.mx-here, .mx-card:target { outline: 2px solid var(--data); outline-offset: 6px; border-radius: 4px; animation: mx-here 2.6s ease-out forwards; scroll-margin-top: calc(var(--toc-offset, 52px) + 8px); }   /* 讓出位置條＋框的距離，和段落標題同一個算法 */
+[data-play].mx-here { border-radius: 999px; }   /* 星海圖的播放鈕是膠囊形，框跟著圓 */
+@keyframes mx-here { 0%, 55% { outline-color: var(--data); } 100% { outline-color: transparent; } }
+.mx-back {
+  position: fixed; left: 16px; bottom: 20px; z-index: 15;
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px;
+  background: var(--surface); color: var(--accent); border: 1.5px solid var(--accent);
+  font-size: 0.92rem; font-weight: 600; text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .28);
+}
+/* 一直是橘框（Robert 2026-11-15）：這顆是讀者回去的路，要一眼找得到；滑過去改成實心橘，表示按下去了 */
+.mx-back:hover, .mx-back:focus-visible { background: var(--accent); color: var(--on-accent); }
+/* 位置條示範：子琦在右上角提示往下捲，星羽號發亮；點一下或讀者看到位置條之後退場 */
+.mx-say {
+  position: fixed; right: 16px; top: calc(var(--header-h, 64px) + 12px); z-index: 16; width: min(340px, calc(100% - 32px));
+  padding: 12px 14px; border-radius: 6px; background: var(--surface); border: 1px solid var(--rule);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .4); cursor: pointer; transition: opacity .4s, transform .4s;
+}
+.mx-say .qa-crew { max-width: none; }
+.mx-say.bye { opacity: 0; transform: translateY(-8px); }
+:root[data-theme="light"] .mx-say { box-shadow: 0 10px 26px rgba(0, 0, 0, .14); }
+.toc-ship.mx-glow { filter: drop-shadow(0 0 3px var(--data)) drop-shadow(0 0 8px var(--data)); animation: mx-glow 1.2s ease-in-out infinite alternate; }
+@keyframes mx-glow { from { opacity: .75; } to { opacity: 1; } }
+/* 深色框線示範：整頁換色時慢慢淡過去，不要一下子閃白 */
+.mx-fade, .mx-fade * { transition: background-color .6s, color .6s, border-color .6s !important; }
+:root[data-theme="light"] .mx-back { box-shadow: 0 6px 18px rgba(0, 0, 0, .12); }
+@media (min-width: 760px) { .mx-back { left: 28px; bottom: 28px; } }
+@media (prefers-reduced-motion: reduce) { .mx-here, .mx-card:target, .toc-ship.mx-glow { animation: none; } .mx-say { transition: none; } }
+
 /* ---------- 帶走五層提問 ---------- */
 .steps { margin: 0; padding-left: 1.4em; max-width: var(--measure); }
 .steps li { padding: 6px 0; font-size: 1.05rem; }
