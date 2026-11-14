@@ -1410,4 +1410,13 @@ button.btn.primary { background: var(--accent); }
 .lb-mini span:nth-child(3) { left: 32px; top: 44px; border-color: var(--data); color: var(--data); }
 [data-theme="light"] .lb-mini span { box-shadow: 0 3px 8px rgba(0, 0, 0, .08); }
 @media (max-width: 420px) { .lb-mini { width: 84px; } .lb-mini span { width: 58px; } .lb-mini span:nth-child(2) { left: 12px; } .lb-mini span:nth-child(3) { left: 24px; } }
+/* 入口卡右邊刷淡的子琦與雙宇（2026-11-14）：圖往左漸層到透明，字那一側保持乾淨；手機卡片太窄就不放，避免壓到字 */
+.lb-entry { position: relative; overflow: hidden; }
+.lb-entry > .lb-mini, .lb-entry > .lb-entry-text { position: relative; z-index: 1; }
+.lb-entry-art { position: absolute; top: 0; right: 0; width: 42%; height: 100%; object-fit: cover; object-position: 50% 28%;
+  opacity: .9; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, .55) 35%, #000 70%);
+          mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, .55) 35%, #000 70%); }
+.lb-entry-art ~ .lb-entry-text { max-width: 44%; }   /* 字在圖開始淡入之前就換行，不壓到圖 */
+@media (max-width: 720px) { .lb-entry-art { display: none; } .lb-entry-art ~ .lb-entry-text { max-width: none; } }
 @media (prefers-reduced-motion: reduce) { .lb-stack a, .lb-entry { transition: none; } .lb-stack a:hover, .lb-stack a:focus-visible { transform: none; } }
