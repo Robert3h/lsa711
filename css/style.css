@@ -15,7 +15,7 @@
   --surface: #171a1d;    /* hover、釘住的導覽列底色 */
   --ink: #ececea;
   --muted: #a2a6aa;      /* 次要資訊：主動退後 */
-  --rule: #2a2e33;
+  --rule: #3b4046;       /* 卡片框線、分隔線：深色底上卡片幾乎沒底色差、陰影也看不到，靠框線撐邊界；1.8:1 看得出、不搶內容（11/14 由 #2a2e33 調亮） */
   --accent: #d97757;     /* Claude 橘 */
   --accent-strong: #eb9474;
   --on-accent: #0f1113;
