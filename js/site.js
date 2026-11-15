@@ -225,17 +225,16 @@
   document.querySelectorAll('.deck-pair').forEach(function (pair) {
     var pick = pair.querySelector('.deck-pick');
     var btns = pick.querySelectorAll('button');
-    var note = pick.querySelector('.deck-note');
-    function show(which, auto) {
+    // 2026-11-15 起不再寫「已依你的螢幕選直式」：按鈕上的「建議」已經說了同一件事（Robert：做法和網站導覽相簿一樣）
+    function show(which) {
       pair.querySelectorAll('[data-ratio]').forEach(function (d) { d.hidden = d.getAttribute('data-ratio') !== which; });
       btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-pick') === which)); });
-      note.textContent = auto ? (which === 'tall' ? '已依你的螢幕選直式' : '已依你的螢幕選橫式') : '';
       // 剛露出來的那組寬度從 0 變成正常，讓幻燈片重新對齊頁碼
       window.dispatchEvent(new Event('resize'));
     }
-    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-pick'), false); }); });
+    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-pick')); }); });
     pick.hidden = false;
-    show(PORTRAIT_PAIR && PORTRAIT_PAIR.matches ? 'tall' : 'wide', true);
+    show(PORTRAIT_PAIR && PORTRAIT_PAIR.matches ? 'tall' : 'wide');
   });
 
   // 麵包屑「LSA ▾」的同層頁面選單：點 ▾ 開關（手機也能用）；有滑鼠的電腦，移上去就打開、移開稍等一下才關，

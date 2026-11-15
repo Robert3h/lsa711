@@ -517,13 +517,18 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
    4:5 那組在文章欄裡維持手機大小，上下留白比較多，所以下面多留一點距離 */
 .deck-pair { margin: 0 0 2.4em; }
 .deck-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 12px; }
+/* 2026-11-15 起按鈕外觀和設定集「網站導覽」相簿的版本按鈕一樣（Robert：做法和按鈕都要一樣）：
+   灰框方角＋適合目前螢幕的那顆有「建議」、框線變橘；另外多一個相簿沒有的狀態——正在看的那顆填滿橘色 */
 .deck-pick button {
-  font: inherit; font-size: 0.92rem; min-height: 44px; padding: 0 16px; border-radius: 22px;
-  border: 1px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px;
+  border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); color: var(--ink);
+  font: inherit; font-size: 0.9rem; cursor: pointer;
 }
-.deck-pick button:hover { background: var(--surface); }
-.deck-pick button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
-.deck-note { font-size: 0.85rem; color: var(--muted); }
+.deck-pick button:hover, .deck-pick button:focus-visible { border-color: var(--accent); color: var(--accent); }
+@media (orientation: landscape) { .deck-pick .ver-wide { border-color: var(--accent); } }
+@media (orientation: portrait) { .deck-pick .ver-tall { order: -1; border-color: var(--accent); } }
+.deck-pick button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.deck-pick button[aria-pressed="true"] .ver-tag { background: var(--on-accent); color: var(--accent); }
 .deck-pair .slides { margin: 0; }
 /* 全螢幕看幻燈片（Robert 2026-11-10：投影片字小，滿版才看得清楚）。
    iPhone 的 Safari 不支援把一般區塊切成真正的全螢幕，所以一律先用 CSS 把幻燈片蓋滿整個畫面；
