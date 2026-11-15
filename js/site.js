@@ -456,6 +456,12 @@
       if (go) setTimeout(function () { flash(go, true); }, 1200);
     }
     var FX = {
+      // One more thing：預設收起，只亮框看不出裡面有東西。先亮一下，再自己展開，讀者就知道它打得開
+      'one-more-thing': function (el) {
+        if (!el) return;
+        flash(el, true);
+        setTimeout(function () { el.open = true; }, REDUCE ? 0 : 1000);
+      },
       'finder-h': function () { typeThenGo('finder-q'); },     // 找 3 篇：輸入框 → 「找 3 篇」
       'voyage': function () { typeThenGo('voy-q'); },          // 38 光年航程：輸入框 → 「起飛」
       // 星海圖：框整張圖範圍太大（Robert 2026-11-15「框的範圍太奇怪了」），改成兩顆播放鈕輪流亮，讀者就知道要按什麼
@@ -506,7 +512,7 @@
       }
     };
     // 目標：有 id 的直接找；沒有 id 的用代號（第一組幻燈片、第一句重點字、星海圖、作品集第一張卡）
-    var ALIAS = { slides: '.deck-pair, .slides', 'w-hi': '.w-hi', starmap: '.arc-map',
+    var ALIAS = { slides: '.deck-pair, .slides', 'w-hi': '.w-hi', starmap: '.arc-map', 'deck-pick': '.deck-pick',
                   'theme-demo': 'section[aria-labelledby="h-cases"] .case-card' };
     var h = decodeURIComponent(location.hash.slice(1));
     var el = !h ? null : ALIAS[h] ? document.querySelector(ALIAS[h]) : document.getElementById(h);

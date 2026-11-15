@@ -836,6 +836,10 @@ button.btn.primary { background: var(--accent); }
 .ver-tag { display: none; font-family: var(--font-log); font-size: 0.75rem; padding: 1px 6px; border-radius: 3px; background: var(--accent); color: var(--on-accent); }
 @media (orientation: landscape) { .ver-wide { border-color: var(--accent); } .ver-wide .ver-tag { display: inline; } }
 @media (orientation: portrait) { .ver-tall { order: -1; border-color: var(--accent); } .ver-tall .ver-tag { display: inline; } }
+/* 2026-11-15 Robert：全站 16:9／4:5 按鈕都一樣「大片橘底」。相簿按鈕沒有「正在看」的狀態，所以填滿的是建議的那顆 */
+@media (orientation: landscape) { .album-open.album-ver.ver-wide, .album-open.album-ver.ver-wide:hover, .album-open.album-ver.ver-wide:focus-visible { background: var(--accent); color: var(--on-accent); } }
+@media (orientation: portrait) { .album-open.album-ver.ver-tall, .album-open.album-ver.ver-tall:hover, .album-open.album-ver.ver-tall:focus-visible { background: var(--accent); color: var(--on-accent); } }
+.album-open.album-ver .ver-tag { background: var(--on-accent); color: var(--accent); }
 @media (prefers-reduced-motion: reduce) { .album-cover img { transition: none; } .album-open:hover .album-cover img { transform: none; } }
 
 /* 放大檢視 */
