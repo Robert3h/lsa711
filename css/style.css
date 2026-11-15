@@ -554,6 +554,25 @@ html.slides-lock, html.slides-lock body { overflow: hidden; }
 .sign p { margin: 0 0 4px; }
 .sign .author-note { margin: 0 0 1em; color: var(--ink); }   /* Robert 本人的附註（不是署名），用正文字體 */
 
+/* One more thing（2026-11-15）：Robert 在留言區的補充與碎碎念。預設收起，本文才是主角；
+   整條標題列都能點（手機至少 44px 高），右邊的＋／－用橘色，因為橘色＝可以點。
+   標題是 h2（位置條才會列出這一段），但放在標題列裡要和一般段落標題一樣大會太搶，縮成粗體小標 */
+.author-notes { margin-top: 28px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+.author-notes summary { list-style: none; cursor: pointer; position: relative; min-height: 44px;
+  padding: 14px 44px 14px 16px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.author-notes summary::-webkit-details-marker { display: none; }
+.author-notes summary::after { content: "＋"; position: absolute; right: 16px; top: 13px; color: var(--accent); font-weight: 700; }
+.author-notes[open] summary::after { content: "－"; }
+.author-notes summary:hover .an-title { color: var(--accent); }
+.author-notes summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 12px; }
+.author-notes .an-title { font-size: 1.05rem; font-weight: 700; margin: 0; line-height: 1.5; }
+.author-notes .an-sub { color: var(--muted); font-size: .875rem; }
+.author-notes ol { list-style: none; margin: 0; padding: 0 16px 16px; }
+.author-notes li + li { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.author-notes li p { margin: 0 0 .8em; }
+.author-notes li .log { margin-bottom: 8px; }
+.author-notes a { overflow-wrap: anywhere; }   /* 長網址在 375px 不撐出橫向捲動 */
+
 .subscribe { margin-top: 40px; padding: 24px 0; border-top: 1px solid var(--rule); }
 .subscribe h2 { font-size: 1.1rem; margin: 0 0 6px; }
 .subscribe p { margin: 0; color: var(--muted); }

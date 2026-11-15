@@ -365,6 +365,12 @@
     // 點段落連結跳過去後，馬上重新判斷一次（不等下一次捲動），橘色才會立刻停在點的那一段
     window.addEventListener('hashchange', update);
     bar.addEventListener('click', function (e) { if (e.target.closest('a')) setTimeout(update, 50); });
+    // 位置條點「One more thing」：跳過去順便展開，讀者不用再按一次＋（2026-11-15）
+    bar.addEventListener('click', function (e) {
+      var a = e.target.closest('a'), t = a && document.getElementById(a.getAttribute('href').slice(1));
+      var d = t && t.closest('details.author-notes');
+      if (d) d.open = true;
+    });
     update();
   })();
 
