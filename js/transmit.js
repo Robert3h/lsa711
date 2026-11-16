@@ -31,7 +31,7 @@
     if (slug && Object.prototype.hasOwnProperty.call(topics, slug)) re = topics[slug];
   } catch (e) {}
   if (re && reBox) {
-    reBox.querySelector('strong').textContent = '〈' + re + '〉';
+    reBox.querySelector('strong').textContent = EN ? '“' + re + '”' : '〈' + re + '〉';
     reBox.hidden = false;
     form.message.placeholder = EN ? 'e.g.\nReading this piece reminded me of…\nNothing in particular — just wanted to say I think this way too.'
                                   : '例如：\n讀了這一篇，我想到……\n沒什麼事，只是想說我也是這樣想的。';
