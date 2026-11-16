@@ -185,8 +185,12 @@
     // 抵達：LSA-711 和它的軌道站
     if (s.t > FLIGHT - 8) {
       var k = (s.t - (FLIGHT - 8)) / 8, r = 20 + k * W * 0.32, py = -r + k * (H * 0.32 + r);
+      // 星環分前後兩半畫（Robert 2026-11-16：原本整圈畫在星球上面，後半圈透過星球看得到，像透明的）：
+      // 先畫後半圈（上半弧），再畫星球蓋住它，最後畫前半圈（下半弧）
+      ctx.strokeStyle = C.data; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.ellipse(W / 2, py, r * 1.5, r * 0.32, -0.2, Math.PI, Math.PI * 2); ctx.stroke();
       ctx.fillStyle = '#1c2a30'; ctx.beginPath(); ctx.arc(W / 2, py, r, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = C.data; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.ellipse(W / 2, py, r * 1.5, r * 0.32, -0.2, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(W / 2, py, r * 1.5, r * 0.32, -0.2, 0, Math.PI); ctx.stroke();
       ctx.font = font;
       ctx.fillStyle = C.data; ctx.textAlign = 'center'; ctx.fillText('LSA-711', W / 2, py + r + 22);
     }

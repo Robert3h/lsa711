@@ -99,11 +99,15 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .site-name { font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }   /* 名字不從中間斷開（2026-10-29） */
 /* 星芒小標記（2026-11-16）：最輕量的做法——只放圖示、不帶文字，招募者看到的還是「Robert Huang 黃星翰」這個名字優先 */
 .site-mark { width: 20px; height: 20px; flex: none; }
+/* 淺色主題：白色星芒在白底上幾乎看不見，換成灰色那張（金色不變）；兩張都放，依主題只顯示一張 */
+.mark-light { display: none; }
+:root[data-theme="light"] .mark-dark { display: none; }
+:root[data-theme="light"] .mark-light { display: block; }
 .site-name:hover { color: var(--accent); }
 .site-nav { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 18px; }
 .site-nav a { color: var(--muted); text-decoration: none; padding: 6px 0; display: inline-block; }
-.site-nav a:hover { color: var(--ink); text-decoration: underline; }
+.site-nav a:hover { color: var(--accent); text-decoration: underline; }   /* 2026-11-16：跟全站「橘色＝可以點」一致，原本是 ink 不夠明確 */
 .site-nav a[aria-current="page"] { color: var(--accent); font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; }
 /* 選單分隔號（2026-11-16）：跟語言切換「中文｜English」同一個符號，全站只有這一種分隔號風格 */
 .nav-sep { margin-left: 8px; color: var(--rule); }
@@ -111,7 +115,7 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 /* 語言切換：🌐 是國際通用的「換語言」符號；目前的語言用橘色標示、不可點，另一個語言是連結 */
 .lang-switch { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; color: var(--muted); }
 .lang-switch a { color: var(--muted); padding: 6px 2px; text-decoration: none; }
-.lang-switch a:hover { color: var(--ink); text-decoration: underline; }
+.lang-switch a:hover { color: var(--accent); text-decoration: underline; }   /* 2026-11-16：同上，可以點的那個語言 hover 要是橘色 */
 .lang-cur { color: var(--accent); font-weight: 600; }
 .lang-switch .l-short { display: none; }
 .zh-tag { color: var(--muted); }
