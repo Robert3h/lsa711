@@ -96,13 +96,17 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .site-name { order: 1; }
 .site-header .site-nav { order: 2; margin-left: auto; }
 .site-header .theme-toggle { order: 3; }
-.site-name { font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; }   /* 名字不從中間斷開（2026-10-29） */
+.site-name { font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }   /* 名字不從中間斷開（2026-10-29） */
+/* 星芒小標記（2026-11-16）：最輕量的做法——只放圖示、不帶文字，招募者看到的還是「Robert Huang 黃星翰」這個名字優先 */
+.site-mark { width: 20px; height: 20px; flex: none; }
 .site-name:hover { color: var(--accent); }
 .site-nav { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 18px; }
 .site-nav a { color: var(--muted); text-decoration: none; padding: 6px 0; display: inline-block; }
 .site-nav a:hover { color: var(--ink); text-decoration: underline; }
 .site-nav a[aria-current="page"] { color: var(--accent); font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; }
+/* 選單分隔號（2026-11-16）：跟語言切換「中文｜English」同一個符號，全站只有這一種分隔號風格 */
+.nav-sep { margin-left: 8px; color: var(--rule); }
 
 /* 語言切換：🌐 是國際通用的「換語言」符號；目前的語言用橘色標示、不可點，另一個語言是連結 */
 .lang-switch { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; color: var(--muted); }
@@ -1156,7 +1160,10 @@ button.btn.primary { background: var(--accent); }
 .qa-foot { color: var(--muted); }
 .first-qa { margin: 12px 0 0; }
 /* 「常見問題」只在電腦版導覽列出現；手機頁首放不下，改由頁尾進入 */
-@media (max-width: 759px) { .site-nav .nav-wide { display: none; } }
+@media (max-width: 759px) {
+  .site-nav .nav-wide { display: none; }
+  .site-nav li:has(+ .nav-wide) .nav-sep { display: none; }   /* 「常見問題」手機版藏起來，前一項後面的｜不留在那裡孤伶伶 */
+}
 
 /* ---------- 傳訊給我（2026-10-29） ---------- */
 .transmit { display: grid; gap: 6px; max-width: var(--measure); margin: 8px 0 40px; }
