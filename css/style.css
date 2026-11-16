@@ -577,6 +577,9 @@ html.slides-lock, html.slides-lock body { overflow: hidden; }
 .author-notes li p { margin: 0 0 .8em; }
 .author-notes li .log { margin-bottom: 8px; }
 .author-notes a { overflow-wrap: anywhere; }   /* 長網址在 375px 不撐出橫向捲動 */
+/* 資料來源（2026-11-16）：一個來源一行。蓋掉上面「一則留言一條分隔線」的規則，免得每個連結中間都畫線 */
+.author-notes .an-src { list-style: none; margin: 0; padding: 0; }
+.author-notes .an-src li { margin: 0; padding: 5px 0; border: 0; }
 
 .subscribe { margin-top: 40px; padding: 24px 0; border-top: 1px solid var(--rule); }
 .subscribe h2 { font-size: 1.1rem; margin: 0 0 6px; }
