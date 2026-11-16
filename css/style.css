@@ -216,6 +216,54 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .gate-extra a { color: var(--accent); display: inline-block; padding: 10px 2px; margin: -10px 0; }   /* 疊在整張可點的卡片上，點擊範圍要夠大才不會誤點進卡片（健檢 C11） */
 .gate-extra a:hover { color: var(--accent-strong); }
 
+/* 登機證入口（2026-11-16，Robert 看完首頁入口試作後喜歡的版本）：
+   上面一排「出發地 LSA-711 → 目的地」，借登機證的 FROM/TO 版面，不用文字說明讀者就懂「飛去哪裡」。
+   LSA-711 不是編的代號，頁尾本來就這樣稱呼這個網站。 */
+.route { position: relative; z-index: 2; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.route-point { display: flex; flex-direction: column; gap: 2px; }
+.route-label {
+  /* 0.75rem＝12px，全站最小字級（健檢抓到原本 0.68rem＝10.88px 太小） */
+  font-family: var(--font-log); font-size: 0.75rem; letter-spacing: 0.1em;
+  color: var(--muted); text-transform: uppercase;
+}
+.route-code { font-family: var(--font-log); font-size: 0.95rem; letter-spacing: 0.04em; color: var(--data); }
+.route-code--to { font-size: 1.3rem; font-weight: 700; letter-spacing: 0.06em; color: var(--ink); transition: color .2s ease; }
+.gate:hover .route-code--to, .gate:focus-within .route-code--to { color: var(--accent); }  /* 跟 h2 同一條 hover 規則，維持「橘色只代表可以點」 */
+
+/* 飛船飛過去：借用文章頁閱讀進度條本來就在用的那艘船（.toc-ship），同一個意象——那邊代表讀到哪裡，這裡代表飛去哪裡 */
+.route-path { flex: 1 1 auto; position: relative; height: 14px; }
+.route-path::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed var(--rule); }
+.route-ship {
+  /* 2026-11-16 改：Robert 覺得飛得不夠遠。改成飛船停在接近 TO 那端（快抵達的感覺），
+     起點拉到路徑左邊，整段飛行距離拉長（原本只飛自己機身寬度的 0.8 倍，現在飛 6 倍） */
+  position: absolute; top: 50%; left: 92%; width: 34px; height: auto; transform: translate(-100%, -50%);
+  animation: ship-fly 1.3s cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: .3s;
+}
+.gate-lsa .route-ship { animation-delay: .45s; }  /* 第二張卡晚一點出發，兩艘船不會同時到，比較自然，跟 gate-focus 的做法一樣 */
+@keyframes ship-fly {
+  from { transform: translate(-700%, -50%); opacity: 0; }
+  to   { transform: translate(-100%, -50%); opacity: 1; }
+}
+:root[data-theme="light"] .route-ship { filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, .35)); }   /* 白色機身在白底上要有一點影子才看得到，跟 .toc-ship 同一招 */
+
+.pass-gate { position: relative; z-index: 2; margin: 0 0 16px; }
+
+/* 撕票邊：虛線＋兩個缺口，模仿登機證存根撕開的痕跡。純粹造型，不帶資訊。 */
+.pass-tear { position: relative; height: 1px; border-top: 1px dashed var(--rule); margin: 0 0 20px; }
+.pass-tear::before, .pass-tear::after {
+  content: ""; position: absolute; top: 50%; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--bg); border: 1px solid var(--rule); transform: translateY(-50%);
+}
+.pass-tear::before { left: -7px; }
+.pass-tear::after { right: -7px; }
+
+/* 真實數量：案例數、文章數、彩蛋集數都是 build_site.py 現場算出來的，不是手打的數字，內容增加時會自動跟著變 */
+.gate-stats { position: relative; z-index: 2; margin: 0 0 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .route-ship { animation: none; transform: translate(-100%, -50%); }
+}
+
 .motto { margin: 28px 0 0; color: var(--muted); font-size: 0.95rem; }
 
 /* 手機首頁（2026-10-25，健檢 M4）：第一屏要先看到兩個入口，不是寫作系統的消息。
