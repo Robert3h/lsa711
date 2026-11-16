@@ -1126,6 +1126,11 @@ button.btn.primary { background: var(--accent); }
 .transmit button[disabled] { opacity: .6; cursor: wait; }
 /* 機器人陷阱：真人看不到、按 Tab 也不會跳到這一格 */
 .transmit .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+/* 「你正在回應：〈標題〉」：橘色直線標出這則傳訊對著哪一篇；取消鈕退後成次要資訊 */
+.transmit-re { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 0 0 4px; padding: 6px 0 6px 14px; border-left: 3px solid var(--accent); }
+.transmit-re[hidden] { display: none; }
+.transmit-re-x { min-height: 32px; padding: 2px 10px; font: inherit; font-size: 0.85rem; color: var(--muted); background: none; border: 1px solid var(--rule); border-radius: 6px; cursor: pointer; }
+.transmit-re-x:hover, .transmit-re-x:focus-visible { color: var(--ink); border-color: var(--ink); }
 .transmit-status { min-height: 1.4em; margin: 4px 0 0; color: var(--data); }
 .transmit-status.is-bad { color: var(--accent); }
 .transmit-done { max-width: var(--measure); margin: 8px 0 40px; padding: 20px; border: 1px solid var(--data); border-radius: 8px; }

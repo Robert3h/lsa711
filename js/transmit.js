@@ -22,6 +22,23 @@
     off: '傳訊功能還在準備中，暫時請寄信到 ' + MAIL + '。',
     done: '訊號已送出 📡', thanks: '謝謝你。我會盡量看每一則。', again: '再傳一則'
   };
+  // 從文章底部點過來（網址帶 ?re=代號）：顯示「你正在回應：〈標題〉」，讀者不用自己打讀了哪一篇。
+  // 只認表單上那份對照表裡的代號；「✕ 不指定」可以取消。
+  var re = null, reBox = form.querySelector('.transmit-re'), ph0 = form.message.placeholder;
+  try {
+    var topics = JSON.parse(form.getAttribute('data-topics') || '{}');
+    var slug = new URLSearchParams(location.search).get('re');
+    if (slug && Object.prototype.hasOwnProperty.call(topics, slug)) re = topics[slug];
+  } catch (e) {}
+  if (re && reBox) {
+    reBox.querySelector('strong').textContent = '〈' + re + '〉';
+    reBox.hidden = false;
+    form.message.placeholder = EN ? 'e.g.\nReading this piece reminded me of…\nNothing in particular — just wanted to say I think this way too.'
+                                  : '例如：\n讀了這一篇，我想到……\n沒什麼事，只是想說我也是這樣想的。';
+    reBox.querySelector('button').addEventListener('click', function () {
+      re = null; reBox.hidden = true; form.message.placeholder = ph0; form.message.focus();
+    });
+  }
   function say(msg, bad) { status.textContent = msg; status.classList.toggle('is-bad', !!bad); }
 
   form.addEventListener('submit', function (ev) {
@@ -33,7 +50,8 @@
     var data = new URLSearchParams({
       name: form.name.value.trim(), message: msg, email: form.email.value.trim(),
       website: form.website.value, lang: EN ? 'en' : 'zh',
-      page: document.referrer || location.href      // 從哪一頁點進來的，方便 Robert 知道讀者剛讀了什麼
+      // 從哪一頁點進來的，方便 Robert 知道讀者剛讀了什麼；有指定文章時把標題放最前面（從 LinkedIn 點來的 referrer 看不出是哪一篇）
+      page: (re ? '〈' + re + '〉 ' : '') + (document.referrer || location.href)
     });
     fetch(endpoint, { method: 'POST', body: data })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
