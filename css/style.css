@@ -1587,3 +1587,92 @@ button.btn.primary { background: var(--accent); }
             mask-image: linear-gradient(to bottom, #000 40%, rgba(0, 0, 0, .5) 70%, transparent 100%); }
   .lb-entry-art ~ .lb-entry-text { max-width: none; } }
 @media (prefers-reduced-motion: reduce) { .lb-stack a, .lb-entry { transition: none; } .lb-stack a:hover, .lb-stack a:focus-visible { transform: none; } }
+/* ---------- 艙位配置圖 /deck-plan/（2026-11-17）----------
+   第二版（Robert 看完第一版）：航站畫成跑道（外框＋中心虛線＋兩端跑道頭斑馬線）；艙內畫成星羽號側視輪廓，
+   和設定集的剖面圖同方向：船頭在左、船尾三具引擎（Robert：星羽號是三個引擎）。手機轉成船頭朝上、引擎在下。
+   「航站」「艙內」標籤置中：靠左會壓到跑道頭斑馬線和船頭弧線（Robert 2026-11-17）。
+   跑道、船身、引擎都只是線條（不能點、沒有底色），裡面每一艙才是連結：看起來可點的（有底色、滑過去變橘框）都真的可點。 */
+.dp .page-head { padding-bottom: 0; }
+.dp-ginni { margin: 4px 0 0; max-width: 40em; }
+.dp-label { position: relative; margin: 0 0 10px; text-align: center; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.12em; }
+/* 跑道 */
+.dp-terminal { position: relative; margin: 20px 0 30px; padding: 16px 52px 22px; border: 2px solid var(--rule); border-radius: 14px; }
+.dp-terminal::before, .dp-terminal::after { content: ""; position: absolute; top: 22%; bottom: 22%; width: 22px; opacity: 0.55;
+  background: repeating-linear-gradient(180deg, var(--muted) 0 3px, transparent 3px 10px); }   /* 跑道頭斑馬線 */
+.dp-terminal::before { left: 14px; } .dp-terminal::after { right: 14px; }
+.dp-row { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.dp-row::before { content: ""; position: absolute; left: -30px; right: -30px; top: 50%; border-top: 2px dashed var(--rule); }   /* 中心線 */
+/* 星羽號 */
+.dp-ship { position: relative; margin: 0 76px 40px 0; padding: 22px 26px 26px 7%; border: 2px solid var(--rule);
+  border-radius: 230px 46px 46px 230px / 50% 46px 46px 50%; }   /* 左邊收成船頭 */
+.dp-engine { position: absolute; right: -74px; width: 112px; height: 56px; border: 2px solid var(--rule); border-radius: 28px 10px 10px 28px; background: var(--bg); }
+.dp-engine::after { content: ""; position: absolute; right: -2px; top: 18%; bottom: 18%; width: 6px; border-radius: 3px; background: var(--data); opacity: 0.7; }   /* 引擎噴口 */
+.dp-engine-a { top: 10%; } .dp-engine-b { bottom: 10%; } .dp-engine-c { top: calc(50% - 28px); }
+.dp-deck { position: relative; display: grid; gap: 22px 12px;
+  grid-template-columns: 1.15fr 1.1fr 1.1fr 1.1fr 1fr;
+  grid-template-areas: "cockpit work archive lounge hangar" "cockpit lsa lab kit hangar"; }
+.dp-deck::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed var(--rule); }   /* 走道 */
+.dp-work { grid-area: work; } .dp-lsa { grid-area: lsa; } .dp-archive { grid-area: archive; } .dp-lab { grid-area: lab; }
+.dp-lounge { grid-area: lounge; } .dp-kit { grid-area: kit; } .dp-cockpit { grid-area: cockpit; } .dp-hangar { grid-area: hangar; }
+.dp-room { position: relative; display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 44px; padding: 14px 16px; overflow-wrap: break-word; hyphens: auto;
+  border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); color: var(--ink); text-decoration: none; }
+.dp-room b { font-size: 1.12rem; line-height: 1.3; }
+.dp-room b::after { content: " →"; color: var(--accent); }   /* 不換行空白：→ 黏著最後一個字，不會自己掉到下一行 */
+.dp-code { font-size: 0.75rem; letter-spacing: 0.1em; color: var(--muted); }
+.dp-what { font-size: 0.88rem; line-height: 1.5; color: var(--muted); }
+.dp-n { margin-top: auto; padding-top: 6px; font-size: 0.8rem; color: var(--data); }
+.dp-n .nw { white-space: nowrap; }
+.dp-room:hover, .dp-room:focus-visible { border-color: var(--accent); outline: none; }
+.dp-room:focus-visible { box-shadow: 0 0 0 2px var(--accent); }
+.dp-cockpit { justify-content: center; padding-left: 26%; border-radius: 150px 10px 10px 150px / 50% 10px 10px 50%; }
+.dp-hangar { justify-content: center; border-radius: 10px 26px 26px 10px; }
+.dp-room.is-here { border-color: var(--data); box-shadow: 0 0 0 2px var(--data); }
+.dp-here { position: absolute; top: -11px; left: 12px; padding: 1px 8px; border-radius: 999px; font-size: 0.75rem; white-space: nowrap;
+  background: var(--data); color: var(--on-accent); font-family: var(--font-log); letter-spacing: 0.04em; }
+.dp-cockpit .dp-here { left: 26%; }
+.dp-en { margin: 18px 0 40px; color: var(--muted); font-size: 0.8rem; }
+@media (max-width: 760px) {
+  .dp-terminal { padding: 14px 20px 16px; }
+  .dp-terminal::before, .dp-terminal::after { width: 8px; }
+  .dp-terminal::before { left: 6px; } .dp-terminal::after { right: 6px; }
+  .dp-row { gap: 8px; }
+  .dp-row::before { left: -20px; right: -20px; }
+  .dp-row .dp-room { padding: 10px 8px; }
+  .dp-row .dp-what { display: none; }   /* 手機一排三格：只留代號、名稱、數字，說明到那一頁就看得到 */
+  .dp-row .dp-room b { font-size: 0.95rem; }
+  .dp-row .dp-n .nw { white-space: normal; }   /* 一排三格太窄，「16 questions」要能換行 */
+  .dp-ship { margin: 0 0 70px; padding: 70px 12px 18px; border-radius: 50% 50% 40px 40px / 130px 130px 40px 40px; }   /* 上面收成船頭 */
+  .dp-engine { right: auto; top: auto; bottom: -58px; width: 48px; height: 84px; border-radius: 10px 10px 24px 24px; }
+  .dp-engine::after { right: 18%; left: 18%; top: auto; bottom: -2px; width: auto; height: 6px; }
+  .dp-engine-a { left: 14%; } .dp-engine-b { right: 14%; bottom: -58px; } .dp-engine-c { top: auto; left: calc(50% - 24px); }
+  .dp-deck { gap: 12px 18px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);   /* minmax(0,…)：英文長字（entertainment）不會把格子撐寬造成橫向捲動 */
+    grid-template-areas: "cockpit cockpit" "work lsa" "archive lab" "lounge kit" "hangar hangar"; }
+  .dp-deck::before { left: 50%; right: auto; top: 0; bottom: 0; border-top: 0; border-left: 1px dashed var(--rule); }
+  .dp-room { padding: 12px; }
+  .dp-cockpit { padding: 12px; text-align: center; align-items: center; border-radius: 50% 50% 10px 10px / 44px 44px 10px 10px; }
+  .dp-cockpit .dp-here { left: 50%; transform: translateX(-50%); }
+  .dp-hangar { border-radius: 10px 10px 24px 24px; }
+}
+@media (prefers-reduced-motion: no-preference) { .dp-room { transition: border-color .15s, box-shadow .15s; } }
+
+/* ---------- 寫作系統首頁的兩張入口圖卡（2026-11-17）----------
+   原本是兩行文字連結，整頁最重要的兩個入口最不顯眼。改成左右兩張圖卡：整張是一個連結，滑過去框線變橘、圖片微微放大。
+   圖片用固定比例裁切，兩張高度一樣；手機上下排。 */
+.lsa-doors { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 24px 0 40px; }
+.lsa-door { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--rule); border-radius: 14px;
+  background: var(--surface); color: var(--ink); text-decoration: none; }
+.lsa-door img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.lsa-door-body { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px 20px; flex: 1; }
+.lsa-door-code { font-size: 0.75rem; letter-spacing: 0.12em; color: var(--muted); }
+.lsa-door-title { font-size: 1.4rem; font-weight: 700; line-height: 1.3; }
+.lsa-door-desc { color: var(--muted); line-height: 1.6; }
+.lsa-door-stats { margin-top: 4px; font-size: 0.8rem; color: var(--data); }
+.lsa-door-go { margin-top: auto; padding-top: 8px; color: var(--accent); font-weight: 600; }
+.lsa-door:hover, .lsa-door:focus-visible { border-color: var(--accent); outline: none; }
+.lsa-door:focus-visible { box-shadow: 0 0 0 2px var(--accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .lsa-door img { transition: transform .4s ease; }
+  .lsa-door:hover img, .lsa-door:focus-visible img { transform: scale(1.03); }
+  .lsa-door { transition: border-color .15s; }
+}
+@media (max-width: 640px) { .lsa-doors { grid-template-columns: 1fr; gap: 14px; } }

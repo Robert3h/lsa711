@@ -1,4 +1,4 @@
-// 子琦與雙宇的四個小遊戲（試映版）
+// 子琦與雙宇的小遊戲（2026-11-17 正式上架，拿掉「試映」字眼）
 // 台詞資料由頁面裡的 <script id="game-data"> 提供，全部取自已發表的宇琦對話，這支程式只負責流程。
 (function () {
   var root = document.querySelector('[data-game]');

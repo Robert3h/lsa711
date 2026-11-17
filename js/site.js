@@ -97,7 +97,7 @@
       if (f.indexOf(id) < 0) f.push(id);
       try { localStorage.setItem(FKEY, JSON.stringify(f)); } catch (e) {}
       mark();
-      say('收到傳訊碎片 ' + f.length + ' / ' + total + '。到「即將上映 → 傳訊碎片」查看。');
+      say('收到傳訊碎片 ' + f.length + ' / ' + total + '。到「小遊戲 → 傳訊碎片」查看。');
     });
   });
 
@@ -555,4 +555,24 @@
       }
     }
   }
+})();
+
+// ---------- 3e. 艙位配置圖「您在這裡」（2026-11-17）----------
+// 頁尾的「艙位配置圖」連結帶 ?at=這頁屬於哪一艙（build_site.py 的 deck_zone()）。
+// 到了配置圖：那一艙加青色框和「您在這裡」標籤，子琦那句話也換成「您目前在……」。青色＝標記，不和「可以點」的橘色混用。
+// 網址上的 ?at= 讀完就拿掉，分享出去的網址保持乾淨。沒有 JS 時配置圖照樣能點，只是沒有標記。
+(function () {
+  var m = /[?&]at=([a-z]+)(?:&|$)/.exec(location.search);
+  if (!m || !document.querySelector('.dp-deck')) return;
+  try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+  var el = document.querySelector('.dp-room[data-zone="' + m[1] + '"]');   // 航站的三格也算（登機門、服務台、塔台）
+  if (!el) return;
+  el.classList.add('is-here');
+  var tag = document.createElement('span');
+  tag.className = 'dp-here';
+  var deck = document.querySelector('.dp-deck');   // 中英文版的字寫在頁面上（data-here、data-now），這裡不寫死
+  tag.textContent = deck.getAttribute('data-here');
+  el.insertBefore(tag, el.firstChild);
+  var say = document.getElementById('dp-say');
+  if (say) say.textContent = deck.getAttribute('data-now').replace('{name}', el.getAttribute('data-name'));
 })();
