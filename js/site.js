@@ -576,3 +576,11 @@
   var say = document.getElementById('dp-say');
   if (say) say.textContent = deck.getAttribute('data-now').replace('{name}', el.getAttribute('data-name'));
 })();
+
+// ---------- 3f. 連到維修日誌的投影片（2026-11-17）----------
+// 文章裡「投影片好讀版本」的連結是 /logbook/#h-deck；那張卡平常收起來，從連結過來就直接打開，讀者不用再按一次「展開投影片」。
+(function () {
+  if (location.hash !== '#h-deck') return;
+  var d = document.querySelector('details.lb-deck');
+  if (d) d.open = true;
+})();
