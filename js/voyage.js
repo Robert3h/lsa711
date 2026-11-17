@@ -254,21 +254,266 @@
     }).join('') + '</ol>';
   }
 
+  // ===== 紀念登機證（2026-11-17，Robert：讓讀者透過遊戲做出客製化登機證，可下載）=====
+  // 只在讀者的瀏覽器裡用 Canvas 畫成 PNG：網站沒有資料庫，名字不送出、只記在這台裝置（localStorage）。
+  // 艙等照這趟接到幾則訊號決定（Robert 2026-11-17 定）：8 則白羽艙、6～7 金羽艙、3～5 銀羽豪華艙、0～2 銀羽艙。
+  //   規則不寫在遊戲頁上，抵達後由子琦廣播宣布（讀者好奇就會再飛一次）。
+  // 票面配色只看艙等、不分網站深淺色（Robert：「那樣卡片變數太多」）：白羽艙象牙白、金羽艙黑底金線、銀羽兩艙深色系。
+  // 版面參考 GrokBot 2026-11-17 的「三艙等票卡」：照片為主、細幾何線條、下方存根放 GATE＋條碼＋星芒。
+  var CLS = {
+    W:    { zh: '白羽艙',     en: 'FIRST CLASS',     bg: '#f6f2e9', line: '#c2a66a', ink: '#1e1c19', muted: '#7e776a', hi: '#a8843f', frames: 2, mark: 'light' },
+    G:    { zh: '金羽艙',     en: 'BUSINESS',        bg: '#0e0d0b', line: '#c9a45c', ink: '#f2ebdb', muted: '#a69a80', hi: '#d9b56a', frames: 1, mark: 'dark' },
+    'S+': { zh: '銀羽豪華艙', en: 'PREMIUM ECONOMY', bg: '#111a29', line: '#c5ccd6', ink: '#e9edf3', muted: '#93a0b3', hi: '#e9edf3', frames: 2, mark: 'dark' },
+    S:    { zh: '銀羽艙',     en: 'ECONOMY',         bg: '#131821', line: '#7f8896', ink: '#e2e5ea', muted: '#8b939f', hi: '#cfd5dd', frames: 1, mark: 'dark' }
+  };
+  function tierOf(n) { return n >= 8 ? 'W' : n >= 6 ? 'G' : n >= 3 ? 'S+' : 'S'; }
+  // 子琦宣布艙等（台詞 Claude 草擬，Robert 可改）
+  function tierLine(t, n) {
+    if (t === 'W') return '8 則訊號全部收到了！恭喜升等<b>白羽艙</b>，請從專屬通道登機～';
+    if (t === 'G') return '收到 ' + n + ' 則訊號，這趟為您安排<b>金羽艙</b>。金羽酒廊已經準備好了喔～';
+    if (t === 'S+') return '收到 ' + n + ' 則訊號，為您安排<b>銀羽豪華艙</b>，腿可以伸直一點了～';
+    return (n ? '收到 ' + n + ' 則訊號，' : '訊號這次都擦身而過了，沒關係，') + '為您安排<b>銀羽艙</b>。下一趟說不定可以升等喔～';
+  }
+  function pad(k) { return (k < 10 ? '0' : '') + k; }
+  function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+  // 座位編碼照 product.md §5：白羽艙 W-01A（套房＋床位）、金羽艙 G-D3-12、銀羽豪華艙 S+-D4-08、銀羽艙 S-D4-36
+  function seatOf(t) {
+    if (t === 'W') return 'W-' + pad(rnd(1, 8)) + (Math.random() < 0.5 ? 'A' : 'K');
+    if (t === 'G') return 'G-D' + rnd(2, 3) + '-' + pad(rnd(1, 24));
+    if (t === 'S+') return 'S+-D4-' + pad(rnd(1, 20));
+    return 'S-D' + rnd(4, 5) + '-' + pad(rnd(1, 60));
+  }
+  function today() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function img(src) { var i = new Image(); i.src = src; return i; }
+  var PHOTO = img(root.getAttribute('data-photo')), MARK = img(root.getAttribute('data-mark')), MARKL = img(root.getAttribute('data-mark-light'));
+  var NAME_KEY = 'voy-name';
+  function savedName() { try { return localStorage.getItem(NAME_KEY) || ''; } catch (e) { return ''; } }
+
+  // ---- 畫圖小工具 ----
+  function rr(g, x, y, w, h, r) {
+    g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
+    g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
+  }
+  // 四芒星（星芒標誌同一個形狀）：四個尖角用往中心凹的曲線連起來
+  function sparkle(g, cx, cy, r) {
+    g.beginPath(); g.moveTo(cx, cy - r);
+    g.quadraticCurveTo(cx, cy, cx + r, cy); g.quadraticCurveTo(cx, cy, cx, cy + r);
+    g.quadraticCurveTo(cx, cy, cx - r, cy); g.quadraticCurveTo(cx, cy, cx, cy - r); g.fill();
+  }
+  var BODY = getComputedStyle(document.body).fontFamily;
+  var MONO = getComputedStyle(document.documentElement).getPropertyValue('--font-log') || 'monospace';
+  function txt(g, str, x, y, size, color, o) {
+    o = o || {};
+    g.font = (o.weight || 400) + ' ' + size + 'px ' + (o.mono ? MONO : BODY);
+    g.fillStyle = color; g.textAlign = o.align || 'left'; g.textBaseline = 'alphabetic';
+    if ('letterSpacing' in g) g.letterSpacing = (o.sp || 0) + 'px';
+    // 太長就縮小字級塞進寬度（例如很長的名字），不會跑出票面
+    if (o.max) { var s0 = size; while (s0 > 12 && g.measureText(str).width > o.max) { s0 -= 2; g.font = (o.weight || 400) + ' ' + s0 + 'px ' + (o.mono ? MONO : BODY); } }
+    g.fillText(str, x, y);
+    var w = g.measureText(str).width;
+    if ('letterSpacing' in g) g.letterSpacing = '0px';
+    return w;
+  }
+  function cover(g, im, x, y, w, h, r) {
+    g.save(); rr(g, x, y, w, h, r); g.clip();
+    if (im.complete && im.naturalWidth) {
+      var k = Math.max(w / im.naturalWidth, h / im.naturalHeight), iw = im.naturalWidth * k, ih = im.naturalHeight * k;
+      g.drawImage(im, x + (w - iw) / 2, y, iw, ih);   // 上緣對齊：寧可切小腿也不切頭（Robert 2026-11-16）
+    } else { g.fillStyle = '#2a2f36'; g.fillRect(x, y, w, h); }
+    g.restore();
+  }
+  // 條碼：純裝飾、不帶資料（跟 Grok 版一樣）；用名字＋日期當種子，同一張票每次畫出來一樣
+  function barcode(g, x, y, w, h, seed, color) {
+    var v = 0; for (var i = 0; i < seed.length; i++) v = (v * 31 + seed.charCodeAt(i)) >>> 0;
+    g.fillStyle = color; var cx = x;
+    while (cx < x + w - 6) { v = (v * 1103515245 + 12345) >>> 0; var bw = 2 + (v >>> 16) % 5; g.fillRect(cx, y, bw, h); cx += bw + 2 + (v >>> 8) % 5; }
+  }
+  // 訊號點：8 顆點，亮的是這趟真的接到的則數（有資料支撐，不是裝飾）
+  function dots(g, cx, y, n, c) {
+    for (var i = 0; i < SIGNALS; i++) {
+      var x = cx + (i - (SIGNALS - 1) / 2) * 30;
+      g.beginPath(); g.arc(x, y, 6, 0, Math.PI * 2);
+      if (i < n) { g.fillStyle = c.hi; g.fill(); } else { g.strokeStyle = c.muted; g.lineWidth = 1.5; g.stroke(); }
+    }
+  }
+  function field(g, x, y, label, value, sub, c, o) {
+    txt(g, label, x, y, o.ls, c.muted, { mono: true, sp: 2 });
+    var w = txt(g, value, x, y + o.gap, o.vs, c.ink, { weight: 600, mono: o.mono, max: o.max });
+    if (o.chip) {   // 艙等旁邊的機位代號小框（W／G／S+／S）
+      g.font = '600 ' + Math.round(o.vs * 0.55) + 'px ' + MONO;
+      var cw = g.measureText(o.chip).width + 18, ch = o.vs * 0.8, cx = x + w + 14, cy = y + o.gap - o.vs * 0.72;
+      g.strokeStyle = c.hi; g.lineWidth = 1.5; rr(g, cx, cy, cw, ch, 6); g.stroke();
+      txt(g, o.chip, cx + cw / 2, cy + ch * 0.72, Math.round(o.vs * 0.55), c.hi, { weight: 600, mono: true, align: 'center' });
+    }
+    if (sub) txt(g, sub, x, y + o.gap + o.ss + 14, o.ss, c.muted, { mono: true, sp: 1 });
+  }
+  function routeRow(g, x1, x2, yl, yc, from, to, c, size) {
+    txt(g, 'FROM', x1, yl, size * 0.4, c.muted, { mono: true, sp: 3 });
+    txt(g, 'TO', x2, yl, size * 0.4, c.muted, { mono: true, sp: 3, align: 'right' });
+    var wf = txt(g, from, x1, yc, size, c.ink, { weight: 600, mono: true });
+    g.font = '600 ' + size + 'px ' + MONO; var wt = g.measureText(to).width;
+    txt(g, to, x2, yc, size, c.hi, { weight: 600, mono: true, align: 'right' });
+    var a = x1 + wf + 28, b = x2 - wt - 28, my = yc - size * 0.32;
+    g.strokeStyle = c.line; g.lineWidth = 1.5; g.setLineDash([6, 8]);
+    g.beginPath(); g.moveTo(a, my); g.lineTo(b, my); g.stroke(); g.setLineDash([]);
+    g.fillStyle = c.hi; sparkle(g, (a + b) / 2, my, size * 0.26);
+  }
+  // 撕票孔：虛線＋兩端挖空的半圓（PNG 在缺口和圓角是透明的，貼到任何背景都像一張真的票）
+  function perforation(g, W, H, pos, vertical, c) {
+    g.strokeStyle = c.line; g.lineWidth = 1.5; g.setLineDash([10, 10]); g.beginPath();
+    if (vertical) { g.moveTo(pos, 40); g.lineTo(pos, H - 40); } else { g.moveTo(40, pos); g.lineTo(W - 40, pos); }
+    g.stroke(); g.setLineDash([]);
+    var pts = vertical ? [[pos, 0], [pos, H]] : [[0, pos], [W, pos]];
+    g.save(); g.globalCompositeOperation = 'destination-out';
+    pts.forEach(function (p) { g.beginPath(); g.arc(p[0], p[1], 28, 0, Math.PI * 2); g.fill(); });
+    g.restore();
+    g.strokeStyle = c.line; g.lineWidth = 2;
+    pts.forEach(function (p) { g.beginPath(); g.arc(p[0], p[1], 28, 0, Math.PI * 2); g.stroke(); });
+  }
+  function frame(g, W, H, c) {
+    g.strokeStyle = c.line; g.lineWidth = 2; rr(g, 18, 18, W - 36, H - 36, 30); g.stroke();
+    if (c.frames > 1) { g.globalAlpha = 0.5; g.lineWidth = 1; rr(g, 28, 28, W - 56, H - 56, 24); g.stroke(); g.globalAlpha = 1; }
+  }
+  function brand(g, x, y, size, c) {
+    var m = c.mark === 'light' ? MARKL : MARK;
+    if (m.complete && m.naturalWidth) g.drawImage(m, x, y - size * 0.82, size * 1.3, size * 1.3);
+    else { g.fillStyle = c.ink; sparkle(g, x + size * 0.6, y - size * 0.3, size * 0.55); }
+    txt(g, 'STARWING', x + size * 1.6, y, size, c.ink, { weight: 600, sp: size * 0.18 });
+  }
+
+  // T＝這張票的內容：{ t: 艙等, n: 訊號數, to: 目的地, seat, date, name }
+  function drawTicket(cv2, T, wide) {
+    var c = CLS[T.t], W = wide ? 1920 : 1080, H = wide ? 768 : 1920, g = cv2.getContext('2d');
+    cv2.width = W; cv2.height = H;
+    g.clearRect(0, 0, W, H);
+    g.save(); rr(g, 0, 0, W, H, 44); g.clip(); g.fillStyle = c.bg; g.fillRect(0, 0, W, H); g.restore();
+    frame(g, W, H, c);
+    var name = T.name || '星羽號乘客', from = T.n ? 'LSA-711' : 'THE LOOP', gateLine = 'GATE 02 · 寫作系統 · 預計航程 38+ 光年';
+    var seed = name + T.date + T.seat;
+    if (!wide) {
+      var P = 64, R = W - P;
+      brand(g, P, 112, 34, c);
+      txt(g, 'BOARDING PASS', R, 104, 30, c.ink, { mono: true, sp: 3, align: 'right', weight: 600 });
+      txt(g, '登機證 · FLIGHT SW711', R, 142, 22, c.muted, { align: 'right', sp: 1 });
+      cover(g, PHOTO, P, 176, W - 2 * P, 880, 18);
+      g.strokeStyle = c.line; g.lineWidth = 1.5; rr(g, P, 176, W - 2 * P, 880, 18); g.stroke();
+      routeRow(g, P, R, 1126, 1190, from, T.to, c, 56);
+      txt(g, gateLine, P, 1244, 24, c.muted, { sp: 1 });
+      g.globalAlpha = 0.5; g.fillStyle = c.line; g.fillRect(P, 1272, W - 2 * P, 1); g.globalAlpha = 1;
+      field(g, P, 1322, 'PASSENGER 乘客', name, '', c, { ls: 20, gap: 54, vs: 44, ss: 18, max: 560 });
+      field(g, P + 620, 1322, 'DATE 日期', T.date, '', c, { ls: 20, gap: 54, vs: 40, ss: 18, mono: true });
+      field(g, P, 1452, 'CLASS 艙等', c.zh, c.en, c, { ls: 20, gap: 52, vs: 40, ss: 18, chip: T.t, max: 260 });
+      field(g, P + 420, 1452, 'SEAT 座位', T.seat, '', c, { ls: 20, gap: 52, vs: 40, ss: 18, mono: true });
+      field(g, P + 720, 1452, 'SIGNALS 訊號', T.n + ' / ' + SIGNALS, '', c, { ls: 20, gap: 52, vs: 40, ss: 18, mono: true });
+      perforation(g, W, H, 1600, false, c);
+      txt(g, 'GATE', P, 1690, 22, c.muted, { mono: true, sp: 3 });
+      txt(g, '02', P - 4, 1804, 116, c.ink, { mono: true, weight: 300 });
+      txt(g, '寫作系統', P, 1848, 24, c.muted);
+      barcode(g, 330, 1668, 420, 96, seed, c.hi);
+      dots(g, 540, 1810, T.n, c);
+      txt(g, 'robert3h.github.io/lsa711', 540, 1862, 20, c.muted, { mono: true, align: 'center', sp: 1 });
+      g.fillStyle = c.hi; sparkle(g, R - 56, 1736, 58);
+      g.globalAlpha = 0.7; sparkle(g, R - 8, 1798, 20); g.globalAlpha = 1;   // 大星＋小星錯位：星芒標誌的意象
+    } else {
+      cover(g, PHOTO, 40, 40, 580, H - 80, 22);
+      g.strokeStyle = c.line; g.lineWidth = 1.5; rr(g, 40, 40, 580, H - 80, 22); g.stroke();
+      var L = 672, Rm = 1430;
+      brand(g, L, 100, 30, c);
+      txt(g, 'BOARDING PASS', Rm, 92, 26, c.ink, { mono: true, sp: 3, align: 'right', weight: 600 });
+      txt(g, '登機證 · FLIGHT SW711', Rm, 126, 20, c.muted, { align: 'right', sp: 1 });
+      routeRow(g, L, Rm, 200, 262, from, T.to, c, 50);
+      txt(g, gateLine, L, 314, 22, c.muted, { sp: 1 });
+      g.globalAlpha = 0.5; g.fillStyle = c.line; g.fillRect(L, 340, Rm - L, 1); g.globalAlpha = 1;
+      field(g, L, 392, 'PASSENGER 乘客', name, '', c, { ls: 18, gap: 50, vs: 40, ss: 16, max: 440 });
+      field(g, L + 500, 392, 'DATE 日期', T.date, '', c, { ls: 18, gap: 50, vs: 36, ss: 16, mono: true });
+      field(g, L, 512, 'CLASS 艙等', c.zh, c.en, c, { ls: 18, gap: 48, vs: 36, ss: 16, chip: T.t, max: 230 });
+      field(g, L + 340, 512, 'SEAT 座位', T.seat, '', c, { ls: 18, gap: 48, vs: 36, ss: 16, mono: true });
+      field(g, L + 590, 512, 'SIGNALS 訊號', T.n + ' / ' + SIGNALS, '', c, { ls: 18, gap: 48, vs: 36, ss: 16, mono: true });
+      txt(g, 'THE LOOP → LSA-711 · robert3h.github.io/lsa711', L, 700, 18, c.muted, { mono: true, sp: 1 });
+      perforation(g, W, H, 1480, true, c);
+      var cx = 1700;
+      txt(g, 'GATE', cx, 128, 22, c.muted, { mono: true, sp: 3, align: 'center' });
+      txt(g, '02', cx, 236, 104, c.ink, { mono: true, weight: 300, align: 'center' });
+      txt(g, '寫作系統', cx, 280, 22, c.muted, { align: 'center' });
+      txt(g, T.seat, cx, 336, 26, c.ink, { mono: true, align: 'center', weight: 600 });
+      barcode(g, 1570, 372, 260, 84, seed, c.hi);
+      dots(g, cx, 500, T.n, c);
+      g.fillStyle = c.hi; sparkle(g, cx - 10, 620, 52);
+      g.globalAlpha = 0.7; sparkle(g, cx + 44, 674, 18); g.globalAlpha = 1;
+    }
+  }
+
+  function ticketHtml(T) {
+    var c = CLS[T.t];
+    return '<section class="voy-ticket" aria-labelledby="voy-ticket-h">' +
+      '<h3 id="voy-ticket-h">你的紀念登機證</h3>' +
+      '<div class="deck-pick voy-orient" role="group" aria-label="登機證方向">' +
+        '<button type="button" class="ver-wide" data-o="wide" aria-pressed="false"><span class="ver-tag">建議</span>電腦版 橫式</button>' +
+        '<button type="button" class="ver-tall" data-o="tall" aria-pressed="false"><span class="ver-tag">建議</span>手機版 直式</button></div>' +
+      '<div class="voy-ticket-view"><canvas role="img" aria-label="紀念登機證：' + esc(c.zh) + '，座位 ' + esc(T.seat) + '，目的地 ' + esc(T.to) +
+        '，這趟接收 ' + T.n + ' / ' + SIGNALS + ' 則訊號"></canvas></div>' +
+      '<label for="voy-name">登機證上的名字<span class="opt">（可以留白；只記在這台裝置，不會送出）</span></label>' +
+      '<input id="voy-name" type="text" maxlength="20" autocomplete="off" placeholder="例：Robert">' +
+      '<div class="actions"><button type="button" class="btn primary voy-dl">下載登機證 PNG</button></div>' +
+      '<p class="voy-note voy-dl-msg" role="status"></p></section>';
+  }
+
+  function bindTicket(T) {
+    var box = result.querySelector('.voy-ticket'), view = box.querySelector('.voy-ticket-view'), c2 = view.querySelector('canvas');
+    var nameIn = box.querySelector('#voy-name'), msg = box.querySelector('.voy-dl-msg'), btns = box.querySelectorAll('.voy-orient button');
+    var wide = !(window.matchMedia && matchMedia('(orientation: portrait)').matches);   // 手機直拿先看直式，電腦先看橫式
+    nameIn.value = T.name = savedName();
+    function paint() {
+      drawTicket(c2, T, wide);
+      view.classList.toggle('is-wide', wide);
+      [].forEach.call(btns, function (b) { b.setAttribute('aria-pressed', String((b.getAttribute('data-o') === 'wide') === wide)); });
+    }
+    [].forEach.call(btns, function (b) { b.addEventListener('click', function () { wide = b.getAttribute('data-o') === 'wide'; paint(); }); });
+    nameIn.addEventListener('input', function () {
+      T.name = nameIn.value.trim();
+      try { localStorage.setItem(NAME_KEY, T.name); } catch (e) {}
+      paint();
+    });
+    // 圖片還沒載完時先畫一次，載完再補畫
+    [PHOTO, MARK, MARKL].forEach(function (im) { if (!im.complete) im.addEventListener('load', paint, { once: true }); });
+    box.querySelector('.voy-dl').addEventListener('click', function () {
+      var file = 'STARWING_SW711_' + T.t.replace('+', 'plus') + '_' + T.date + (wide ? '_wide' : '_tall') + '.png';
+      try {
+        c2.toBlob(function (blob) {
+          if (!blob) { msg.textContent = '這個瀏覽器沒辦法直接下載，可以長按或右鍵上面的登機證另存圖片。'; return; }
+          var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+          msg.textContent = '已下載：' + file;
+        }, 'image/png');
+      } catch (e) {
+        // 用電腦直接打開本機檔案（file://）預覽時，瀏覽器的安全限制會擋下；放上網站後就能下載
+        msg.textContent = '本機預覽無法下載（瀏覽器的安全限制），推上線後就可以。';
+      }
+    });
+    paint();
+  }
+
   function finish() {
     s.done = true; draw();
     stage.hidden = true;
-    var n = s.got.length;
+    var n = s.got.length, t = tierOf(n);
+    var first = n ? window.LSA_FINDER.docs[s.got[0]] : null;
+    // 目的地 TO＝第一則接到的訊號的原稿編號（LSA_013、A46…）；一則都沒接到，就是這班船本來的終點 LSA-711
+    var T = { t: t, n: n, to: first && first.c ? first.c : 'LSA-711', seat: seatOf(t), date: today(), name: '' };
     result.innerHTML = '<p class="log">ARRIVED · LSA-711 軌道站</p><h2>抵達 LSA-711</h2>' +
       '<p class="voy-toast">' + comm('julian', '抵達 LSA-711 軌道站。') + '</p>' +
-      // 抵達後子琦的 hook（Robert 2026-11-07）：放在標題下方，接到很多則訊號時也不用往下捲才看到。
-      //   世界觀設定集還沒放上網站，先連到設定集頁的「星羽號綜合設定集」相簿
-      '<p class="voy-toast">' + comm('ginni', '想知道 LSA-711 星球和星羽號的內裝長什麼樣嗎？請參考最新的設定集，放在賽博創界的設定集相簿裡。' +
-        '<br><a href="../../cybertron/index.html#album-01">看設定集相簿 →</a>') + '</p>' +
+      '<p class="voy-toast">' + comm('ginni', tierLine(t, n)) + '</p>' +
+      ticketHtml(T) +
       '<p>38 光年，設定上約 7 天的航程。' + (n ? '這趟你接收了 ' + n + ' / ' + SIGNALS + ' 則傳訊：' : '這趟的訊號都擦身而過了。') + '</p>' +
       (n ? list(s.got) : '') +
+      // 子琦的設定集 hook（Robert 2026-11-07）：世界觀設定集還沒放上網站，先連到設定集頁的「星羽號綜合設定集」相簿
+      '<p class="voy-toast">' + comm('ginni', '想知道 LSA-711 星球和星羽號的內裝長什麼樣嗎？請參考最新的設定集，放在賽博創界的設定集相簿裡。' +
+        '<br><a href="../../cybertron/index.html#album-01">看設定集相簿 →</a>') + '</p>' +
       '<div class="actions"><button type="button" class="btn primary voy-again">再飛一次</button>' +
       '<a class="btn" href="../../archive/index.html">看全部傳訊</a></div>';
     result.hidden = false;
+    bindTicket(T);
     result.querySelector('.voy-again').addEventListener('click', reset);
     result.querySelector('h2').focus();
   }

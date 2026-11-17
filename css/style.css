@@ -168,18 +168,27 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .first-read { padding-top: 32px; }
 .first-read > h2 { padding-top: 0; border-top: 0; }   /* 入口區已有底線，這裡不再疊一條線和留白 */
 
-.gates { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.gate { display: block; padding: 32px 0; text-decoration: none; color: var(--ink); }
-.gate + .gate { border-top: 1px solid var(--rule); }
+/* 兩張登機證（2026-11-17，Robert：「不論深淺色，做得更有卡片的感覺跟線條邊界」）：
+   原本是兩欄中間一條分隔線，看起來像同一張紙的左右兩半；改成兩張獨立的票，才像真的拿在手上的登機證。
+   功能理由：一張卡＝一個入口，邊界清楚，讀者一眼知道「整張都可以點」、兩條路是分開的。
+   --pass-bg／--pass-edge 只給這兩張票用：深色底上靠「稍亮的底色＋較亮的框線」撐出邊界（深色上陰影看不到）；
+   淺色底上靠「米白底＋框線＋淡陰影」。 */
+:root, :root[data-theme="dark"] { --pass-bg: #15181b; --pass-edge: #4a5158; --pass-shadow: none; }
+:root[data-theme="light"] { --pass-bg: #fbfaf8; --pass-edge: #d3d6da; --pass-shadow: 0 1px 2px rgba(0, 0, 0, .05), 0 10px 28px rgba(0, 0, 0, .07); }
+.gates { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.gate {
+  display: block; padding: 26px 20px 28px; text-decoration: none; color: var(--ink);
+  background: var(--pass-bg); border: 1px solid var(--pass-edge); border-radius: 14px; box-shadow: var(--pass-shadow);
+  transition: border-color .2s ease, background-color .2s ease;
+}
 .gate h2 { font-size: clamp(1.9rem, 6vw, 2.8rem); line-height: 1.2; margin: 6px 0 12px; }
 .gate p { margin: 0 0 18px; max-width: 26em; color: var(--muted); }
 .gate .go { color: var(--accent); font-weight: 600; }
-.gate:hover, .gate:focus-visible { background: var(--surface); }
+.gate:hover, .gate:focus-visible { background: var(--surface); border-color: var(--accent); }   /* 橘框＝可以點，和全站一致 */
 .gate:hover .go { text-decoration: underline; }
 @media (min-width: 760px) {
-  .gates { grid-template-columns: 1fr 1fr; }
-  .gate { padding: 40px 32px; }   /* 左右兩個入口內距一樣，圖片才會一樣大 */
-  .gate + .gate { border-top: 0; border-left: 1px solid var(--rule); }
+  .gates { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .gate { padding: 36px 32px; }   /* 左右兩個入口內距一樣，圖片才會一樣大 */
 }
 
 /* 入口的圖片（2026-10-22）：一直看得到，讓兩條路一眼就有視覺差異；手機也看得到。
@@ -257,13 +266,17 @@ a[target="_blank"]::after { content: " ↗"; font-size: 0.85em; }
 .pass-gate { position: relative; z-index: 2; margin: 0 0 16px; }
 
 /* 撕票邊：虛線＋兩個缺口，模仿登機證存根撕開的痕跡。純粹造型，不帶資訊。 */
-.pass-tear { position: relative; height: 1px; border-top: 1px dashed var(--rule); margin: 0 0 20px; }
+/* 2026-11-17 改成獨立卡片後：虛線拉到卡片左右邊緣，兩個缺口咬進卡片外框（半圓用頁面底色蓋掉票的邊），像真的票被打了缺口 */
+.pass-tear { position: relative; height: 1px; border-top: 1px dashed var(--pass-edge); margin: 0 -20px 20px; }
 .pass-tear::before, .pass-tear::after {
-  content: ""; position: absolute; top: 50%; width: 14px; height: 14px;
-  border-radius: 50%; background: var(--bg); border: 1px solid var(--rule); transform: translateY(-50%);
+  content: ""; position: absolute; top: 50%; width: 18px; height: 18px;
+  border-radius: 50%; background: var(--bg); border: 1px solid var(--pass-edge); transform: translateY(-50%);
+  transition: border-color .2s ease;
 }
-.pass-tear::before { left: -7px; }
-.pass-tear::after { right: -7px; }
+.pass-tear::before { left: -10px; clip-path: inset(0 0 0 50%); }    /* 只露出咬進卡片的那半邊，外面半圓不畫，才不會在卡片外多出一個圈 */
+.pass-tear::after { right: -10px; clip-path: inset(0 50% 0 0); }
+.gate:hover .pass-tear::before, .gate:hover .pass-tear::after { border-color: var(--accent); }
+@media (min-width: 760px) { .pass-tear { margin: 0 -32px 20px; } }
 
 /* 真實數量：案例數、文章數、彩蛋集數都是 build_site.py 現場算出來的，不是手打的數字，內容增加時會自動跟著變 */
 .gate-stats { position: relative; z-index: 2; margin: 0 0 14px; }
@@ -1117,6 +1130,21 @@ button.btn.primary { background: var(--accent); }
 .voy-result ol { padding-left: 1.4em; display: grid; gap: 14px; margin: 12px 0 20px; }
 .voy-result li > a { font-weight: 600; }
 .voy-result li > span { display: block; font-size: .85rem; }
+/* 紀念登機證（2026-11-17）：票面本身是 Canvas 畫的圖（配色照艙等、不跟網站深淺色），外面不再包框，避免卡片套卡片 */
+.voy-ticket { display: grid; gap: 10px; margin: 18px 0 26px; }
+.voy-ticket h3 { margin: 0; font-size: 1.1rem; }
+.voy-ticket .deck-pick { margin: 0; }
+.voy-ticket-view canvas { display: block; width: 100%; max-width: 340px; height: auto; margin: 0 auto; border-radius: 0; cursor: default; touch-action: auto; background: none; }
+.voy-ticket-view.is-wide canvas { max-width: 100%; }
+.voy-ticket label { font-weight: 600; margin-top: 4px; }
+.voy-ticket .opt { font-weight: 400; font-size: .85rem; color: var(--muted); margin-left: 6px; }
+.voy-ticket input {
+  min-height: 44px; font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; width: 100%;
+}
+.voy-ticket input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.voy-ticket .actions { margin: 0; }
+.voy-ticket .voy-dl-msg:empty { display: none; }
 @media (prefers-reduced-motion: no-preference) {
   .voy-toast.is-on { animation: t-delta-in .4s ease both; }
 }
