@@ -37,10 +37,35 @@
   function href(d) { return /^\.\.\//.test(d.u) ? '../../' + d.u.slice(3) : d.u; }
   function isExt(d) { return !/^\.\.\//.test(d.u); }
 
+  // 手機瀏覽器的網址列會隨捲動伸縮，innerHeight 跟著變；量「網址列出現時」的最小可見高度（100svh），
+  // 整個遊戲畫面照它來排，網址列收起來也不會多切掉一截。舊瀏覽器不認得 svh 時退回 innerHeight。
+  function viewH() {
+    var p = document.createElement('div');
+    p.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
+    document.body.appendChild(p);
+    var h = p.offsetHeight;
+    document.body.removeChild(p);
+    return Math.min(h || Infinity, window.innerHeight);
+  }
+  // 飛行中導覽列不釘在頂端、跟著頁面捲走（2026-11-17 Robert：手機上被上下遮到）：
+  // 手機上導覽列折成兩排、約 116px，占掉畫面五分之一；飛完（抵達或再飛一次）就恢復釘住。
+  function flying(on) { document.documentElement.classList.toggle('voy-flying', on); }
+  // 飛行中導覽列已經捲走，不用扣；萬一還釘著（例如 CSS 沒載到），照實際高度扣（手機上兩排，高度不固定）
+  function headerH() {
+    if (document.documentElement.classList.contains('voy-flying')) return 0;
+    var h = document.querySelector('.site-header');
+    return h ? h.offsetHeight : 0;
+  }
+  var lastW = 0;
   function resize() {
     var r = stage.getBoundingClientRect();
-    W = Math.round(r.width);
-    H = Math.round(Math.min(W * 1.4, Math.max(360, window.innerHeight - 160)));
+    W = Math.round(r.width); lastW = window.innerWidth;
+    // 畫布高度＝看得到的高度 − 導覽列 − 暫停列 − 下方廣播（照最長那則留好高度）− 一點喘息空間，
+    // 讓暫停鈕、船、廣播三樣同時在畫面裡。手機橫拿太矮時至少 260，寧可廣播要往下捲，也不讓船太擠。
+    toast.style.minHeight = toastNeed() + 'px';
+    var bar = $('.voy-bar');
+    var used = headerH() + bar.offsetHeight + 8 + toast.offsetHeight + 10 + 12;
+    H = Math.round(Math.min(W * 1.4, Math.max(260, viewH() - used)));
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -61,10 +86,31 @@
 
   // 艦內廣播：機長雙宇報航行狀態，座艙長子琦對乘客說話（Robert 2026-11-07 確認台詞與分工）
   var CREW = { julian: ['機長 雙宇', root.getAttribute('data-julian')], ginni: ['座艙長 子琦', root.getAttribute('data-ginni')] };
+  // 機長出發前廣播（Robert 2026-11-07）：先說這班船要去哪，2.5 秒後再報出港
+  var HELLO = '各位乘客，這裡是機長雙宇。本班星羽號從地球軌道上的 The Loop 出發，前往 LSA-711，航程 38 光年。';
   function comm(who, html) {
     var c = CREW[who];
     return '<span class="voy-comm voy-comm-' + who + '"><img src="' + c[1] + '" width="40" height="40" alt="">' +
       '<span><span class="voy-who">' + c[0] + '</span>' + html + '</span></span>';
+  }
+  // 接到訊號時子琦說的話；resize() 也用它量「最長那則」有多高，兩邊共用才不會對不上
+  function sigLine(d, n) {
+    return '收到一則訊號<span class="log"> · SIGNAL ' + n + '</span>：' + esc(d.t) + (d.m ? '<br><span class="voy-mood">適合：' + esc(d.m) + '</span>' : '');
+  }
+  // 廣播區要留多高：在畫面外排一個看不見的分身，放進目前最長的那則訊號，量它在這支手機寬度下的高度。
+  // 用分身而不是直接塞進廣播區，報讀軟體才不會把它念出來（廣播區是 aria-live）。
+  function toastNeed() {
+    var docs = (window.LSA_FINDER && window.LSA_FINDER.docs) || [], best = null, len = -1;
+    docs.forEach(function (d) { var l = (d.t || '').length + (d.m || '').length; if (l > len) { len = l; best = d; } });
+    var p = toast.cloneNode(false);
+    p.removeAttribute('role'); p.removeAttribute('aria-live'); p.setAttribute('aria-hidden', 'true');
+    p.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;min-height:0;width:' + toast.offsetWidth + 'px';
+    p.innerHTML = comm('julian', HELLO);
+    stage.appendChild(p);
+    var h = p.offsetHeight;
+    if (best) { p.innerHTML = comm('ginni', sigLine(best, SIGNALS)); h = Math.max(h, p.offsetHeight); }
+    stage.removeChild(p);
+    return h;
   }
   function say(who, html) {
     toast.innerHTML = who ? comm(who, html) : html;
@@ -126,7 +172,7 @@
       if (dx * dx + dy * dy < 30 * 30) {
         g.taken = true; s.got.push(g.id);
         var d = window.LSA_FINDER.docs[g.id];
-        say('ginni', '收到一則訊號<span class="log"> · SIGNAL ' + s.got.length + '</span>：' + esc(d.t) + (d.m ? '<br><span class="voy-mood">適合：' + esc(d.m) + '</span>' : ''));
+        say('ginni', sigLine(d, s.got.length));
       }
     });
 
@@ -496,7 +542,7 @@
 
   function finish() {
     s.done = true; draw();
-    stage.hidden = true;
+    stage.hidden = true; flying(false);
     var n = s.got.length, t = tierOf(n);
     var first = n ? window.LSA_FINDER.docs[s.got[0]] : null;
     // 目的地 TO＝第一則接到的訊號的原稿編號（LSA_013、A46…）；一則都沒接到，就是這班船本來的終點 LSA-711
@@ -519,7 +565,7 @@
   }
 
   function reset() {
-    result.hidden = true; stage.hidden = true; form.hidden = false; s = null; input.focus();
+    result.hidden = true; stage.hidden = true; flying(false); form.hidden = false; s = null; input.focus();
   }
 
   function launch(q, animate) {
@@ -534,15 +580,14 @@
       result.querySelector('.voy-fly').addEventListener('click', function () { launch(q, true); });
       return;
     }
-    stage.hidden = false;
+    stage.hidden = false; flying(true);
     resize(); newFlight(q);
-    // 捲到整個遊戲畫面都看得到的位置（扣掉上方固定的導覽列）
-    var top = stage.getBoundingClientRect().top + window.pageYOffset - 72;
+    // 捲到整個遊戲畫面都看得到的位置（扣掉上方固定的導覽列，用實際量到的高度）
+    var top = stage.getBoundingClientRect().top + window.pageYOffset - headerH() - 4;
     window.scrollTo(0, Math.max(0, top));
     toast.innerHTML = ''; pauseBtn.textContent = '暫停'; pauseBtn.setAttribute('aria-pressed', 'false');
     s.saidAt = -9;
-    // 機長出發前廣播（Robert 2026-11-07）：先說這班船要去哪，2.5 秒後再報出港
-    say('julian', '各位乘客，這裡是機長雙宇。本班星羽號從地球軌道上的 The Loop 出發，前往 LSA-711，航程 38 光年。');
+    say('julian', HELLO);
     if (!raf) raf = requestAnimationFrame(loop);
     cv.focus();
   }
@@ -577,5 +622,6 @@
   pauseBtn.addEventListener('click', function () { if (s) setPause(!s.paused); });
   // 切到別的分頁或 App 時自動暫停，回來不會發現已經飛完了
   document.addEventListener('visibilitychange', function () { if (document.hidden) setPause(true); });
-  window.addEventListener('resize', function () { if (s && !stage.hidden) resize(); });
+  // 只有寬度變了（手機轉向、電腦拉視窗）才重排；手機網址列伸縮只改高度，重排會讓畫面上下跳
+  window.addEventListener('resize', function () { if (s && !stage.hidden && window.innerWidth !== lastW) resize(); });
 })();

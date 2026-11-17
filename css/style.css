@@ -1122,6 +1122,17 @@ button.btn.primary { background: var(--accent); }
 .voy-comm-julian { border-left-color: var(--data); }
 .voy-comm img { width: 40px; height: 40px; border-radius: 50%; flex: none; object-fit: cover; }
 .voy-who { display: block; font-size: .78rem; color: var(--muted); }
+/* 飛行中的廣播固定留「職稱 1 行＋內容 4 行」的高度（2026-11-17 Robert：手機上被上下遮到）：
+   廣播長短不一（訊號標題＋適合），高度一變，畫布和船就被推出畫面。這裡是保底；voyage.js 起飛時會照最長那則訊號
+   在這支手機寬度下的實際高度再設一次，並用它決定畫布多高。
+   手機上字和頭像小一點，長句少換一兩行，畫布才留得住空間。 */
+.voy-stage .voy-toast { line-height: 1.5; min-height: calc(7.2em + 16px); }
+/* 飛行中導覽列不釘在頂端（voyage.js 的 flying()），整個畫面讓給遊戲；往上捲還是找得到導覽列 */
+.voy-flying .site-header { position: static; }
+@media (max-width: 520px) {
+  .voy-stage .voy-toast { font-size: .88rem; }
+  .voy-stage .voy-comm img { width: 32px; height: 32px; }
+}
 .voy-brief { display: grid; gap: 0; margin-bottom: 8px; }
 .voy-brief .voy-toast { min-height: 0; margin: 0 0 8px; }
 .voy-toast .log { color: var(--data); margin-right: 6px; }
