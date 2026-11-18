@@ -625,3 +625,12 @@
   // 只有寬度變了（手機轉向、電腦拉視窗）才重排；手機網址列伸縮只改高度，重排會讓畫面上下跳
   window.addEventListener('resize', function () { if (s && !stage.hidden && window.innerWidth !== lastW) resize(); });
 })();
+
+// ---------- 起飛前的「我是誰？」（2026-11-18）：點任一張看不清楚的登機證＝按「起飛」 ----------
+(function () {
+  var go = document.querySelector('.voy-start .actions .btn');
+  if (!go) return;
+  Array.prototype.forEach.call(document.querySelectorAll('.voy-mystery [data-go]'), function (b) {
+    b.addEventListener('click', function () { go.click(); });
+  });
+})();

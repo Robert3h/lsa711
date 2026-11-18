@@ -1687,3 +1687,49 @@ button.btn.primary { background: var(--accent); }
   .lsa-door { transition: border-color .15s; }
 }
 @media (max-width: 640px) { .lsa-doors { grid-template-columns: 1fr; gap: 14px; } }
+
+/* ---------- 傳訊頁的照片（2026-11-18）：手機在標題下面橫放；電腦放右欄、直式裁切、捲動時停在畫面上 ---------- */
+.tx-photo { margin: 8px 0 28px; }
+.tx-photo img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 14px; border: 1px solid var(--rule); }
+.tx-photo figcaption { margin: 10px 0 0; color: var(--muted); font-size: 0.8rem; }
+@media (min-width: 1000px) {
+  .tx-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 420px; column-gap: 48px; align-items: start; }
+  .tx-wrap > * { grid-column: 1; }
+  .tx-wrap > .tx-photo { grid-column: 2; grid-row: 1 / span 3; position: sticky; top: calc(var(--header-h) + 24px); margin-top: 48px; }
+  .tx-photo img { aspect-ratio: 4 / 3; object-position: 40% 50%; }   /* 兩人一左一右站滿畫面，直式會切到人；4:3 剛好留住兩人和中間的耳機線 */
+}
+
+/* ---------- 38 光年航程：起飛前的「我是誰？」（2026-11-18）----------
+   卡面模糊＋壓暗＋問號：看得出四張顏色不同、看不清細節。整張卡是按鈕（點了就起飛），滑過去微微抬起、問號變橘。
+   手機：四張縮小排一列；電腦（夠寬時）：搬到右邊空白處，排成 2×2。 */
+.voy-start { position: relative; }
+.voy-mystery { margin: 18px 0 4px; }
+.voy-my-title { margin: 2px 0 10px; font-size: 1.6rem; font-weight: 800; letter-spacing: 0.04em; }
+.voy-my-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.voy-q { position: relative; display: block; padding: 0; aspect-ratio: 5 / 7;   /* 像一張卡牌；卡面只剩顏色（2026-11-18 Robert：看不出人影才有驚喜感） */ overflow: hidden; border: 1px solid var(--rule); border-radius: 10px; background: #000; cursor: pointer; }
+.voy-q img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; filter: blur(16px) brightness(0.55) saturate(1.3); transform: scale(1.6); }   /* 圖檔只有 16px 寬，放大＋模糊＝只剩色塊 */
+.voy-q-sp img { filter: blur(16px) brightness(0.66) saturate(1.6) hue-rotate(-18deg); }
+.voy-q span { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-log); font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 800; color: #ececea; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6); }
+.voy-q:hover, .voy-q:focus-visible { border-color: var(--accent); outline: none; }
+.voy-q:hover span, .voy-q:focus-visible span { color: var(--accent); }
+.voy-q:focus-visible { box-shadow: 0 0 0 2px var(--accent); }
+.voy-my-say { margin: 12px 0 0; font-size: 0.9rem; line-height: 1.6; color: var(--muted); }
+.voy-my-say .voy-who { display: block; font-size: 0.75rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .voy-q { transition: transform .2s ease, border-color .15s; }
+  .voy-q:hover, .voy-q:focus-visible { transform: translateY(-4px) rotate(-1.5deg); }
+  .voy-q:nth-child(even):hover, .voy-q:nth-child(even):focus-visible { transform: translateY(-4px) rotate(1.5deg); }
+}
+/* 電腦：起飛前的畫面變兩欄，「我是誰？」是右欄（不用浮動，頁面高度才會跟著撐開、不壓到頁尾）；起飛後 .voy-start 收起，.voyage 回到原本寬度 */
+@media (min-width: 1100px) {
+  .voyage:has(> .voy-start:not([hidden])) { max-width: none; }
+  .voy-start { grid-template-columns: minmax(0, 34rem) 320px; column-gap: 64px; align-items: start; }
+  .voy-start > * { grid-column: 1; }
+  .voy-start > .voy-mystery { grid-column: 2; grid-row: 1 / span 20; margin: 0; }
+  .voy-my-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .voy-q span { font-size: 3.4rem; }
+  .voy-my-title { font-size: 2.2rem; }
+}
+
+/* 文章與 One more thing 裡的長網址（2026-11-18 健檢：it-cosplay 留言的傳訊網址在手機上撐出橫向捲動）：網址沒有空白可以斷行，允許在任何位置換行 */
+.prose a, .author-notes a { overflow-wrap: anywhere; }
