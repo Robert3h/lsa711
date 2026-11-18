@@ -1696,7 +1696,7 @@ button.btn.primary { background: var(--accent); }
   .tx-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 420px; column-gap: 48px; align-items: start; }
   .tx-wrap > * { grid-column: 1; }
   .tx-wrap > .tx-photo { grid-column: 2; grid-row: 1 / span 3; position: sticky; top: calc(var(--header-h) + 24px); margin-top: 48px; }
-  .tx-photo img { aspect-ratio: 4 / 3; object-position: 40% 50%; }   /* 兩人一左一右站滿畫面，直式會切到人；4:3 剛好留住兩人和中間的耳機線 */
+  .tx-photo img { aspect-ratio: 4 / 3; object-position: 27% 50%; }   /* 兩人一左一右站滿畫面，直式會切到人；4:3 剛好留住兩人和中間的耳機線（11/18 子琦往左靠之後，置中點改 27%） */
 }
 
 /* ---------- 38 光年航程：起飛前的「我是誰？」（2026-11-18）----------
