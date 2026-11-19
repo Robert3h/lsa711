@@ -1025,6 +1025,7 @@ button.btn.primary { background: var(--accent); }
 .arc-filter[aria-pressed="true"] .log { color: inherit; }
 .arc-status { margin: 0 0 8px; min-height: 1.4em; }
 .arc-month { padding-top: 28px; }
+.arc-month > .arc-ym { border-top: 0; padding-top: 0; }   /* 月份只留下底線（2026-11-19：上下各一條太擠） */
 .arc-month[hidden] { display: none; }
 .arc-ym { font-size: 0.85rem; margin: 0 0 6px; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
 .arc-list { list-style: none; margin: 0; padding: 0; }
@@ -1098,6 +1099,49 @@ button.btn.primary { background: var(--accent); }
 .finder-moods li > a { font-weight: 600; }
 .finder-moods li > span { display: block; font-size: .85rem; }
 .finder-more { margin-top: 14px; min-height: 44px; cursor: pointer; font: inherit; }
+
+/* 全部傳訊頁上半部的三張卡片（2026-11-19，Robert：原本太擠、缺乏美感）。
+   一頁一主角：「不知道從哪篇開始？」底色最亮、字最大；導覽和瀏覽只有細框、沒有底色，看得出是同一組但不搶戲。
+   卡片之間不再加分隔線：卡片本身就是分組，線一多又會回到擁擠 */
+.arc-top { display: grid; gap: 14px; margin: 20px 0 14px; }
+@media (min-width: 860px) { .arc-top { grid-template-columns: 1.6fr 1fr; align-items: stretch; } }
+.arc-card { border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; }
+.finder.arc-card { margin: 0; max-width: none; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.arc-hero { background: var(--surface); padding: 22px 24px; }
+.arc-hero > h2 { font-size: 1.2rem; border-top: 0; padding-top: 0; }   /* 卡片的框就是分隔，不再疊 section > h2 的上邊線 */
+.arc-guide { display: flex; flex-direction: column; justify-content: center; gap: 6px; color: var(--ink); text-decoration: none;
+  transition: border-color .2s ease; }
+.arc-guide .log { color: var(--data); font-size: .75rem; letter-spacing: .08em; }
+.arc-guide-t { font-weight: 600; line-height: 1.6; }
+.arc-guide:hover, .arc-guide:focus-visible { border-color: var(--accent); }
+.arc-guide:hover .arc-guide-t { color: var(--accent); }
+/* 主角卡：座艙長子琦在問乘客（頭像＋職稱小標，讓讀者知道是誰在跟你說話） */
+.arc-host { display: flex; align-items: center; gap: 14px; margin: 0 0 10px; }
+.arc-host img { width: 52px; height: 52px; border-radius: 50%; flex: none; border: 2px solid var(--accent); }
+.arc-host .log { margin: 0 0 2px; font-size: .75rem; letter-spacing: .06em; color: var(--data); }
+.arc-host h2 { margin: 0; }
+/* 導覽卡：機長雙宇的登機證存根（v3.4 登機證風格）。右邊用虛線撕口隔出一格放機長；撕口上下的半圓缺口用頁面底色畫 */
+.arc-pass { flex-direction: row; align-items: stretch; padding: 0; gap: 0; position: relative; }
+.pass-main { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 18px 18px 18px 20px; }
+.pass-brand { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-log); font-size: .8rem;
+  font-weight: 700; letter-spacing: .18em; color: var(--ink); }
+.pass-star { width: 22px; height: 22px; flex: none; }
+.pass-stub { flex: none; width: 84px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  border-left: 1px dashed var(--rule); padding: 14px 8px; text-align: center; }
+.pass-stub img { width: 44px; height: 44px; border-radius: 50%; }
+.pass-stub .log { font-size: .7rem; letter-spacing: .08em; line-height: 1.3; color: var(--muted); }
+/* 缺口只畫卡片裡面那半圈：上缺口畫下半圈、下缺口畫上半圈（兩邊框線上色再轉 45°） */
+.arc-pass::before, .arc-pass::after { content: ''; position: absolute; right: 77px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg); border: 1px solid transparent; transform: rotate(-45deg); }
+.arc-pass::before { top: -8px; border-left-color: var(--rule); border-bottom-color: var(--rule); }
+.arc-pass::after { bottom: -8px; border-top-color: var(--rule); border-right-color: var(--rule); }
+.arc-pass:hover::before { border-left-color: var(--accent); border-bottom-color: var(--accent); }
+.arc-pass:hover::after { border-top-color: var(--accent); border-right-color: var(--accent); }
+.arc-browse { padding: 6px 16px 14px; margin: 0 0 8px; }
+.arc-browse .arc-view { margin: 0; }   /* 星海圖程式的樣式上方留 28px，放進卡片後不需要 */
+.arc-browse .arc-filters { margin: 12px 0 0; }
+.arc-browse .arc-filters[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .arc-guide { transition: none; } }
 
 /* ---------- 小遊戲 05：38 光年航程（2026-11-07 試作） ---------- */
 .voyage { max-width: 34rem; margin: 8px 0 40px; }
