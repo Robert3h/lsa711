@@ -1067,25 +1067,23 @@ button.btn.primary { background: var(--accent); }
 .pager-next { text-align: right; grid-column: 2; }
 .pager-title { font-size: 0.95rem; line-height: 1.5; }
 @media (max-width: 559px) { .pager { grid-template-columns: 1fr; } .pager-next { grid-column: 1; } }
-/* 文章的上一篇／下一篇：像登機證中間的航線（2026-11-19 Robert）。中間一欄是「本篇」：弧形虛線從上一站接到下一站，
-   弧頂的四芒星＝讀者現在的位置。手機上下排時，弧線換成直的虛線，四芒星在兩張卡之間 */
+/* 文章的上一篇／下一篇：像登機證中間的航線（2026-11-19 Robert）。中間一欄是「本篇」：一條虛線從上一站接到下一站，
+   中間的四芒星＝讀者現在的位置。弧線試過，Robert：「太彎了」→ 和票面一樣的直線。
+   配色照遊戲的兩種登機證：深色＝銀羽艙票（白星、淺灰虛線），淺色＝白羽艙票（金星、金色虛線）。手機上下排時改成直的虛線 */
 .pager-route { grid-template-columns: minmax(0, 1fr) 76px minmax(0, 1fr); gap: 0; }
 .pager-route .pager-next { grid-column: 3; }
-.pager-hub { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  padding-top: 12px; gap: 4px; color: var(--ink); }
-.pager-arc { position: absolute; left: 0; top: 0; width: 100%; height: 100%; color: var(--muted); opacity: .7; }
-.pager-hub .pass-star { position: relative; width: 30px; height: 30px; }   /* 弧頂（約高度 22%）剛好穿過星芒中心 */
-.pager-hub .log { position: relative; font-size: .75rem; color: var(--data); letter-spacing: .08em; }
+.pager-hub { --route: #c9cdd3; --route-star: #f4f5f7; position: relative; display: flex; align-items: center; justify-content: center; }
+:root[data-theme="light"] .pager-hub { --route: #b08f4f; --route-star: #a47e3b; --route-text: #7d5f26; }   /* 小字要 4.5:1，金色字調深一階 */
+.pager-hub::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 1.5px dashed var(--route); opacity: .85; }
+.pager-star { position: relative; width: 24px; height: 24px; color: var(--route-star); }
+.pager-hub .log { position: absolute; top: calc(50% + 16px); left: 0; right: 0; text-align: center; font-size: .75rem;
+  letter-spacing: .08em; color: var(--route-text, var(--route-star)); }
 @media (max-width: 559px) {
   .pager-route { grid-template-columns: minmax(0, 1fr); }
   .pager-route .pager-next { grid-column: 1; }
-  .pager-hub { flex-direction: row; justify-content: center; padding: 10px 0; gap: 8px; }
-  .pager-hub .log { position: absolute; left: calc(50% + 22px); top: 50%; transform: translateY(-50%); }
-  .pager-arc { display: none; }
-  /* 直的虛線：從上一張卡的下緣，穿過四芒星，接到下一張卡的上緣 */
-  .pager-hub::before, .pager-hub::after { content: ''; position: absolute; left: 50%; width: 0; border-left: 1.5px dashed var(--muted);
-    opacity: .7; height: 10px; }
-  .pager-hub::before { top: 0; } .pager-hub::after { bottom: 0; }
+  .pager-hub { height: 48px; }
+  .pager-hub::before { left: 50%; right: auto; top: 0; bottom: 0; border-top: 0; border-left: 1.5px dashed var(--route); }
+  .pager-hub .log { top: 50%; left: calc(50% + 20px); right: auto; transform: translateY(-50%); }
 }
 
 /* 文章裡的 YouTube 封面卡（插圖清單.csv，2026-10-28）：封面上已經寫「在 YouTube 觀看 →」，不再加外部連結的 ↗ */
