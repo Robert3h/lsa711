@@ -1602,6 +1602,8 @@ button.btn.primary { background: var(--accent); }
    錯位疊在一起的卡片：露出來的邊讓讀者知道「後面還有」，不用寫說明（CLAUDE.md v2.6）。
    可以點的疊卡照全站規則：框線平常是灰的，滑鼠移上去變橘；初衷的小標用青色（標記）。 */
 .lb-head { display: grid; gap: 28px; align-items: center; }
+/* 兩句各自成一塊，放得下就一句一行，不會在「很多／次」中間斷開（2026-11-19 Robert）；太窄時才在句子裡換行 */
+.lb-lead span { display: inline-block; }
 @media (min-width: 900px) { .lb-head { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 44px; } }
 .lb-cover { margin: 0; }
 .lb-cover img { display: block; width: 100%; height: auto; border-radius: 4px; }
