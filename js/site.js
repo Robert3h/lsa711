@@ -237,6 +237,20 @@
     show(PORTRAIT_PAIR && PORTRAIT_PAIR.matches ? 'tall' : 'wide');
   });
 
+  // 彩蛋劇照的兩種比例（Robert 2026-11-19）：劇照散在對白之間，所以按鈕放在文章最上面、一次切換整篇。
+  // 判斷條件和上面的圖卡一樣：手機直拿看 4:5，電腦和橫放看 16:9（電腦上 4:5 一張就佔滿整個螢幕，對白要捲很久才接得上）
+  document.querySelectorAll('.ratio-page').forEach(function (pick) {
+    var scope = pick.closest('article') || document;
+    var btns = pick.querySelectorAll('button');
+    function show(which) {
+      scope.querySelectorAll('.ratio-fig [data-ratio]').forEach(function (d) { d.hidden = d.getAttribute('data-ratio') !== which; });
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-pick') === which)); });
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-pick')); }); });
+    pick.hidden = false;
+    show(PORTRAIT_PAIR && PORTRAIT_PAIR.matches ? 'tall' : 'wide');
+  });
+
   // 麵包屑「LSA ▾」的同層頁面選單：點 ▾ 開關（手機也能用）；有滑鼠的電腦，移上去就打開、移開稍等一下才關，
   // 避免滑鼠從 ▾ 移到選單途中經過空隙就關掉。Esc 或點選單外面也會關。
   document.querySelectorAll('.crumb-menu').forEach(function (box) {

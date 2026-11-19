@@ -549,6 +549,9 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .prose figure.portrait img { max-width: min(360px, 100%); }   /* 不能比手機的內容區寬，否則整頁會左右滑（健檢 M5） */
 /* 小劇場的 4:5 直圖（2026-11-05）：手機佔滿內容寬，電腦限寬置中，一張圖不會超過一個畫面。只影響有場景說明的對話頁 */
 .prose .scene-note ~ figure.portrait img { width: 100%; max-width: min(440px, 100%); margin-inline: auto; }
+/* 同一張劇照的 16:9 版（2026-11-19）：橫圖鋪滿文章欄寬，高度約是 4:5 的一半，對白和劇照可以同時留在畫面上 */
+.prose figure.ratio-fig [data-ratio="wide"] img { width: 100%; max-width: 100%; }
+.prose > .ratio-page { margin: 0 0 1.6em; }
 
 .video { max-width: 360px; }
 .video video { width: 100%; background: #000; border-radius: 4px; }
