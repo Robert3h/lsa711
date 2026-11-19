@@ -1134,7 +1134,7 @@ button.btn.primary { background: var(--accent); }
 .pass-stub { flex: none; width: 84px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
   border-left: 1px dashed var(--rule); padding: 14px 8px; text-align: center; }
 .pass-stub img { width: 44px; height: 44px; border-radius: 50%; }
-.pass-stub .log { font-size: .7rem; letter-spacing: .08em; line-height: 1.3; color: var(--muted); }
+.pass-stub .log { font-size: .75rem; letter-spacing: .08em; line-height: 1.3; color: var(--muted); }
 /* 缺口只畫卡片裡面那半圈：上缺口畫下半圈、下缺口畫上半圈（兩邊框線上色再轉 45°） */
 .arc-pass::before, .arc-pass::after { content: ''; position: absolute; right: 77px; width: 14px; height: 14px; border-radius: 50%;
   background: var(--bg); border: 1px solid transparent; transform: rotate(-45deg); }
