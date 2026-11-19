@@ -8,6 +8,8 @@
 - [工作系統](https://robert3h.github.io/lsa711/work/)
 - [寫作系統 LSA](https://robert3h.github.io/lsa711/lsa/)
 - [全部傳訊（文章列表）](https://robert3h.github.io/lsa711/lsa/archive/)
+- [帶走五層提問：可以直接貼給 AI 的提示詞](https://robert3h.github.io/lsa711/lsa/toolkit/)
+- [賽博創界 設定集：子琦與雙宇的角色、星羽號機體與制服設定](https://robert3h.github.io/lsa711/lsa/cybertron/)
 - [關於](https://robert3h.github.io/lsa711/about/)
 - [常見問答](https://robert3h.github.io/lsa711/qa/)
 - [English](https://robert3h.github.io/lsa711/en/)
