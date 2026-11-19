@@ -1162,6 +1162,22 @@ button.btn.primary { background: var(--accent); }
 .arc-pass::after { bottom: -8px; border-top-color: var(--rule); border-right-color: var(--rule); }
 .arc-pass:hover::before { border-left-color: var(--accent); border-bottom-color: var(--accent); }
 .arc-pass:hover::after { border-top-color: var(--accent); border-right-color: var(--accent); }
+/* 維修日誌頁首的「快速通關」（2026-11-19）：同一張登機證，裡面是子琦一句話＋兩顆比例按鈕；整張不是連結，按鈕才是 */
+.lb-quick { display: flex; margin: 18px 0 20px; max-width: 560px; }
+#h-deck { scroll-margin-top: 130px; }   /* 從快速通關跳下來時，標題不要被頂端的頁首＋位置條蓋住 */
+.lb-quick::before, .lb-quick::after { background: var(--bg); }
+.lb-quick-say { display: flex; align-items: center; gap: 10px; line-height: 1.6; }
+.lb-quick-say img { width: 40px; height: 40px; border-radius: 50%; flex: none; border: 2px solid var(--accent); }
+.lb-quick-go { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.lb-quick-go a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border: 1px solid var(--rule);
+  border-radius: 4px; color: var(--ink); text-decoration: none; font-size: .9rem; }
+.lb-quick-go a:hover, .lb-quick-go a:focus-visible { border-color: var(--accent); color: var(--accent); }
+.lb-quick-go .ver-tag { display: none; font-size: .75rem; padding: 0 6px; border-radius: 3px; background: var(--accent); color: var(--on-accent); }
+/* 建議的那顆用大片橘底（CLAUDE.md v3.1）：電腦／橫放建議 16:9，手機直拿建議 4:5 並排到前面 */
+@media (orientation: landscape) { .lb-quick-go .ver-wide { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .lb-quick-go .ver-wide .ver-tag { display: inline; background: var(--on-accent); color: var(--accent); } }
+@media (orientation: portrait) { .lb-quick-go .ver-tall { order: -1; background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .lb-quick-go .ver-tall .ver-tag { display: inline; background: var(--on-accent); color: var(--accent); } }
 .arc-browse { padding: 6px 16px 14px; margin: 0 0 8px; }
 .arc-browse .arc-view { margin: 0; }   /* 星海圖程式的樣式上方留 28px，放進卡片後不需要 */
 .arc-browse .arc-filters { margin: 12px 0 0; }

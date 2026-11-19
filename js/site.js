@@ -237,6 +237,23 @@
     show(PORTRAIT_PAIR && PORTRAIT_PAIR.matches ? 'tall' : 'wide');
   });
 
+  // 維修日誌「快速通關」（2026-11-19）：按電腦版／手機版 → 打開下面的投影片區、切到那個比例、捲過去。
+  // 放在比例切換（.deck-pair）初始化之後，按鈕才已經綁好；沒有 JS 時連結照樣跳到 #h-deck
+  document.querySelectorAll('.lb-quick [data-open]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      // 不攔下連結：先打開投影片區、切好比例，連結本來的 #h-deck 跳轉接著發生（平滑捲動在部分瀏覽器不會動，2026-11-19 測到）
+      var d = document.querySelector('details.lb-deck');
+      if (!d) return;
+      d.open = true;
+      var b = d.querySelector('.deck-pick [data-pick="' + a.getAttribute('data-open') + '"]');
+      if (b) b.click();
+      if (location.hash === '#h-deck') {        // 已經在 #h-deck 時，再按一次網址不會變，瀏覽器不會再跳
+        var h = document.getElementById('h-deck');
+        if (h) h.scrollIntoView();
+      }
+    });
+  });
+
   // 彩蛋劇照的兩種比例（Robert 2026-11-19）：劇照散在對白之間，所以按鈕放在文章最上面、一次切換整篇。
   // 判斷條件和上面的圖卡一樣：手機直拿看 4:5，電腦和橫放看 16:9（電腦上 4:5 一張就佔滿整個螢幕，對白要捲很久才接得上）
   document.querySelectorAll('.ratio-page').forEach(function (pick) {
