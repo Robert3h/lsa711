@@ -615,3 +615,15 @@
   var d = document.querySelector('details.lb-deck');
   if (d) d.open = true;
 })();
+
+// 改裝卡收折後（2026-11-20）：首頁最新消息、「← 回維修日誌」都連到 #mx-…，到了要直接是打開的，讀者不用再找、再點。
+(function () {
+  function openHash() {
+    var id = location.hash.slice(1);
+    var el = /^mx-\d{4}-\d{2}$/.test(id) && document.getElementById(id);
+    // 只負責打開，不另外捲：瀏覽器自己會捲到這張卡，卡片打開是往下長，上緣位置不變
+    if (el && el.tagName === 'DETAILS') el.open = true;
+  }
+  openHash();
+  window.addEventListener('hashchange', openHash);
+})();
