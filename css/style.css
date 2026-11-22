@@ -1092,6 +1092,19 @@ button.btn.primary { background: var(--accent); }
 /* 素材待補（2026-11-12）：只是告訴讀者「原文這裡有東西，本站還沒放」，不是內文，所以降低對比、不加粗 */
 .prose .fig-todo { font-weight: 400; font-size: 0.875rem; color: var(--muted); }
 .prose .yt-note { font-size: 0.85em; color: var(--muted); }
+/* 自製影片（插圖清單「自製YouTube」，2026-11-22 LSA_000 Podcast 導讀）：用自己的 4:5 劇照當封面，直式卡片不要撐滿欄寬 */
+.prose .yt-tall { max-width: 360px; margin-left: auto; margin-right: auto; }
+.prose .yt-tall .video-thumb { aspect-ratio: 4 / 5; }
+/* 常駐的 ▶ 播放鈕（2026-11-22）：置中的半透明圓，滑過時變網站橘 */
+.play-btn {
+  position: absolute; top: 50%; left: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px;
+  display: flex; align-items: center; justify-content: center; border-radius: 50%;
+  background: rgba(0, 0, 0, .6); color: #fff; padding-left: 4px; box-sizing: border-box;
+  border: 2px solid rgba(255, 255, 255, .9); box-shadow: 0 2px 12px rgba(0, 0, 0, .45);
+  transition: background .25s ease, transform .25s ease;
+}
+.video-card:hover .play-btn, .video-card:focus-visible .play-btn { background: var(--accent); transform: scale(1.06); }
+@media (prefers-reduced-motion: reduce) { .play-btn { transition: none; } .video-card:hover .play-btn { transform: none; } }
 /* One more thing 裡的 YouTube 封面卡（2026-11-22 kim-lin-taipei）：和文章裡一樣，不加 ↗、不縮排，說明字小一號 */
 .author-notes .yt { margin: 0 0 .8em; }
 .author-notes .yt .video-card::after { content: none; }
