@@ -14,8 +14,9 @@
 - [常見問答](https://robert3h.github.io/lsa711/qa/)
 - [English](https://robert3h.github.io/lsa711/en/)
 
-## 文章（70 篇，新的在上）
+## 文章（71 篇，新的在上）
 
+- [黑天鵝滿天飛的日子，我把腦袋暫時交給金琳的歌曲 🎤](https://robert3h.github.io/lsa711/lsa/kim-lin-taipei/)：2026-11-22 · 艙房A 生活隨筆
 - [換我當需求單位：把 AI 當 IT 部門，自己 Cosplay 最挑剔的使用者 🎭｜個人網站日誌](https://robert3h.github.io/lsa711/lsa/it-cosplay/)：2026-11-18 · 艙房A 生活隨筆
 - [家人跟我分享八卦新聞，我的第一反應是不討喜地畫流程圖 🧩](https://robert3h.github.io/lsa711/lsa/gossip-flowchart/)：2026-11-13 · 艙房A 生活隨筆
 - [［宇琦對話_座標 010］她只是請我調低頻寬，我卻直接拔掉了電源…](https://robert3h.github.io/lsa711/lsa/egg-010/)：2026-11-10 · 艙房C 小劇場
