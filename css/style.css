@@ -518,12 +518,15 @@ main h2[id] { scroll-margin-top: var(--toc-offset, 52px); }
 .prose .w-hi { color: var(--data); }
 /* 小標：上方留大空白、加分段記號，讓讀者一眼看出「換段落了」 */
 .prose h2 {
-  font-size: 1.2rem; line-height: 1.5;
-  margin: 3.2em 0 1em; padding-top: 1.4em;
+  /* 2026-11-24 Robert 試小標時發現：內文 18px，h2 原本 1.2rem＝19px、h3 1.05rem＝17px（比內文還小），小標字沒變大。
+     改用 em（跟著內文 18px 走）：h2 約 24px、h3 約 20px，比內文明顯大一階；留白照比例縮，看起來和原本差不多 */
+  font-size: 1.35em; line-height: 1.45;
+  margin: 2.4em 0 .75em; padding-top: 1.05em;
   border-top: 1px solid var(--rule);
 }
 .prose h2::before { content: "✦ "; color: var(--accent); }
-.prose h3 { font-size: 1.05rem; margin: 2.4em 0 0.8em; }
+.prose h2.no-star::before { content: none; }   /* 原稿小標本身是 emoji 開頭（💖、🤔）時不再加 ✦，免得兩個符號疊在一起（build_site.render_body 加 class） */
+.prose h3 { font-size: 1.12em; line-height: 1.5; margin: 2em 0 .7em; }
 .prose hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
 .prose hr + h2 { border-top: 0; margin-top: 0; padding-top: .2em; }   /* Robert 在小標前自己加的分隔線＋小標本身的上邊線會變成兩條：只留分隔線（2026-11-07） */
 .prose ul { padding-left: 1.2em; margin: 0 0 1.2em; }
