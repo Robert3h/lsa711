@@ -157,6 +157,7 @@
 @keyframes sm-pop { 0% { transform: scale(.2); } 60% { transform: scale(1.6); } 100% { transform: scale(1); } }
 .sm-map .star.ping { animation: sm-ping .7s ease-out; }
 @keyframes sm-ping { 0% { transform: scale(1); } 40% { transform: scale(2.2); } 100% { transform: scale(1); } }
+.sm-embed { scroll-margin-top: 72px; }   /* 切到星海圖時捲到這裡：讓出上方位置條，切換鈕還露一點，知道自己在哪 */
 /* 最新那天的星星：藍圈閃兩次後淡出，和維修日誌最新改裝卡同一個藍（Robert 2026-11-26：「閃個兩次好了，比較顯眼」） */
 .sm-new { fill: none; stroke: var(--data); stroke-width: 3; pointer-events: none; opacity: 0; animation: sm-new 3.2s ease-out .6s forwards; }
 @keyframes sm-new { 0% { opacity: 0; } 12% { opacity: 1; } 28% { opacity: .1; } 44% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
@@ -275,15 +276,37 @@
       g.insertBefore(ring, g.firstChild);
     });
   }
+  // 子琦說明閃的是什麼（Robert 2026-11-26）。full＝全部傳訊切到星海圖：直接翻開最新那顆星的卡片；
+  // 否則（星海圖頁）只在歡迎詞後面補一句，保留圖例說明。讀者已經點了別顆星就不打擾
+  var welcome = gLine.textContent;
+  function newestNote(full) {
+    if (pin || sel) return;
+    var ns = Array.prototype.filter.call(map.querySelectorAll('.star'), function (g) { var s = STARS[g.dataset.code]; return s && s.d === newest; });
+    if (!ns.length) return;
+    var one = ns.length === 1, t = STARS[ns[0].dataset.code].t;
+    var msg = one ? '閃著藍圈的那顆星，是最新抵達的傳訊（' + newest + '）：〈' + t + '〉。'
+                  : '閃著藍圈的 ' + ns.length + ' 顆星，是 ' + newest + ' 同一天抵達的最新傳訊。';
+    if (full) { show(ns[0]); sel.classList.remove('sel'); sel = null; gLine.textContent = msg + (one ? '下面就是它的介紹。' : '下面先介紹其中一則。'); }
+    else gLine.textContent = welcome + msg;
+  }
   // 等星海圖真的出現在畫面上才閃：全部傳訊頁預設是清單，切到星海圖時動畫才不會早就播完（2026-11-26 Robert 回報看不到）
+  var embed = !!map.closest('.sm-embed');
   if ('IntersectionObserver' in window) {
     var seen = false;
     new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting && !seen) flashNew(); seen = e.isIntersecting; });
+      es.forEach(function (e) { if (e.isIntersecting && !seen) { flashNew(); if (!embed) newestNote(false); } seen = e.isIntersecting; });
     }).observe(map);
-  } else flashNew();
-  // 保險：全部傳訊頁按「星海圖」切換時直接重閃一次（不只靠 IntersectionObserver）
-  document.querySelectorAll('[data-view="map"]').forEach(function (b) { b.addEventListener('click', function () { setTimeout(flashNew, 30); }); });
+  } else { flashNew(); if (!embed) newestNote(false); }
+  // 全部傳訊頁按「星海圖」：捲到整張星圖都看得到的位置（Robert 2026-11-26 截圖的位置），再閃、再由子琦說明
+  document.querySelectorAll('[data-view="map"]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      setTimeout(function () {
+        var wrap = map.closest('.sm-wrap') || map;
+        wrap.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        flashNew(); newestNote(true);
+      }, 30);
+    });
+  });
   map.querySelectorAll('.star').forEach(function (g) {
     g.addEventListener('click', function (e) { e.stopPropagation(); choose(g); });
     g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(g); } });
