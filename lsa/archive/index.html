@@ -157,6 +157,9 @@
 @keyframes sm-pop { 0% { transform: scale(.2); } 60% { transform: scale(1.6); } 100% { transform: scale(1); } }
 .sm-map .star.ping { animation: sm-ping .7s ease-out; }
 @keyframes sm-ping { 0% { transform: scale(1); } 40% { transform: scale(2.2); } 100% { transform: scale(1); } }
+/* 最新那天的星星：藍圈閃兩次後淡出，和維修日誌最新改裝卡同一個藍（Robert 2026-11-26：「閃個兩次好了，比較顯眼」） */
+.sm-new { fill: none; stroke: var(--data); stroke-width: 3; pointer-events: none; opacity: 0; animation: sm-new 3.2s ease-out .6s forwards; }
+@keyframes sm-new { 0% { opacity: 0; } 12% { opacity: 1; } 28% { opacity: .1; } 44% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
 .sm-ship { pointer-events: none; }
 /* 手機按播放：整個星海圖和廣播一起全螢幕、轉橫向（Robert 2026-11-13）。左邊地圖、右邊廣播，和電腦版同一個配置 */
 .sm-close { display: none; }
@@ -166,7 +169,7 @@
 .sm-stage.is-full .sm-map { height: calc(100vh - 24px); height: calc(100dvh - 24px); width: 100%; }
 .sm-stage.is-full .sm-card { position: static; max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); overflow: auto; padding: 12px; font-size: .9rem; }
 .sm-stage.is-full .sm-close { display: block; position: absolute; top: 10px; right: 10px; z-index: 2; font: inherit; font-size: .88rem; min-height: 40px; padding: 0 14px; border-radius: 20px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); cursor: pointer; }
-@media (prefers-reduced-motion: reduce) { .sm-map * { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .sm-map * { animation: none !important; transition: none !important; } .sm-new { opacity: 1; } }
 @media (max-width: 900px) {
   .sm-stage { grid-template-columns: 1fr; }
   .sm-card { position: static; scroll-margin-top: 12px; }
@@ -260,6 +263,15 @@
     if (narrow.matches) { var cr = card.getBoundingClientRect(); if (cr.top > innerHeight - 120) card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     try { history.replaceState(null, '', '#' + el.dataset.code); } catch (e) {}
   }
+  // 最新那天的星星（同一天好幾篇就都標）：由 STARS 的日期算，不另外記哪篇最新；之後預約文章由 JS 顯示時也照樣適用
+  var newest = Object.keys(STARS).reduce(function (m, c) { return STARS[c].d > m ? STARS[c].d : m; }, '');
+  map.querySelectorAll('.star').forEach(function (g) {
+    var s = STARS[g.dataset.code], dot = g.querySelector('.dot');
+    if (!s || s.d !== newest || !dot) return;
+    var ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    ring.setAttribute('class', 'sm-new'); ring.setAttribute('cx', dot.getAttribute('cx')); ring.setAttribute('cy', dot.getAttribute('cy')); ring.setAttribute('r', '27');
+    g.insertBefore(ring, g.firstChild);
+  });
   map.querySelectorAll('.star').forEach(function (g) {
     g.addEventListener('click', function (e) { e.stopPropagation(); choose(g); });
     g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(g); } });
