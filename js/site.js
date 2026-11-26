@@ -74,6 +74,17 @@
     });
   });
 
+  // ---------- 2a-1. 預約上架：建站時先放好、藏起來，讀者電腦的時間到了才顯示（2026-11-26） ----------
+  // 靜態網站不會在發表時間自己重建，所以由讀者端判斷；沒有 JS 的讀者等下次重建網站才看得到
+  document.querySelectorAll('[data-publish]').forEach(function (el) {
+    if (Date.now() >= new Date(el.getAttribute('data-publish')).getTime()) el.hidden = false;
+  });
+  // 首頁最新消息固定 3 則：預約的那則出現後，把最舊的一則藏起來
+  document.querySelectorAll('.news ul').forEach(function (ul) {
+    var n = 0;
+    Array.prototype.forEach.call(ul.children, function (li) { if (!li.hidden && ++n > 3) li.hidden = true; });
+  });
+
   // ---------- 2a-2. 首頁傳訊列：7 天內的消息顯示 NEW（依讀者當下的真實日期判斷） ----------
   document.querySelectorAll('.news-item[data-date]').forEach(function (a) {
     var d = new Date(a.getAttribute('data-date') + 'T00:00:00+08:00');
