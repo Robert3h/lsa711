@@ -237,13 +237,25 @@
   }
   // 最新那天的星星（同一天好幾篇就都標）：由 STARS 的日期算，不另外記哪篇最新；之後預約文章由 JS 顯示時也照樣適用
   var newest = Object.keys(STARS).reduce(function (m, c) { return STARS[c].d > m ? STARS[c].d : m; }, '');
-  map.querySelectorAll('.star').forEach(function (g) {
-    var s = STARS[g.dataset.code], dot = g.querySelector('.dot');
-    if (!s || s.d !== newest || !dot) return;
-    var ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    ring.setAttribute('class', 'sm-new'); ring.setAttribute('cx', dot.getAttribute('cx')); ring.setAttribute('cy', dot.getAttribute('cy')); ring.setAttribute('r', '27');
-    g.insertBefore(ring, g.firstChild);
-  });
+  function flashNew() {
+    map.querySelectorAll('.sm-new').forEach(function (r) { r.remove(); });
+    map.querySelectorAll('.star').forEach(function (g) {
+      var s = STARS[g.dataset.code], dot = g.querySelector('.dot');
+      if (!s || s.d !== newest || !dot) return;
+      var ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      ring.setAttribute('class', 'sm-new'); ring.setAttribute('cx', dot.getAttribute('cx')); ring.setAttribute('cy', dot.getAttribute('cy')); ring.setAttribute('r', '27');
+      g.insertBefore(ring, g.firstChild);
+    });
+  }
+  // 等星海圖真的出現在畫面上才閃：全部傳訊頁預設是清單，切到星海圖時動畫才不會早就播完（2026-11-26 Robert 回報看不到）
+  if ('IntersectionObserver' in window) {
+    var seen = false;
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting && !seen) flashNew(); seen = e.isIntersecting; });
+    }).observe(map);
+  } else flashNew();
+  // 保險：全部傳訊頁按「星海圖」切換時直接重閃一次（不只靠 IntersectionObserver）
+  document.querySelectorAll('[data-view="map"]').forEach(function (b) { b.addEventListener('click', function () { setTimeout(flashNew, 30); }); });
   map.querySelectorAll('.star').forEach(function (g) {
     g.addEventListener('click', function (e) { e.stopPropagation(); choose(g); });
     g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(g); } });
