@@ -1852,3 +1852,53 @@ button.btn.primary { background: var(--accent); }
 
 /* 文章與 One more thing 裡的長網址（2026-11-18 健檢：it-cosplay 留言的傳訊網址在手機上撐出橫向捲動）：網址沒有空白可以斷行，允許在任何位置換行 */
 .prose a, .author-notes a { overflow-wrap: anywhere; }
+
+/* 傳訊月曆（2026-11-27，Robert：「每個月份有多少文章，弄成類似月曆的方式呈現」）：全部傳訊的第三個切換。
+   上面一年 12 格看每月幾則，細條是三個艙房各占多少；下面左邊是那個月的日曆、右邊是點到那天的傳訊。
+   艙房配色同星海圖：電子報青、生活隨筆白（淺色版黑）、小劇場橘。程式在 site_page_archive.py 和 js/calendar.js */
+.arc-cal { margin: 18px 0 28px; }
+.cal-key { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 14px; font-size: .85rem; color: var(--muted); }
+.cal-key span { display: inline-flex; align-items: center; gap: 6px; }
+.cal-key i, .cal-dots i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.r-b { background: var(--data); }
+.r-a { background: var(--ink); }
+.r-c { background: var(--accent); }
+.cal-year { display: grid; grid-template-columns: 3.5rem 1fr; gap: 8px 10px; align-items: start; margin: 0 0 22px; }
+.cal-year > .log { margin: 0; padding-top: 10px; color: var(--data); }
+.cal-mos { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 6px; }
+.cal-mo { font: inherit; display: flex; flex-direction: column; align-items: flex-start; gap: 5px; min-width: 0; min-height: 68px; padding: 8px 8px 10px; border: 1px solid var(--rule); border-radius: 10px; background: none; color: var(--ink); text-align: left; }
+button.cal-mo { cursor: pointer; }
+button.cal-mo:hover, button.cal-mo:focus-visible { border-color: var(--muted); }
+button.cal-mo[aria-pressed="true"] { border-color: var(--accent); background: var(--surface); box-shadow: inset 0 0 0 1px var(--accent); }
+.cal-m { font-size: .82rem; color: var(--muted); }
+.cal-n { font-size: 1.3rem; line-height: 1; color: var(--data); }
+.cal-mo.zero .cal-n { color: var(--muted); }
+.cal-mo.out { opacity: .4; border-style: dashed; }
+.cal-bar { display: flex; width: 100%; height: 4px; margin-top: auto; border-radius: 2px; overflow: hidden; background: var(--rule); }
+.cal-bar i { display: block; height: 100%; }
+.cal-body { display: grid; grid-template-columns: minmax(0, 25rem) minmax(0, 1fr); gap: 24px 36px; align-items: start; }
+.cal-month { padding-top: 0; }   /* 全站 section 上方留 48px，月曆裡不需要，左右兩欄才對齊 */
+.cal-month h3 { margin: 0 0 10px; font-size: .95rem; font-weight: 400; color: var(--data); }
+.cal-week, .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.cal-week span { padding: 2px 0 4px; text-align: center; font-size: .78rem; color: var(--muted); }
+.cal-day { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; aspect-ratio: 1; min-height: 40px; border-radius: 8px; font-family: var(--font-log); font-size: .88rem; color: var(--muted); }
+button.cal-day { font: inherit; font-family: var(--font-log); font-size: .88rem; padding: 0; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); cursor: pointer; }
+button.cal-day:hover, button.cal-day:focus-visible { border-color: var(--muted); }
+button.cal-day.sel { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.cal-day.later { opacity: .35; }
+.cal-dots { display: flex; gap: 3px; height: 8px; }
+/* 最新那天：藍圈閃三次後淡出（和星海圖 .sm-new 同一個藍、同樣節奏） */
+.cal-day.cal-new::after { content: ""; position: absolute; inset: -4px; border: 3px solid var(--data); border-radius: 12px; opacity: 0; pointer-events: none; animation: cal-new 4.4s ease-out .4s forwards; }
+@keyframes cal-new { 0% { opacity: 0; } 9% { opacity: 1; } 20% { opacity: .1; } 32% { opacity: 1; } 43% { opacity: .1; } 55% { opacity: 1; } 78% { opacity: 1; } 100% { opacity: 0; } }
+.cal-picked { min-width: 0; }
+.cal-pick-h { margin: 0 0 6px; padding-bottom: 6px; border-bottom: 1px solid var(--rule); font-size: .95rem; color: var(--data); }
+@media (max-width: 860px) {
+  .cal-body { grid-template-columns: minmax(0, 1fr); }
+  .cal-month { max-width: 25rem; }
+}
+@media (max-width: 720px) {
+  .cal-year { grid-template-columns: minmax(0, 1fr); }
+  .cal-year > .log { padding-top: 0; }
+  .cal-mos { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .cal-day.cal-new::after { animation: none; opacity: 1; } }
