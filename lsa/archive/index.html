@@ -158,9 +158,9 @@
 .sm-map .star.ping { animation: sm-ping .7s ease-out; }
 @keyframes sm-ping { 0% { transform: scale(1); } 40% { transform: scale(2.2); } 100% { transform: scale(1); } }
 .sm-embed { scroll-margin-top: 72px; }   /* 切到星海圖時捲到這裡：讓出上方位置條，切換鈕還露一點，知道自己在哪 */
-/* 最新那天的星星：藍圈閃兩次後淡出，和維修日誌最新改裝卡同一個藍（Robert 2026-11-26：「閃個兩次好了，比較顯眼」） */
-.sm-new { fill: none; stroke: var(--data); stroke-width: 3; pointer-events: none; opacity: 0; animation: sm-new 3.2s ease-out .6s forwards; }
-@keyframes sm-new { 0% { opacity: 0; } 12% { opacity: 1; } 28% { opacity: .1; } 44% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
+/* 最新那天的星星：藍圈閃三次後淡出，和維修日誌最新改裝卡同一個藍（Robert 2026-11-26：「閃個兩次好了，比較顯眼」；2026-11-27 改三次：「無三不成禮」） */
+.sm-new { fill: none; stroke: var(--data); stroke-width: 3; pointer-events: none; opacity: 0; animation: sm-new 4.4s ease-out .6s forwards; }
+@keyframes sm-new { 0% { opacity: 0; } 9% { opacity: 1; } 20% { opacity: .1; } 32% { opacity: 1; } 43% { opacity: .1; } 55% { opacity: 1; } 78% { opacity: 1; } 100% { opacity: 0; } }
 .sm-ship { pointer-events: none; }
 /* 手機按播放：整個星海圖和廣播一起全螢幕、轉橫向（Robert 2026-11-13）。左邊地圖、右邊廣播，和電腦版同一個配置 */
 .sm-close { display: none; }
