@@ -34,8 +34,18 @@
 
   function show(html) { out.innerHTML = html; }
 
+  // 同義詞（2026-11-27）：讀者用的詞和文章用的詞常常不一樣（老婆／太太），打到同一組的任一個詞，就把整組一起比對
+  function expand(q, syn) {
+    var low = q.toLowerCase(), add = [];
+    (syn || []).forEach(function (g) {
+      if (g.some(function (w) { return low.indexOf(w.toLowerCase()) >= 0; })) add = add.concat(g);
+    });
+    return add.length ? q + ' ' + add.join(' ') : q;
+  }
+
   function search(q) {
     var F = window.LSA_FINDER, score = {}, hits = {};
+    q = expand(q, F.syn);
     var seen = {};
     tokens(q).forEach(function (t) {
       if (seen[t]) return; seen[t] = 1;
