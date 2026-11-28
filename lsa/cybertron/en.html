@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <script>/* 在畫面出現前套用讀者上次選的主題，避免閃一下 */try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
-<link rel="stylesheet" href="../../css/style.css?v=124332ae">
+<link rel="stylesheet" href="../../css/style.css?v=dbd21a66">
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
@@ -173,7 +173,7 @@
     </ul>
     <div class="resonate is-small" data-endpoint="https://script.google.com/macros/s/AKfycbxPF7zOsSah8MmHhBUXHvIFPNYMO0_fBYdG4oM2G9egW3bruhN4yqBLVe8m13TqyZ1t/exec" data-slug="cyber-videos" data-name="設定集｜影片" data-lang="en" hidden><button type="button" class="resonate-btn" aria-pressed="false"><span aria-hidden="true">❤️</span> Resonates</button><span class="resonate-count" aria-live="polite"></span></div>
   </section>
-  <p class="sub music-note">The background music, “Beneath the Amber,” is AI-generated and has no vocals.</p>
+  <p class="sub music-note">The background music, “Beneath the Amber” and “Binary Star Ambient,” is AI-generated and has no vocals; one is picked at random each visit. The latter is played live by your browser, so the melody is never the same twice.</p>
 </div>
 <div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Enlarged photo view">
   <button type="button" class="lb-close" aria-label="Close">✕</button>
@@ -182,14 +182,15 @@
   <button type="button" class="lb-next" aria-label="Next">→</button>
 </div>
 <script src="../../js/gallery.js?v=485af2e1"></script>
-<audio class="bgm" src="../../media/music/beneath-the-amber.mp3" preload="none" loop></audio>
+<audio class="bgm" src="../../media/music/beneath-the-amber.mp3" data-title="Beneath the Amber" preload="none" loop></audio>
 <aside class="transmission" aria-label="Background music" hidden>
   <p class="tx-head log">📡 Transmission from 38 light-years away | Planet LSA-711</p>
   <p class="tx-body">A short piece of instrumental music. Play it here?</p>
   <div class="tx-actions"><button type="button" class="btn primary tx-play">▶ Play</button><button type="button" class="btn tx-no">■ No thanks</button></div>
 </aside>
-<button type="button" class="tx-mini" aria-pressed="false" hidden><span class="tx-icon" aria-hidden="true">♪</span><span class="tx-label">Play music</span><span class="tx-title log">Beneath the Amber</span></button>
-<script src="../../js/music.js?v=a6f8ccf2"></script>
+<div class="tx-dock"><button type="button" class="tx-swap" aria-label="Switch track" title="Switch track" hidden>⇄</button><button type="button" class="tx-mini" aria-pressed="false" hidden><span class="tx-icon" aria-hidden="true">♪</span><span class="tx-label">Play music</span><span class="tx-title log">Beneath the Amber</span></button></div>
+<script src="../../js/ambient.js?v=8db66fa4"></script>
+<script src="../../js/music.js?v=a9c39ef8"></script>
 
 </main>
 <footer class="site-footer" id="site-footer">

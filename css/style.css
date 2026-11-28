@@ -959,8 +959,17 @@ button.btn.primary { background: var(--accent); }
 :root[data-theme="light"] .transmission { box-shadow: 0 10px 26px rgba(0, 0, 0, .14); }
 
 /* 選過之後留在角落的小按鈕：隨時能開、能關 */
+/* ♪ 和 ⇄（換一首，播放中才出現）一起固定在右下角 */
+.tx-dock { position: fixed; right: 16px; bottom: 20px; z-index: 15; display: flex; align-items: center; gap: 8px; }
+.tx-swap {
+  width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font: inherit; font-size: 1.05rem;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .28);
+}
+.tx-swap[hidden] { display: none; }
+.tx-swap:hover, .tx-swap:focus-visible { border-color: var(--accent); color: var(--accent); }
+:root[data-theme="light"] .tx-swap { box-shadow: 0 6px 18px rgba(0, 0, 0, .12); }
 .tx-mini {
-  position: fixed; right: 16px; bottom: 20px; z-index: 15;
   display: inline-flex; align-items: center; gap: 8px;
   padding: 10px 16px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 0.9rem; font-weight: 600;
   background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
@@ -974,7 +983,7 @@ button.btn.primary { background: var(--accent); }
 .tx-mini.is-playing .tx-title { display: inline; }   /* 正在播的時候才顯示曲名：顯示的是真實狀態 */
 @media (max-width: 420px) { .tx-mini.is-playing .tx-title { display: none; } }
 :root[data-theme="light"] .tx-mini { box-shadow: 0 6px 18px rgba(0, 0, 0, .12); }
-@media (min-width: 760px) { .transmission, .tx-mini { right: 28px; bottom: 28px; } }
+@media (min-width: 760px) { .transmission, .tx-dock { right: 28px; bottom: 28px; } }
 /* 手機（健檢 S10）：固定在畫面上的卡片幾乎全寬，會一直蓋住劇照。
    改成放進頁首說明區、跟著頁面捲走，不再浮在照片上；選完之後一樣留角落的小 ♪。 */
 .transmission.inline { position: static; width: auto; margin: 20px 0 0; box-shadow: none; }

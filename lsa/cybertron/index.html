@@ -21,7 +21,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary_large_image">
 <script>/* 在畫面出現前套用讀者上次選的主題，避免閃一下 */try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
-<link rel="stylesheet" href="../../css/style.css?v=124332ae">
+<link rel="stylesheet" href="../../css/style.css?v=dbd21a66">
 </head>
 <body>
 <a class="skip" href="#main">跳到主要內容</a>
@@ -172,7 +172,7 @@
     </ul>
     <div class="resonate is-small" data-endpoint="https://script.google.com/macros/s/AKfycbxPF7zOsSah8MmHhBUXHvIFPNYMO0_fBYdG4oM2G9egW3bruhN4yqBLVe8m13TqyZ1t/exec" data-slug="cyber-videos" data-name="設定集｜影片" data-lang="zh" hidden><button type="button" class="resonate-btn" aria-pressed="false"><span aria-hidden="true">❤️</span> 有共鳴</button><span class="resonate-count" aria-live="polite"></span></div>
   </section>
-  <p class="sub music-note">背景音樂〈Beneath the Amber〉為 AI 生成，無人聲。</p>
+  <p class="sub music-note">背景音樂〈Beneath the Amber〉、〈Binary Star Ambient〉為 AI 生成，無人聲，每次隨機播一首；後者由瀏覽器即時演奏，旋律每次都不一樣。</p>
 </div>
 <div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="照片放大檢視">
   <button type="button" class="lb-close" aria-label="關閉">✕</button>
@@ -181,14 +181,15 @@
   <button type="button" class="lb-next" aria-label="下一張">→</button>
 </div>
 <script src="../../js/gallery.js?v=485af2e1"></script>
-<audio class="bgm" src="../../media/music/beneath-the-amber.mp3" preload="none" loop></audio>
+<audio class="bgm" src="../../media/music/beneath-the-amber.mp3" data-title="Beneath the Amber" preload="none" loop></audio>
 <aside class="transmission" aria-label="背景音樂" hidden>
   <p class="tx-head log">📡 收到38光年外傳訊｜來自 LSA-711 星球</p>
   <p class="tx-body">一段無人聲的輕音樂，要在這裡播放嗎？</p>
   <div class="tx-actions"><button type="button" class="btn primary tx-play">▶ 播放</button><button type="button" class="btn tx-no">■ 不用了</button></div>
 </aside>
-<button type="button" class="tx-mini" aria-pressed="false" hidden><span class="tx-icon" aria-hidden="true">♪</span><span class="tx-label">播放音樂</span><span class="tx-title log">Beneath the Amber</span></button>
-<script src="../../js/music.js?v=a6f8ccf2"></script>
+<div class="tx-dock"><button type="button" class="tx-swap" aria-label="換一首" title="換一首" hidden>⇄</button><button type="button" class="tx-mini" aria-pressed="false" hidden><span class="tx-icon" aria-hidden="true">♪</span><span class="tx-label">播放音樂</span><span class="tx-title log">Beneath the Amber</span></button></div>
+<script src="../../js/ambient.js?v=8db66fa4"></script>
+<script src="../../js/music.js?v=a9c39ef8"></script>
 </main>
 <footer class="site-footer" id="site-footer">
   <div class="wrap">
